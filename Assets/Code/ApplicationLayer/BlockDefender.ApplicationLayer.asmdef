@@ -1,0 +1,16 @@
+{
+    "name": "BlockDefender.ApplicationLayer",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8561eec076893fa49855a53ed7b70f22"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

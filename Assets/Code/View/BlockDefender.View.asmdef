@@ -1,0 +1,16 @@
+{
+    "name": "BlockDefender.View",
+    "rootNamespace": "",
+    "references": [
+        "GUID:99171f38581f85d4b9743f0681c7c97b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
