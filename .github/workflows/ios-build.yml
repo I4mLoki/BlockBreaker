@@ -74,7 +74,7 @@ jobs:
       FIREBASE_RELEASE_NOTES: 'iOS build number #${{ github.run_number }} requested by ${{ github.actor }}.'
     steps:
       - name: Test 1
-        run: echo ls -r
+        run: ls -r
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Download iOS Artifact
