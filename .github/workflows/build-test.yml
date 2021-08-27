@@ -6,6 +6,11 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
+
+  #####################################################################################################################
+  ## Build
+  #####################################################################################################################
+  
   buildAndTestForSomePlatforms:
     name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
@@ -53,8 +58,37 @@ jobs:
           allowDirtyBuild: true
       - uses: actions/upload-artifact@v2
         with:
-          name: blockbreaker.apk
-          path: build
+          name: build-Android
+          path: build/Android
+          
+  #####################################################################################################################
+  ## App Distribution
+  #####################################################################################################################
+  
+  appDistribution:
+    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+    runs-on: ubuntu-latest
+    needs: buildAndTestForSomePlatforms
+    env:
+      ANDROID_BUILD_FILE_PATH: ${{ format('{0}/build/Android/Android.aab', github.workspace) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Download Android Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-Android
+          path: build/Android
+          
+  #####################################################################################################################
+  ## Discord notification
+  #####################################################################################################################
+  
+  discord:
+    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+    runs-on: ubuntu-latest
+    needs: appDistribution
+    steps:
       - name: Send confirmation message to Discord
         uses: sebastianpopp/discord-action@releases/v1
         with:
