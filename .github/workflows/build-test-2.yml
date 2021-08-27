@@ -80,7 +80,7 @@ jobs:
           name: build-Android
           path: build/Android
       - name: Display structure of downloaded files
-        run: ls -R
+        run: echo env.ANDROID_BUILD_FILE_PATH
       - uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
         with:
         # App id can be found on the General Settings page
