@@ -74,11 +74,11 @@ jobs:
       FIREBASE_RELEASE_NOTES: test222
     steps:
       - name: Test 1
-        run: echo ${{gihub.workflow}}
+        run: echo ${{github.workflow}}
       - name: Test 2
-        run: echo ${{gihub.event}}
+        run: echo ${{github.event}}
       - name: Test 3
-        run: echo ${{gihub.actor}}
+        run: echo ${{github.actor}}
       - name: Test 4
         run: echo ${{github.run_number}}
       - name: Checkout Repository
