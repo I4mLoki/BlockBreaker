@@ -49,8 +49,6 @@ jobs:
       - uses: game-ci/unity-builder@v2
         id: buildStep
         with:
-          # customParameters: -developmentBuild
-          # buildMethod: UnityBuilderAction.BuildScript.Build
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
@@ -73,7 +71,7 @@ jobs:
     env:
       ANDROID_BUILD_FILE_PATH: ${{ format('{0}/build/Android/BlockBreaker.apk', github.workspace) }}
       FIREBASE_GROUP: test
-      FIREBASE_RELEASE_NOTES: test
+      FIREBASE_RELEASE_NOTES: test222
     steps:
       - name: Test 1
         run: echo ${{gihub.workflow}}
@@ -96,8 +94,7 @@ jobs:
           token: ${{secrets.FIREBASE_TOKEN}}
           file: ${{env.ANDROID_BUILD_FILE_PATH}}
           groups: ${{env.FIREBASE_GROUP}}
-          # Release notes visible on release page
-          releaseNotes: Release notes.
+          releaseNotes: ${{env.FIREBASE_RELEASE_NOTES}}
       
   #####################################################################################################################
   ## Final stuff
@@ -106,7 +103,7 @@ jobs:
   finalStuff:
     name: Do latest stuff after building
     runs-on: ubuntu-latest
-    needs: buildForAndroidPlatform
+    needs: appDistribution
     env:
       DISCORD_MESSAGE: ${{ format('{0}/build/Android/BlockBreaker.apk', github.workspace) }}
     steps:
