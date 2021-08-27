@@ -59,7 +59,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-Android
-          path: build/Android
+          path: builds/Android
           
   #####################################################################################################################
   ## App Distribution
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: buildAndTestForSomePlatforms
     env:
-      ANDROID_BUILD_FILE_PATH: ${{ format('{0}/build/Android/BlockBreaker.apk', github.workspace) }}
+      ANDROID_BUILD_FILE_PATH: ${{ format('{0}/builds/Android/BlockBreaker.apk', github.workspace) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -80,7 +80,7 @@ jobs:
           name: build-Android
           path: build/Android
       - name: Display structure of downloaded files
-        run: echo env.ANDROID_BUILD_FILE_PATH
+        run: echo ${{env.ANDROID_BUILD_FILE_PATH}}
       - uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
         with:
         # App id can be found on the General Settings page
@@ -88,7 +88,7 @@ jobs:
           # Upload token - see Firebase CLI Reference
           token: ${{secrets.FIREBASE_TOKEN}}
           # Artifact to upload (.apk or .ipa)
-          file: env.ANDROID_BUILD_FILE_PATH
+          file: ${{env.ANDROID_BUILD_FILE_PATH}}
           #file: /home/runner/work/BlockBreaker/BlockBreaker/build/Android/BlockBreaker.apk
           # Distribution groups
           groups: test
