@@ -69,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: buildForAndroidPlatform
     env:
-      ANDROID_BUILD_FILE_PATH: '${{ github.workspace }/build/Android/BlockBreaker.apk}'
+      ANDROID_BUILD_FILE_PATH: '${{ github.workspace }}/build/Android/BlockBreaker.apk'
       FIREBASE_GROUP: test
       FIREBASE_RELEASE_NOTES: 'Android build number #${{ github.run_number }} requested by ${{ github.actor }}.'
     steps:
