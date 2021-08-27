@@ -86,7 +86,7 @@ jobs:
           # Upload token - see Firebase CLI Reference
           token: ${{secrets.FIREBASE_APP_ID}}
           # Artifact to upload (.apk or .ipa)
-          file: $ANDROID_BUILD_FILE_PATH
+          file: ${{$ANDROID_BUILD_FILE_PATH}}
           # Distribution groups
           groups: test
           # Release notes visible on release page
