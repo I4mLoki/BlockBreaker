@@ -1,18 +1,20 @@
-name: Build test 2
+name: Android Build
 
 on:
   workflow_dispatch: {}
+  pull_request:
+    branches: [ qa ]
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
 
   #####################################################################################################################
-  ## Build
+  ## Build for Android
   #####################################################################################################################
   
-  buildAndTestForSomePlatforms:
-    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+  buildForAndroidPlatform:
+    name: Build For Android Platform
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -23,7 +25,6 @@ jobs:
           - 2020.3.15f2
         targetPlatform:
           - Android
-          #- iOS
     steps:
       - uses: actions/checkout@v2
         with:
@@ -66,12 +67,22 @@ jobs:
   #####################################################################################################################
   
   appDistribution:
-    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+    name: Upload .apk file to Firebase
     runs-on: ubuntu-latest
-    needs: buildAndTestForSomePlatforms
+    needs: buildForAndroidPlatform
     env:
       ANDROID_BUILD_FILE_PATH: ${{ format('{0}/build/Android/BlockBreaker.apk', github.workspace) }}
+      FIREBASE_GROUP: test
+      FIREBASE_RELEASE_NOTES: test
     steps:
+      - name: Test 1
+        run: echo ${{gihub.workflow}}
+      - name: Test 2
+        run: echo ${{gihub.event}}
+      - name: Test 3
+        run: echo ${{gihub.actor}}
+      - name: Test 4
+        run: echo ${{github.run_number}}
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Download Android Artifact
@@ -79,18 +90,28 @@ jobs:
         with:
           name: build-Android
           path: build/Android
-      - name: Display structure of downloaded files
-        run: echo ${{env.ANDROID_BUILD_FILE_PATH}}
       - uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
         with:
-        # App id can be found on the General Settings page
           appId: ${{secrets.FIREBASE_APP_ID}}
-          # Upload token - see Firebase CLI Reference
           token: ${{secrets.FIREBASE_TOKEN}}
-          # Artifact to upload (.apk or .ipa)
           file: ${{env.ANDROID_BUILD_FILE_PATH}}
-          #file: /home/runner/work/BlockBreaker/BlockBreaker/build/Android/BlockBreaker.apk
-          # Distribution groups
-          groups: test
+          groups: ${{env.FIREBASE_GROUP}}
           # Release notes visible on release page
           releaseNotes: Release notes.
+      
+  #####################################################################################################################
+  ## Final stuff
+  #####################################################################################################################
+  
+  finalStuff:
+    name: Do latest stuff after building
+    runs-on: ubuntu-latest
+    needs: buildForAndroidPlatform
+    env:
+      DISCORD_MESSAGE: ${{ format('{0}/build/Android/BlockBreaker.apk', github.workspace) }}
+    steps:
+      - name: Cleanup to avoid storage limit
+        if: always()
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: build-Android
