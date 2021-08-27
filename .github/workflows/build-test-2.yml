@@ -1,0 +1,96 @@
+name: Build test 2
+
+on:
+  workflow_dispatch: {}
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+jobs:
+
+  #####################################################################################################################
+  ## Build
+  #####################################################################################################################
+  
+  buildAndTestForSomePlatforms:
+    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - ./
+        unityVersion:
+          - 2020.3.15f2
+        targetPlatform:
+          - Android
+          #- iOS
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: false
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+      - name: Restore LFS cache
+        uses: actions/cache@v2.1.3
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
+      - name: Git LFS Pull
+        run: git lfs pull
+      - uses: actions/cache@v2.1.3
+        with:
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-${{ matrix.projectPath }}-
+            Library-
+      - uses: game-ci/unity-builder@v2
+        id: buildStep
+        with:
+          # customParameters: -developmentBuild
+          # buildMethod: UnityBuilderAction.BuildScript.Build
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Semantic
+          buildName: BlockBreaker
+          allowDirtyBuild: true
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-Android
+          path: build/Android
+          
+  #####################################################################################################################
+  ## App Distribution
+  #####################################################################################################################
+  
+  appDistribution:
+    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+    runs-on: ubuntu-latest
+    needs: buildAndTestForSomePlatforms
+    env:
+      ANDROID_BUILD_FILE_PATH: ${{ format('{0}/build/Android/BlockBreaker.apk', github.workspace) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Download Android Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-Android
+          path: build/Android
+      - name: Display structure of downloaded files
+        run: ls -R
+      - uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
+        with:
+        # App id can be found on the General Settings page
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          # Upload token - see Firebase CLI Reference
+          token: ${{secrets.FIREBASE_TOKEN}}
+          # Artifact to upload (.apk or .ipa)
+          file: $ANDROID_BUILD_FILE_PATH
+          #file: /home/runner/work/BlockBreaker/BlockBreaker/build/Android/BlockBreaker.apk
+          # Distribution groups
+          groups: test
+          # Release notes visible on release page
+          releaseNotes: Release notes.
