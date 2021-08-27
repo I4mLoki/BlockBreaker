@@ -104,3 +104,8 @@ jobs:
         uses: geekyeggo/delete-artifact@v1
         with:
           name: build-Android
+      - name: Send confirmation message to Discord
+        uses: sebastianpopp/discord-action@releases/v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: ${{env.DISCORD_MESSAGE}}
