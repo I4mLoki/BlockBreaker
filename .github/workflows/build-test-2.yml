@@ -78,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-Android
-          path: build/Android
+          path: builds/Android
       - name: Display structure of downloaded files
         run: echo ${{env.ANDROID_BUILD_FILE_PATH}}
       - uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
