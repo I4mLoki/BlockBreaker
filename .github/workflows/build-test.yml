@@ -86,7 +86,7 @@ jobs:
         # App id can be found on the General Settings page
           appId: ${{secrets.FIREBASE_APP_ID}}
           # Upload token - see Firebase CLI Reference
-          token: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
           # Artifact to upload (.apk or .ipa)
           file: /home/runner/work/BlockBreaker/BlockBreaker/build/Android/BlockBreaker.apk
           # Distribution groups
