@@ -88,7 +88,7 @@ jobs:
           # Upload token - see Firebase CLI Reference
           token: ${{secrets.FIREBASE_TOKEN}}
           # Artifact to upload (.apk or .ipa)
-          file: $ANDROID_BUILD_FILE_PATH
+          file: env.ANDROID_BUILD_FILE_PATH
           #file: /home/runner/work/BlockBreaker/BlockBreaker/build/Android/BlockBreaker.apk
           # Distribution groups
           groups: test
