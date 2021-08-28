@@ -555,7 +555,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: TextMeshPro
+    1: TextMeshPro;ODIN_INSPECTOR;ODIN_INSPECTOR_3
     4: TextMeshPro
     7: ODIN_INSPECTOR;ODIN_INSPECTOR_3;TextMeshPro
     13: TextMeshPro
