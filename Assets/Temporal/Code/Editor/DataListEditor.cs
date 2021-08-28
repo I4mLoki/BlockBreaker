@@ -197,7 +197,6 @@ namespace Editor
 
             //Create GameObject and its components in Scene to Set Prefab
             var go = new GameObject("New Block");
-            ObjectFactory.AddComponent<RectTransform>(go);
 
             var blockParts = ObjectFactory.AddComponent<BlockParts>(go);
             blockParts.BaseBlock = tempBaseBlock;
