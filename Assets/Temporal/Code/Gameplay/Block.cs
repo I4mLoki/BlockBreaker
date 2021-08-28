@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class BlockBehaviour : MonoBehaviour
+    public class Block : MonoBehaviour
     {
-        private int hitsRemaining = 5;
+        private int hitsRemaining;
 
         private SpriteRenderer spriteRenderer;
         private TextMeshPro text;
@@ -25,7 +25,7 @@ namespace Gameplay
             else
             {
                 gameObject.SetActive(false);
-                // GameplayManager.Instance.blockList.Remove(gameObject);
+                GameplayManager.Instance.blockList.Remove(this);
                 Destroy(gameObject, .5f);
             }
         }

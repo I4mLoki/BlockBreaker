@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using DataConfig;
+using DataConfig.Tools;
 using DG.Tweening;
 using Gameplay;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
 {
-    [SerializeField]
-    private BlockBehaviour blockBehaviour;
-
     [SerializeField]
     private GameObject leftWall;
 
@@ -32,13 +30,16 @@ public class GameplayManager : MonoBehaviour
      * Current level properties
      */
     private BaseLevel level;
-    private List<BaseBlockProperties> blockList;
 
+    public List<Block> blockList { get; private set; }
     public static GameplayManager Instance { get; private set; }
+
+    public bool CanPlay { get; private set; }
 
     private void Awake()
     {
         Instance = this;
+        blockList = new List<Block>();
     }
 
     private void Start()
@@ -54,7 +55,6 @@ public class GameplayManager : MonoBehaviour
 
         blockContainer.transform.position = new Vector3(leftWall.transform.position.x, bottomWall.transform.position.y);
         initialPosition = blockContainer.transform.position;
-        blockList = level.LevelData;
 
         GridSetup();
     }
@@ -63,37 +63,50 @@ public class GameplayManager : MonoBehaviour
     {
         var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
 
-        cellSize = distance / levelList.LevelList[0].Cols;
+        cellSize = distance / level.Cols;
         InstantiateGrid();
     }
 
     private void InstantiateGrid()
     {
-        for (var column = 0; column < levelList.LevelList[0].Cols; column++)
+        var list = level.LevelData;
+            
+        for (var row = 0; row < level.Rows; row++)
         {
-            for (var row = 0; row < levelList.LevelList[0].Rows; row++)
+            for (var column = 0; column < level.Cols; column++)
             {
-                var currentBlock = blockList.Find(block => new Vector3(block.X, block.Y) == new Vector3(column, row));
+                var currentBlock = list.Find(block => new Vector3(block.X, block.Y) == new Vector3(row, column));
                 if (currentBlock == null) continue;
 
                 Vector3 blockPosition;
                 if (column == 0 && row == 0) blockPosition = initialPosition;
-                else blockPosition = new Vector3(row * cellSize, column * cellSize) + initialPosition;
+                else blockPosition = new Vector3(column * cellSize, row * cellSize) + initialPosition;
 
                 InstantiateBlock(blockPosition, currentBlock);
             }
         }
+
+        CanPlay = true;
     }
 
-    private void InstantiateBlock(Vector3 localPosition, BaseBlockProperties blockTest)
+    private void InstantiateBlock(Vector3 localPosition, BaseBlockProperties blockProperties)
     {
-        var newBlock = Instantiate(blockBehaviour, localPosition + new Vector3(cellSize, cellSize) * .5f, Quaternion.identity, blockContainer.transform);
-        newBlock.transform.localScale = new Vector3(cellSize, cellSize) * 100f;
-        newBlock.SetHits(blockTest.Hits);
+        var block = BlockBuilder.Build(blockProperties, localPosition, blockContainer, cellSize);
+        blockList.Add(block);
     }
 
     public void EnemiesTurn()
     {
-        blockContainer.transform.DOMoveY(blockContainer.transform.position.y - cellSize, 1f);
+        var defaultBlockMovement = new Vector3(0, -1) * cellSize;
+
+        for (var i = 0; i < blockList.Count; i++)
+        {
+            var newPosition = new Vector3(blockList[i].transform.position.x, blockList[i].transform.position.y) + defaultBlockMovement;
+            var isLastBlock = i == blockList.Count - 1;
+
+            blockList[i].transform.DOMove(newPosition, 1f);
+
+            CanPlay = isLastBlock;
+        }
     }
 }

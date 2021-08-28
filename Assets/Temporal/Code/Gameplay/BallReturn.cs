@@ -14,8 +14,9 @@ namespace Gameplay
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            ballLauncher.ReturnBall();
             collision.collider.gameObject.SetActive(false);
+            ballLauncher.MoveBallLauncher(collision.transform.position.x);
+            ballLauncher.ReturnBall();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
