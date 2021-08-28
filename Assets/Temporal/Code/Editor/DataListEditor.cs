@@ -5,6 +5,7 @@ using DataConfig;
 using Editor;
 using Gameplay;
 using PlasticPipe.Server;
+using TMPro;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -198,18 +199,28 @@ namespace Editor
             //Create GameObject and its components in Scene to Set Prefab
             var go = new GameObject("New Block");
 
+            var text = new GameObject("Text");
+            text.transform.parent = go.transform;
+            text.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
+
             var blockParts = ObjectFactory.AddComponent<BlockParts>(go);
             blockParts.BaseBlock = tempBaseBlock;
 
             //Add Block Script
             ObjectFactory.AddComponent<Block>(go);
 
+            //Add Block Script
+            var textTemp = ObjectFactory.AddComponent<TextMeshPro>(text);
+            textTemp.alignment = TextAlignmentOptions.Center;
+            textTemp.autoSizeTextContainer = true;
+            textTemp.color = Color.black;
+
             //Add SpriteRendererComponent
             ObjectFactory.AddComponent<SpriteRenderer>(go);
 
             //Add BoxCollider and PhysicsMaterial
-            ObjectFactory.AddComponent<BoxCollider2D>(go).sharedMaterial =
-                AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+            // ObjectFactory.AddComponent<BoxCollider2D>(go).sharedMaterial =
+            //     AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
 
             var art = new GameObject("Art");
             art.transform.parent = go.transform;
