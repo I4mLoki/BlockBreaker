@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Gameplay
@@ -8,20 +9,22 @@ namespace Gameplay
     {
         [SerializeField]
         private Ball ballPrefab;
+        
+        [SerializeField]
+        private GameObject ballContainer;
 
         private Vector3 startDragPosition;
         private Vector3 endDragPosition;
-        private BlockSpawner blockSpawner;
         private LaunchPreview launchPreview;
         private List<Ball> balls;
         private Camera mainCamera;
         private int ballsReady;
+        private bool canShoot;
 
         private void Awake()
         {
             balls = new List<Ball>();
             mainCamera = Camera.main;
-            blockSpawner = FindObjectOfType<BlockSpawner>();
             launchPreview = GetComponent<LaunchPreview>();
 
             CreateBall();
@@ -37,7 +40,7 @@ namespace Gameplay
                 StartDrag(worldPosition);
             else if (Input.GetMouseButton(0))
                 ContinueDrag(worldPosition);
-            else if (Input.GetMouseButtonUp(0))
+            else if (Input.GetMouseButtonUp(0) && canShoot)
                 EndDrag();
         }
 
@@ -51,7 +54,17 @@ namespace Gameplay
         private void ContinueDrag(Vector3 worldPosition)
         {
             endDragPosition = worldPosition;
-            var direction = endDragPosition - startDragPosition;
+            var direction = startDragPosition - endDragPosition;
+
+            if (direction.y > 0)
+            {
+                canShoot = false;
+                launchPreview.ShowLine(false);
+                return;
+            }
+
+            canShoot = true;
+            launchPreview.ShowLine(true);
             launchPreview.SetEndPoint(transform.position - direction);
         }
 
@@ -63,7 +76,7 @@ namespace Gameplay
 
         private IEnumerator LaunchBalls()
         {
-            var direction = endDragPosition - startDragPosition;
+            var direction = startDragPosition - endDragPosition;
             direction.Normalize();
 
             foreach (var ball in balls)
@@ -80,7 +93,7 @@ namespace Gameplay
 
         private void CreateBall()
         {
-            var ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+            var ball = Instantiate(ballPrefab, transform.position, Quaternion.identity, ballContainer.transform);
             balls.Add(ball);
             ballsReady++;
         }
@@ -89,8 +102,8 @@ namespace Gameplay
         {
             ballsReady++;
             if (ballsReady != balls.Count) return;
-        
-            // blockSpawner.SpawnRowOfBlocks();
+
+            GameplayManager.Instance.EnemiesTurn();
             CreateBall();
         }
     }

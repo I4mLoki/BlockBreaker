@@ -15,6 +15,7 @@ namespace Gameplay
         public void SetStartPoint(Vector3 worldPoint)
         {
             dragStartPoint = worldPoint;
+            Debug.Log("Start point = " + dragStartPoint);
 
             lineRenderer.SetPosition(0, dragStartPoint);
         }
@@ -23,6 +24,8 @@ namespace Gameplay
         {
             var pointOffset = worldPoint - dragStartPoint;
             var endPoint = transform.position + pointOffset;
+            
+            Debug.Log("End point = " + endPoint);
 
             lineRenderer.SetPosition(1, endPoint);
         }
