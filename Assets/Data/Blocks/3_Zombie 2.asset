@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 3_Zombie 2
   m_EditorClassIdentifier: 
   blockName: Zombie 2
-  blockPrefab: {fileID: 0}
+  blockPrefab: {fileID: 228155457816136129, guid: 51717f2436e93b74c929de3f18020f6e, type: 3}
   blockHeads: []
   blockEyes: []
   blockEars: []

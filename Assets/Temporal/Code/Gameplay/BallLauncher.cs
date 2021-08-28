@@ -9,7 +9,7 @@ namespace Gameplay
     {
         [SerializeField]
         private Ball ballPrefab;
-        
+
         [SerializeField]
         private GameObject ballContainer;
 
@@ -18,8 +18,10 @@ namespace Gameplay
         private LaunchPreview launchPreview;
         private List<Ball> balls;
         private Camera mainCamera;
-        private int ballsReady;
         private bool canShoot;
+        private bool shootInProgress;
+        private int ballsAvailable;
+        private bool firstBallReturned;
 
         private void Awake()
         {
@@ -32,7 +34,7 @@ namespace Gameplay
 
         private void Update()
         {
-            if (ballsReady != balls.Count) return;
+            if (shootInProgress || !GameplayManager.Instance.CanPlay) return;
 
             var worldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
 
@@ -71,6 +73,7 @@ namespace Gameplay
         private void EndDrag()
         {
             launchPreview.ShowLine(false);
+            shootInProgress = true;
             StartCoroutine(LaunchBalls());
         }
 
@@ -78,6 +81,8 @@ namespace Gameplay
         {
             var direction = startDragPosition - endDragPosition;
             direction.Normalize();
+
+            ballsAvailable = 0;
 
             foreach (var ball in balls)
             {
@@ -87,24 +92,39 @@ namespace Gameplay
 
                 yield return new WaitForSeconds(0.1f);
             }
-
-            ballsReady = 0;
         }
 
         private void CreateBall()
         {
             var ball = Instantiate(ballPrefab, transform.position, Quaternion.identity, ballContainer.transform);
+            ball.gameObject.SetActive(false);
+            
             balls.Add(ball);
-            ballsReady++;
+            ballsAvailable = balls.Count;
         }
-    
+
         public void ReturnBall()
         {
-            ballsReady++;
-            if (ballsReady != balls.Count) return;
+            ballsAvailable++;
 
-            GameplayManager.Instance.EnemiesTurn();
+            if (ballsAvailable != balls.Count) return;
+            
             CreateBall();
+
+            shootInProgress = false;
+            firstBallReturned = false;
+            
+            GameplayManager.Instance.EnemiesTurn();
+        }
+
+        public void MoveBallLauncher(float positionX)
+        {
+            if (firstBallReturned) return;
+
+            firstBallReturned = true;
+            
+            DOTween.Sequence()
+                .Append(gameObject.transform.DOMoveX(positionX, .5f));
         }
     }
 }
