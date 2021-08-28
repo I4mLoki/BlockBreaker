@@ -23,7 +23,11 @@ namespace Gameplay
             if (hitsRemaining > 0)
                 UpdateVisualState();
             else
-                Destroy(gameObject);
+            {
+                gameObject.SetActive(false);
+                // GameplayManager.Instance.blockList.Remove(gameObject);
+                Destroy(gameObject, .5f);
+            }
         }
 
         private void UpdateVisualState()
