@@ -40,15 +40,15 @@ namespace DataConfig
 
         public void GenerateLevel()
         {
-            foreach (var blockProperties in BaseLevel.LevelData)
-            {
-                var tempBlock = new BlockBuilder();
-                var t = tempBlock.Build(blockProperties.Block);
-
-                t.transform.parent = BlockParent;
-
-                t.transform.position = new Vector3(blockProperties.Y * CellSize, blockProperties.X * CellSize);
-            }
+            // foreach (var blockProperties in BaseLevel.LevelData)
+            // {
+            //     var tempBlock = new BlockBuilder();
+            //     var t = tempBlock.Build(blockProperties.Block);
+            //
+            //     t.transform.parent = BlockParent;
+            //
+            //     t.transform.position = new Vector3(blockProperties.Y * CellSize, blockProperties.X * CellSize);
+            // }
         }
     }
 }

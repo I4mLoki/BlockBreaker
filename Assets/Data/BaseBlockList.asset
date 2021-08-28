@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 776fe9b2c097430db1f74c6d804399da, type: 3}
   m_Name: BaseBlockList
   m_EditorClassIdentifier: 
-  blockList: []
+  blockList:
+  - {fileID: 11400000, guid: 9e45f3cd1a7deb9468cb7d99c091c8e3, type: 2}
+  - {fileID: 11400000, guid: 9440c7c45638d70438d7cab029a6b05c, type: 2}
+  - {fileID: 11400000, guid: a767f62dd6215a840ab13f3e627a17f1, type: 2}
