@@ -216,17 +216,17 @@ namespace Editor
             var leftLeg = new GameObject("leftLeg");
             var rightLeg = new GameObject("rightLeg");
 
-            var headImage = ObjectFactory.AddComponent<Image>(head);
-            var leftEyeImage = ObjectFactory.AddComponent<Image>(leftEye);
-            var rightEyeImage = ObjectFactory.AddComponent<Image>(rightEye);
-            var leftEarImage = ObjectFactory.AddComponent<Image>(leftEar);
-            var rightEarImage = ObjectFactory.AddComponent<Image>(rightEar);
-            var mouthImage = ObjectFactory.AddComponent<Image>(mouth);
-            var hipImage = ObjectFactory.AddComponent<Image>(hip);
-            var leftArmImage = ObjectFactory.AddComponent<Image>(leftArm);
-            var rightArmImage = ObjectFactory.AddComponent<Image>(rightArm);
-            var leftLegImage = ObjectFactory.AddComponent<Image>(leftLeg);
-            var rightLegImage = ObjectFactory.AddComponent<Image>(rightLeg);
+            SpriteRenderer headImage = ObjectFactory.AddComponent<SpriteRenderer>(head);
+            SpriteRenderer leftEyeImage = ObjectFactory.AddComponent<SpriteRenderer>(leftEye);
+            SpriteRenderer rightEyeImage = ObjectFactory.AddComponent<SpriteRenderer>(rightEye);
+            SpriteRenderer leftEarImage = ObjectFactory.AddComponent<SpriteRenderer>(leftEar);
+            SpriteRenderer rightEarImage = ObjectFactory.AddComponent<SpriteRenderer>(rightEar);
+            SpriteRenderer mouthImage = ObjectFactory.AddComponent<SpriteRenderer>(mouth);
+            SpriteRenderer hipImage = ObjectFactory.AddComponent<SpriteRenderer>(hip);
+            SpriteRenderer leftArmImage = ObjectFactory.AddComponent<SpriteRenderer>(leftArm);
+            SpriteRenderer rightArmImage = ObjectFactory.AddComponent<SpriteRenderer>(rightArm);
+            SpriteRenderer leftLegImage = ObjectFactory.AddComponent<SpriteRenderer>(leftLeg);
+            SpriteRenderer rightLegImage = ObjectFactory.AddComponent<SpriteRenderer>(rightLeg);
 
             blockParts.Head = headImage;
             blockParts.LeftEye = leftEyeImage;

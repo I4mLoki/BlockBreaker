@@ -6,17 +6,17 @@ namespace DataConfig
     public class BlockParts : MonoBehaviour
     {
         [SerializeField] private BaseBlock _baseBlock;
-        [SerializeField] private  Image _head;
-        [SerializeField] private  Image _leftEye;
-        [SerializeField] private  Image _rightEye;
-        [SerializeField] private  Image _leftEar;
-        [SerializeField] private  Image _rightEar;
-        [SerializeField] private  Image _mouth;
-        [SerializeField] private  Image _hip;
-        [SerializeField] private  Image _leftArm;
-        [SerializeField] private  Image _rightArm;
-        [SerializeField] private  Image _leftLeg;
-        [SerializeField] private  Image _rightLeg;
+        [SerializeField] private  SpriteRenderer _head;
+        [SerializeField] private  SpriteRenderer _leftEye;
+        [SerializeField] private  SpriteRenderer _rightEye;
+        [SerializeField] private  SpriteRenderer _leftEar;
+        [SerializeField] private  SpriteRenderer _rightEar;
+        [SerializeField] private  SpriteRenderer _mouth;
+        [SerializeField] private  SpriteRenderer _hip;
+        [SerializeField] private  SpriteRenderer _leftArm;
+        [SerializeField] private  SpriteRenderer _rightArm;
+        [SerializeField] private  SpriteRenderer _leftLeg;
+        [SerializeField] private  SpriteRenderer _rightLeg;
         [SerializeField] private  Material _material;
 
         public BaseBlock BaseBlock
@@ -25,67 +25,67 @@ namespace DataConfig
             set => _baseBlock = value;
         }
 
-        public Image Head
+        public SpriteRenderer Head
         {
             get => _head;
             set => _head = value;
         }
 
-        public Image LeftEye
+        public SpriteRenderer LeftEye
         {
             get => _leftEye;
             set => _leftEye = value;
         }
 
-        public Image RightEye
+        public SpriteRenderer RightEye
         {
             get => _rightEye;
             set => _rightEye = value;
         }
 
-        public Image LeftEar
+        public SpriteRenderer LeftEar
         {
             get => _leftEar;
             set => _leftEar = value;
         }
 
-        public Image RightEar
+        public SpriteRenderer RightEar
         {
             get => _rightEar;
             set => _rightEar = value;
         }
 
-        public Image LeftArm
+        public SpriteRenderer LeftArm
         {
             get => _leftArm;
             set => _leftArm = value;
         }
 
-        public Image RightArm
+        public SpriteRenderer RightArm
         {
             get => _rightArm;
             set => _rightArm = value;
         }
 
-        public Image LeftLeg
+        public SpriteRenderer LeftLeg
         {
             get => _leftLeg;
             set => _leftLeg = value;
         }
 
-        public Image RightLeg
+        public SpriteRenderer RightLeg
         {
             get => _rightLeg;
             set => _rightLeg = value;
         }
 
-        public Image Mouth
+        public SpriteRenderer Mouth
         {
             get => _mouth;
             set => _mouth = value;
         }
 
-        public Image Hip
+        public SpriteRenderer Hip
         {
             get => _hip;
             set => _hip = value;
