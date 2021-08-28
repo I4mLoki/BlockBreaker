@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -84,7 +85,7 @@ namespace Gameplay
 
             ballsAvailable = 0;
 
-            foreach (var ball in balls)
+            foreach (var ball in balls.ToList())
             {
                 ball.transform.position = transform.position;
                 ball.gameObject.SetActive(true);

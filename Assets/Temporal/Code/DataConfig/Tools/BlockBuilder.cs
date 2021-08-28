@@ -1,4 +1,5 @@
 using Gameplay;
+using UnityEditor;
 using UnityEngine;
 
 namespace DataConfig.Tools
@@ -8,7 +9,9 @@ namespace DataConfig.Tools
         public static Block Build(BaseBlockProperties _baseBlockProperties, Vector3 localPosition, GameObject parent, float cellSize)
         {
             var tempBaseBlock = Object.Instantiate(_baseBlockProperties.Block.BlockPrefab, localPosition + new Vector3(cellSize, cellSize) * .5f, Quaternion.identity, parent.transform);
-            tempBaseBlock.transform.localScale = new Vector3(cellSize, cellSize) * 100f;
+            
+            tempBaseBlock.GetComponent<SpriteRenderer>().size = new Vector2(cellSize, cellSize);
+            tempBaseBlock.AddComponent<BoxCollider2D>().sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
 
             var tempBlock = tempBaseBlock.GetComponent<Block>();
             
