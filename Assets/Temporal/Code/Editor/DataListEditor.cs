@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DataConfig;
 using Editor;
+using Gameplay;
 using PlasticPipe.Server;
 using UnityEditor;
 using UnityEditor.VersionControl;
@@ -201,6 +202,16 @@ namespace Editor
             var blockParts = ObjectFactory.AddComponent<BlockParts>(go);
             blockParts.BaseBlock = tempBaseBlock;
 
+            //Add Block Script
+            ObjectFactory.AddComponent<Block>(go);
+
+            //Add SpriteRendererComponent
+            ObjectFactory.AddComponent<SpriteRenderer>(go);
+
+            //Add BoxCollider and PhysicsMaterial
+            ObjectFactory.AddComponent<BoxCollider2D>(go).sharedMaterial =
+                AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+
             var art = new GameObject("Art");
             art.transform.parent = go.transform;
 
@@ -251,11 +262,6 @@ namespace Editor
             rightLeg.transform.parent = art.transform;
             mouth.transform.parent = art.transform;
             hip.transform.parent = art.transform;
-
-            // ObjectFactory.AddComponent<SpriteRenderer>(go);
-            // ObjectFactory.AddComponent<BoxCollider2D>(go).sharedMaterial =
-            //     AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Materials/Bouncy.physicsMaterial2D");
-
 
             var prefab = PrefabUtility.SaveAsPrefabAsset(go,
                 "Assets/Prefabs/Blocks/" + (_target.BaseBlockList.BlockList.Count + 1) + "_" + blockName + ".prefab");
