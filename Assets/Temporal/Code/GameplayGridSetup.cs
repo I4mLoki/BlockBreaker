@@ -36,22 +36,42 @@ public class GameplayGridSetup : MonoBehaviour
     private List<BaseBlockProperties> _levelBlockList;
     private List<Block> _loadedBlockList;
 
-    public void InitialLoad(BaseLevel level)
+    private int safeArea = 4;
+
+    public IEnumerator InitialLoad(BaseLevel level)
     {
         _level = level;
-        // _levelBlockList = _level.LevelData;
-        _levelBlockList = _level.LevelData.OrderBy(block => block.X).ThenBy(block => block.Y).ToList();
+        _levelBlockList = _level.LevelData;
         _loadedBlockList = new List<Block>();
 
         var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
         cellSize = distance / level.Cols;
 
         topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + visibleRows * cellSize);
-        blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y);
+        blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y + cellSize);
         initialPosition = blockContainer.transform.position;
 
         LoadNextRow();
+        MoveBlocks();
+        
+        for (var i = 0; i < visibleRows - safeArea; i++)
+        {
+            LoadNextRow();
+            yield return new WaitForSeconds(.5f);
+            MoveBlocks();
+        }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            LoadNextRow();
+            MoveBlocks();
+        }
+    }
+    
+    // private IEnumerator Move
 
     public void LoadNextRow()
     {
@@ -60,7 +80,7 @@ public class GameplayGridSetup : MonoBehaviour
         if (blockListOnThisRow.IsNullOrEmpty())
         {
             currentRow++;
-            StartCoroutine(MoveBlocks());
+            return;
         }
 
         foreach (var blockOnThisRow in blockListOnThisRow)
@@ -74,22 +94,16 @@ public class GameplayGridSetup : MonoBehaviour
         }
 
         currentRow++;
-        StartCoroutine(MoveBlocks());
     }
 
-    private IEnumerator MoveBlocks()
+    private void MoveBlocks()
     {
         var defaultBlockMovement = new Vector3(0, -1) * cellSize;
 
-        for (var i = 0; i < _loadedBlockList.Count; i++)
+        foreach (var block in _loadedBlockList)
         {
-            var newPosition = new Vector3(_loadedBlockList[i].transform.position.x, _loadedBlockList[i].transform.position.y) + defaultBlockMovement;
-            var isLastBlock = i == _loadedBlockList.Count - 1;
-
-            _loadedBlockList[i].transform.DOMove(newPosition, 1f);
+            var newPosition = new Vector3(block.transform.position.x, block.transform.position.y) + defaultBlockMovement;
+            block.transform.DOMove(newPosition, .5f);
         }
-
-        yield return new WaitForSeconds(2f);
-        LoadNextRow();
     }
 }
