@@ -15,4 +15,3 @@ MonoBehaviour:
   blockList:
   - {fileID: 11400000, guid: 9e45f3cd1a7deb9468cb7d99c091c8e3, type: 2}
   - {fileID: 11400000, guid: 1634f349b2b2f7648842b2e35340e32a, type: 2}
-  - {fileID: 11400000, guid: 6244ecdee5dfad342840d122bf8f3595, type: 2}

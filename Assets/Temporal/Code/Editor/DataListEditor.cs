@@ -201,7 +201,7 @@ namespace Editor
 
             var text = new GameObject("Text");
             text.transform.parent = go.transform;
-            text.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
+            text.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
             var blockParts = ObjectFactory.AddComponent<BlockParts>(go);
             blockParts.BaseBlock = tempBaseBlock;
@@ -213,7 +213,7 @@ namespace Editor
             var textTemp = ObjectFactory.AddComponent<TextMeshPro>(text);
             textTemp.alignment = TextAlignmentOptions.Center;
             textTemp.autoSizeTextContainer = true;
-            textTemp.color = Color.black;
+            textTemp.color = Color.white;
 
             //Add SpriteRendererComponent
             ObjectFactory.AddComponent<SpriteRenderer>(go);

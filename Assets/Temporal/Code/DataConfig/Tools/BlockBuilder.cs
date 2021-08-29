@@ -11,7 +11,9 @@ namespace DataConfig.Tools
             var tempBaseBlock = Object.Instantiate(_baseBlockProperties.Block.BlockPrefab, localPosition + new Vector3(cellSize, cellSize) * .5f, Quaternion.identity, parent.transform);
             
             tempBaseBlock.GetComponent<SpriteRenderer>().size = new Vector2(cellSize, cellSize);
-            tempBaseBlock.AddComponent<BoxCollider2D>().sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+            var collider = tempBaseBlock.AddComponent<BoxCollider2D>();
+            collider.sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+            collider.size = new Vector2(cellSize, cellSize);
 
             var tempBlock = tempBaseBlock.GetComponent<Block>();
             

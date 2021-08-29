@@ -644,7 +644,7 @@ namespace Editor
 
                     BeginVertical("button");
                     if (GUILayout.Button((imageButton) as Texture,
-                        new GUILayoutOption[] { GUILayout.Width(60), GUILayout.Height(60) }))
+                        new GUILayoutOption[] { GUILayout.Width(40), GUILayout.Height(40) }))
                     {
                     }
 
@@ -748,6 +748,8 @@ namespace Editor
             else if (brush == 0)
                 tempList.RemoveAt(index);
 
+            tempList = tempList.OrderBy(block => block.X).ThenBy(block => block.Y).ToList();
+
             baseLevelList.LevelList[levelIndex - 1].LevelData = tempList;
         }
 
@@ -757,7 +759,7 @@ namespace Editor
 
         private void DrawShowMenu()
         {
-            GUILayout.BeginVertical("box", GUILayout.MaxWidth(200), GUILayout.ExpandHeight(true));
+            GUILayout.BeginVertical("box", GUILayout.Width(100), GUILayout.ExpandHeight(true));
 
             if (GUILayout.Toggle(selectionShowMenu == SelectionShowMenu.ShowLevelData, "Show\n Level",
                 "button",
