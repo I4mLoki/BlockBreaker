@@ -9,6 +9,9 @@ namespace Gameplay
     public class BallLauncher : MonoBehaviour
     {
         [SerializeField]
+        private Camera camera;
+        
+        [SerializeField]
         private Ball ballPrefab;
 
         [SerializeField]
@@ -18,7 +21,6 @@ namespace Gameplay
         private Vector3 endDragPosition;
         private LaunchPreview launchPreview;
         private List<Ball> balls;
-        private Camera mainCamera;
         private bool canShoot;
         private bool shootInProgress;
         private int ballsAvailable;
@@ -27,7 +29,6 @@ namespace Gameplay
         private void Awake()
         {
             balls = new List<Ball>();
-            mainCamera = Camera.main;
             launchPreview = GetComponent<LaunchPreview>();
 
             CreateBall();
@@ -37,7 +38,7 @@ namespace Gameplay
         {
             if (shootInProgress || !GameplayManager.Instance.CanPlay) return;
 
-            var worldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
+            var worldPosition = camera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
 
             if (Input.GetMouseButtonDown(0))
                 StartDrag(worldPosition);

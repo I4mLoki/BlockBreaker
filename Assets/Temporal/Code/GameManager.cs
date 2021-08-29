@@ -1,33 +1,72 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private LoadingScreen loadingScreen;
+
+    public static GameManager Instance { get; private set; }
+    
+    private int maxFps = 60;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        Instance = this;
+
+        LimitFps();
+        DOTween.SetTweensCapacity(10000, 50);
     }
 
     public void OnLevelClicked(int level)
     {
+        loadingScreen.StartLoading();
         StartCoroutine(LoadLevelAsync("GameplayScene"));
     }
 
     private IEnumerator LoadLevelAsync(string scene)
     {
-        var op = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
-        op.allowSceneActivation = false;
+        var op = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+        // loadingScreen.UpdateProgress((int)(op.progress * 100f));
 
-        while (op.progress < 0.9f)
+        while (!op.isDone)
         {
-            Debug.Log(op.progress.ToString());
+            // loadingScreen.UpdateProgress((int)(op.progress * 100f));
             yield return null;
         }
 
-        Debug.Log("Level loaded");
 
-        yield return new WaitForSeconds(2f);
-        op.allowSceneActivation = true;
+        // GameplayManager.Instance.LoadLevels();
+
+        // yield return new WaitForSeconds(2f);
+        // op.allowSceneActivation = true;
+    }
+
+    public void SetProgress(float progress)
+    {
+        loadingScreen.UpdateProgress((int)progress);
+        
+        if (progress != 100) return;
+
+        StartCoroutine(OnLoadLevelEnded());
+    }
+
+    private IEnumerator OnLoadLevelEnded()
+    {
+        var op = SceneManager.UnloadSceneAsync("TitleScene");
+        
+        while (!op.isDone)
+            yield return null;
+
+        loadingScreen.EndLoading();
+    }
+
+    private void LimitFps()
+    {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = maxFps;
     }
 }
