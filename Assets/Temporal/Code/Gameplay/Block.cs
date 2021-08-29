@@ -33,7 +33,7 @@ namespace Gameplay
         private void UpdateVisualState()
         {
             text.SetText(hitsRemaining.ToString());
-            spriteRenderer.color = Color.Lerp(Color.white, Color.red, hitsRemaining / 10f);
+            // spriteRenderer.color = Color.Lerp(Color.white, Color.red, hitsRemaining / 10f);
         }
 
         public void SetHits(int hits)
