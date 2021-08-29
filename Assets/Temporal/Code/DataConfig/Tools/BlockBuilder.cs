@@ -9,12 +9,18 @@ namespace DataConfig.Tools
         public static Block Build(BaseBlockProperties _baseBlockProperties, Vector3 localPosition, GameObject parent, float cellSize)
         {
             var tempBaseBlock = Object.Instantiate(_baseBlockProperties.Block.BlockPrefab, localPosition + new Vector3(cellSize, cellSize) * .5f, Quaternion.identity, parent.transform);
-            
-            tempBaseBlock.GetComponent<SpriteRenderer>().size = new Vector2(cellSize, cellSize);
-            tempBaseBlock.AddComponent<BoxCollider2D>().sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
 
-            var tempBlock = tempBaseBlock.GetComponent<Block>();
+            // Set sprite renderer size to adjust it to given columns
+            tempBaseBlock.GetComponent<SpriteRenderer>().size = new Vector2(cellSize, cellSize);
             
+            // Set box collider, bounce material and collider size
+            var collider = tempBaseBlock.AddComponent<BoxCollider2D>();
+            collider.sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+            collider.size = new Vector2(cellSize, cellSize);
+
+            // Set block which will be returned on this method
+            var tempBlock = tempBaseBlock.GetComponent<Block>();
+
             tempBlock.SetHits(_baseBlockProperties.Hits);
 
             // var t = tempBlock.GetComponent<BlockParts>();

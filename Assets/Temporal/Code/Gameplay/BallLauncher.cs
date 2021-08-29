@@ -125,7 +125,7 @@ namespace Gameplay
             firstBallReturned = true;
             
             DOTween.Sequence()
-                .Append(gameObject.transform.DOMoveX(positionX, .5f));
+                .Append(gameObject.transform.DOMoveX(positionX, .3f));
         }
     }
 }

@@ -86,8 +86,8 @@ namespace Editor
         private static readonly GUIContent
             ClearLevelContent = new GUIContent("\u21ba", "clear level");
 
-        private static int[] levelSquares = new int[175];
-        private static int[] blockHits = new int[175];
+        private static int[] levelSquares = new int[100000];
+        private static int[] blockHits = new int[100000];
 
         [MenuItem("BlockBreaker/Data Editor")]
         private static void ShowWindow()

@@ -70,13 +70,14 @@ public class GameplayManager : MonoBehaviour
     private void InstantiateGrid()
     {
         var list = level.LevelData;
-            
-        for (var row = 0; row < level.Rows; row++)
+        var currentBlock = list[0];
+        
+        for (var row = 0; row < 10000; row++)
         {
             for (var column = 0; column < level.Cols; column++)
             {
-                var currentBlock = list.Find(block => new Vector3(block.X, block.Y) == new Vector3(row, column));
-                if (currentBlock == null) continue;
+                // var currentBlock = list.Find(block => new Vector3(block.X, block.Y) == new Vector3(row, column));
+                // if (currentBlock == null) continue;
 
                 Vector3 blockPosition;
                 if (column == 0 && row == 0) blockPosition = initialPosition;

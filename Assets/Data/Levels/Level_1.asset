@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_1
   m_EditorClassIdentifier: 
   levelNumber: 1
-  rows: 10
+  rows: 1000
   _cols: 7
   safeArea: 0
   blocks: 0
@@ -21,9 +21,4 @@ MonoBehaviour:
   star2Score: 300
   star3Score: 500
   background: {fileID: 0}
-  levelData:
-  - block: {fileID: 11400000, guid: 9440c7c45638d70438d7cab029a6b05c, type: 2}
-    x: 2
-    y: 1
-    hits: 3
-    seed: 0
+  levelData: []
