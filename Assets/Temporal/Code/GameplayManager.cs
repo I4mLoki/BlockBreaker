@@ -46,8 +46,8 @@ public class GameplayManager : MonoBehaviour
             Debug.LogError($"Unable to find level {desiredLevel} in BaseLevelList, gameplay aborted.");
             return;
         }
-        
-        gridSetup.InitialLoad(level);
+
+        StartCoroutine(gridSetup.InitialLoad(level));
     }
 
     private void Update()
