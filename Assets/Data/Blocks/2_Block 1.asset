@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 2_Block 1
   m_EditorClassIdentifier: 
   blockName: Block 1
-  blockPrefab: {fileID: 0}
+  blockPrefab: {fileID: 2211744940101568219, guid: 76c44415dee1f464fa056dbeed9708f5, type: 3}
   blockHeads: []
   blockEyes: []
   blockEars: []
