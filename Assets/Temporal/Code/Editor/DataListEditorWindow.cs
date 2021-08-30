@@ -638,8 +638,8 @@ namespace Editor
                     {
                         var index = levelSquares[row * baseLevel.Cols + col];
                         if (baseBlockList.BlockList.Count > index)
-                            if (baseBlockList.BlockList[index].BlockIcon != null)
-                                imageButton = baseBlockList.BlockList[index].BlockIcon;
+                            if (baseBlockList.BlockList[index].blockIcon != null)
+                                imageButton = baseBlockList.BlockList[index].blockIcon;
                     }
 
                     BeginVertical("button");
@@ -694,7 +694,7 @@ namespace Editor
         {
             GUILayout.BeginVertical(GUILayout.Width(100));
 
-            var tempContent = baseBlockList.BlockList.Select(block => block.BlockName).ToList();
+            var tempContent = baseBlockList.BlockList.Select(block => block.blockName).ToList();
 
             var content = tempContent.ToArray();
 
@@ -720,7 +720,7 @@ namespace Editor
                     tempList.RemoveAt(index);
                 }
 
-                if (baseBlockList.BlockList[brush].SizeX == 1 && baseBlockList.BlockList[brush].SizeY == 1)
+                if (baseBlockList.BlockList[brush].sizeX == 1 && baseBlockList.BlockList[brush].sizeY == 1)
                     SetTypeLevelData(baseBlockList.BlockList[brush], col, row, hits);
             }
             else if (brush != 0)
@@ -962,7 +962,7 @@ namespace Editor
 
                     GUI.enabled = false;
                     if (baseBlockList.BlockList.Count > 0)
-                        GUILayout.Label(baseBlockList.BlockList[brush].BlockIcon);
+                        GUILayout.Label(baseBlockList.BlockList[brush].blockIcon);
                     GUI.enabled = true;
                 }
                 GUILayout.EndHorizontal();
@@ -1020,23 +1020,23 @@ namespace Editor
             {
                 GUILayout.BeginHorizontal("box");
                 {
-                    block.ShouldBeUnique = Toggle(
+                    block.shouldBeUnique = Toggle(
                         new GUIContent("Unique", "Should only one block of this type be displayed?"),
-                        block.ShouldBeUnique, GUILayout.ExpandWidth(false));
+                        block.shouldBeUnique, GUILayout.ExpandWidth(false));
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    block.BlockName = TextField("Block Name",
-                        block.BlockName);
+                    block.blockName = TextField("Block Name",
+                        block.blockName);
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    block.BlockIcon =
-                        ObjectField("Block Icon", block.BlockIcon, typeof(Texture2D),
+                    block.blockIcon =
+                        ObjectField("Block Icon", block.blockIcon, typeof(Texture2D),
                             false) as Texture2D;
                 }
                 GUILayout.EndHorizontal();
@@ -1168,12 +1168,12 @@ namespace Editor
                     GUILayout.BeginHorizontal();
                     {
                         GUILayout.Label("Size X");
-                        block.SizeX = EditorGUILayout.IntField(block.SizeX);
+                        block.sizeX = EditorGUILayout.IntField(block.sizeX);
 
                         GUILayout.Space(20);
 
                         GUILayout.Label("Size Y");
-                        block.SizeY = EditorGUILayout.IntField(block.SizeY);
+                        block.sizeY = EditorGUILayout.IntField(block.sizeY);
                     }
                     GUILayout.EndHorizontal();
                 }
@@ -1241,7 +1241,7 @@ namespace Editor
 
         private void DeleteBlock(int i)
         {
-            var pathPrefab = AssetDatabase.GetAssetPath(baseBlockList.BlockList[i].BlockPrefab);
+            var pathPrefab = AssetDatabase.GetAssetPath(baseBlockList.BlockList[i].blockPrefab);
             var pathSo =
                 AssetDatabase.GetAssetPath(baseBlockList.BlockList[i]);
 

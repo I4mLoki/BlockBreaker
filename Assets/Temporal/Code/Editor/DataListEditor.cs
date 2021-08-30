@@ -175,19 +175,19 @@ namespace Editor
 
             //Set Fields
             var tempBaseBlock = CreateInstance<BaseBlock>();
-            tempBaseBlock.BlockName = blockName;
-            tempBaseBlock.ShouldBeUnique = isUnique;
-            tempBaseBlock.BlockIcon = blockIcon;
-            tempBaseBlock.SizeX = sizeX;
-            tempBaseBlock.SizeY = sizeY;
-            tempBaseBlock.BlockArms = SetPropertyToTextureList(blockArms);
-            tempBaseBlock.BlockEars = SetPropertyToTextureList(blockEars);
-            tempBaseBlock.BlockHeads = SetPropertyToTextureList(blockHeads);
-            tempBaseBlock.BlockEyes = SetPropertyToTextureList(blockEyes);
-            tempBaseBlock.BlockMouth = SetPropertyToTextureList(blockMouth);
-            tempBaseBlock.BlockHips = SetPropertyToTextureList(blockHips);
-            tempBaseBlock.BlockLegs = SetPropertyToTextureList(blockLegs);
-            tempBaseBlock.BlockMaterials = SetPropertyToMaterialList(blockMaterials);
+            tempBaseBlock.blockName = blockName;
+            tempBaseBlock.shouldBeUnique = isUnique;
+            tempBaseBlock.blockIcon = blockIcon;
+            tempBaseBlock.sizeX = sizeX;
+            tempBaseBlock.sizeY = sizeY;
+            tempBaseBlock.blockArms = SetPropertyToTextureList(blockArms);
+            tempBaseBlock.blockEars = SetPropertyToTextureList(blockEars);
+            tempBaseBlock.blockHeads = SetPropertyToTextureList(blockHeads);
+            tempBaseBlock.blockEyes = SetPropertyToTextureList(blockEyes);
+            tempBaseBlock.blockMouth = SetPropertyToTextureList(blockMouth);
+            tempBaseBlock.blockHips = SetPropertyToTextureList(blockHips);
+            tempBaseBlock.blockLegs = SetPropertyToTextureList(blockLegs);
+            tempBaseBlock.blockMaterials = SetPropertyToMaterialList(blockMaterials);
 
             //Create ScriptableObject in Directory
             AssetDatabase.CreateAsset(tempBaseBlock,
@@ -276,7 +276,7 @@ namespace Editor
             var prefab = PrefabUtility.SaveAsPrefabAsset(go,
                 "Assets/Prefabs/Blocks/" + (_target.BaseBlockList.BlockList.Count + 1) + "_" + blockName + ".prefab");
 
-            tempBaseBlock.BlockPrefab = prefab;
+            tempBaseBlock.blockPrefab = prefab;
 
             DestroyImmediate(go);
         }
