@@ -24,7 +24,7 @@ public class GameplayManager : MonoBehaviour
     public List<Block> blockList { get; private set; }
     public static GameplayManager Instance { get; private set; }
 
-    public bool CanPlay { get; private set; }
+    // public bool CanPlay { get; private set; }
 
     private GameplayGridSetup gridSetup;
 

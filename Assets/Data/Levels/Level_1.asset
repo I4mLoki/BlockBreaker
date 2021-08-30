@@ -17,8 +17,8 @@ MonoBehaviour:
   _cols: 7
   safeArea: 0
   blocks: 0
-  star1Score: 0
-  star2Score: 0
-  star3Score: 0
+  star1Score: 100
+  star2Score: 300
+  star3Score: 500
   background: {fileID: 0}
   levelData: []

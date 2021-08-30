@@ -26,17 +26,17 @@ public class GameplayGridSetup : MonoBehaviour
     [SerializeField]
     private GameObject blockContainer;
 
-    private int visibleRows = 11;
-    private float cellSize;
-    private Vector3 initialPosition;
+    private int _visibleRows = 11;
+    private float _cellSize;
+    private Vector3 _initialPosition;
 
     private BaseLevel _level;
-    private int currentRow;
+    private int _currentRow;
 
     private List<BaseBlockProperties> _levelBlockList;
     private List<Block> _loadedBlockList;
 
-    private int safeArea = 4;
+    private int _safeArea = 4;
 
     public IEnumerator InitialLoad(BaseLevel level)
     {
@@ -45,16 +45,16 @@ public class GameplayGridSetup : MonoBehaviour
         _loadedBlockList = new List<Block>();
 
         var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
-        cellSize = distance / level.Cols;
+        _cellSize = distance / level.Cols;
 
-        topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + visibleRows * cellSize);
-        blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y + cellSize);
-        initialPosition = blockContainer.transform.position;
+        topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + _visibleRows * _cellSize);
+        blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y + _cellSize);
+        _initialPosition = blockContainer.transform.position;
 
         LoadNextRow();
         MoveBlocks();
         
-        for (var i = 0; i < visibleRows - safeArea; i++)
+        for (var i = 0; i < _visibleRows - _safeArea; i++)
         {
             LoadNextRow();
             yield return new WaitForSeconds(.5f);
@@ -75,30 +75,30 @@ public class GameplayGridSetup : MonoBehaviour
 
     public void LoadNextRow()
     {
-        var blockListOnThisRow = _levelBlockList.FindAll(block => block.X == currentRow);
+        var blockListOnThisRow = _levelBlockList.FindAll(block => block.X == _currentRow);
 
         if (blockListOnThisRow.IsNullOrEmpty())
         {
-            currentRow++;
+            _currentRow++;
             return;
         }
 
         foreach (var blockOnThisRow in blockListOnThisRow)
         {
             Vector3 blockPosition;
-            if (blockOnThisRow.Y == 0) blockPosition = initialPosition;
-            else blockPosition = new Vector3(blockOnThisRow.Y * cellSize, 0f) + initialPosition;
+            if (blockOnThisRow.Y == 0) blockPosition = _initialPosition;
+            else blockPosition = new Vector3(blockOnThisRow.Y * _cellSize, 0f) + _initialPosition;
 
-            var block = BlockBuilder.Build(blockOnThisRow, blockPosition, blockContainer, cellSize);
+            var block = BlockBuilder.Build(blockOnThisRow, blockPosition, blockContainer, _cellSize);
             _loadedBlockList.Add(block);
         }
 
-        currentRow++;
+        _currentRow++;
     }
 
     private void MoveBlocks()
     {
-        var defaultBlockMovement = new Vector3(0, -1) * cellSize;
+        var defaultBlockMovement = new Vector3(0, -1) * _cellSize;
 
         foreach (var block in _loadedBlockList)
         {

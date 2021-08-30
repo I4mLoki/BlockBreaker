@@ -15,7 +15,8 @@ namespace DataConfig.Tools
             
             // Set box collider, bounce material and collider size
             var collider = tempBaseBlock.AddComponent<BoxCollider2D>();
-            collider.sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+            collider.sharedMaterial = Resources.Load<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+            // collider.sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
             collider.size = new Vector2(cellSize, cellSize);
 
             // Set block which will be returned on this method

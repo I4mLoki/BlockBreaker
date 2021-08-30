@@ -36,7 +36,8 @@ namespace Gameplay
 
         private void Update()
         {
-            if (shootInProgress || !GameplayManager.Instance.CanPlay) return;
+            // if (shootInProgress || !GameplayManager.Instance.CanPlay) return;
+            if (shootInProgress) return;
 
             var worldPosition = camera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
 
