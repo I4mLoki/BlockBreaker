@@ -1,11 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using DataConfig;
-using DataConfig.Tools;
-using DG.Tweening;
 using Gameplay;
-using Sirenix.Utilities;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
@@ -13,124 +8,71 @@ public class GameplayManager : MonoBehaviour
     [SerializeField]
     private BaseLevelList levelList;
 
-    private int maxActiveBlocksAllowed = 50;
-    private bool levelLoaded;
-
-    /*
-     * Current level properties
-     */
-    private BaseLevel level;
-
-    public List<Block> blockList { get; private set; }
     public static GameplayManager Instance { get; private set; }
 
-    // public bool CanPlay { get; private set; }
+    private PlayerActions _playerActions;
+    private EnemiesActions _enemiesActions;
 
-    private GameplayGridSetup gridSetup;
+    private BaseLevel _level;
+    private bool _levelLoaded;
+
+    private enum GameState
+    {
+        PLAYER_TURN,
+        ENEMY_TURN,
+        PAUSED
+    }
+
+    private GameState CurrentGameState;
 
     private void Awake()
     {
         Instance = this;
-        blockList = new List<Block>();
 
-        gridSetup = GetComponent<GameplayGridSetup>();
+        _playerActions = GetComponent<PlayerActions>();
+        _enemiesActions = GetComponent<EnemiesActions>();
     }
 
     private void Start()
     {
-        var desiredLevel = 1;
-        level = levelList.LevelList.Find(lvl => lvl.LevelNumber == desiredLevel);
+        GamePaused = true;
+        
+        _playerActions.LoadComponents();
+        _enemiesActions.LoadComponents();
+    }
 
-        if (level == null)
+    public void StartGameplay(int desiredLevel)
+    {
+        _level = levelList.LevelList.Find(lvl => lvl.LevelNumber == desiredLevel);
+
+        if (_level == null)
         {
             Debug.LogError($"Unable to find level {desiredLevel} in BaseLevelList, gameplay aborted.");
             return;
         }
 
-        StartCoroutine(gridSetup.InitialLoad(level));
+        _enemiesActions.InitialEnemiesTurn(_level);
     }
 
-    private void Update()
+    public void SetPlayerTurn()
     {
-        // if (levelLoaded || level.LevelData.IsNullOrEmpty()) return;
-        // print(blockList.Count);
-        //
-        // float progress = (blockList.Count * 100) / 3500;
-        // GameManager.Instance.SetProgress(progress);
-        //
-        // if (blockList.Count == 3500)
-        // {
-        //     levelLoaded = true;
-        // }
+        CurrentGameState = GameState.PLAYER_TURN;
+    }
+    
+    public bool IsPlayerTurn()
+    {
+        return CurrentGameState == GameState.PLAYER_TURN;
     }
 
-    // private void GridSetup()
-    // {
-    //     var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
-    //
-    //     cellSize = distance / level.Cols;
-    //     StartCoroutine(InstantiateGrid());
-    // }
-
-    // private IEnumerator InstantiateGrid()
-    // {
-    //     CanPlay = true;
-    //     var list = level.LevelData;
-    //     var rowIndexCount = 0;
-    //     var rowLimit = level.Rows / 10;
-    //
-    //     var currentBlock = list[0];
-    //
-    //     for (var row = 0; row < 500; row++)
-    //     {
-    //         // if (row < 4) continue;
-    //
-    //         // yield return new WaitUntil(() => mustLoadMoreBlocks);
-    //         
-    //         if (rowIndexCount == rowLimit)
-    //         {
-    //             rowIndexCount = 0;
-    //             yield return new WaitForSeconds(.5f);
-    //         }
-    //         
-    //         rowIndexCount++;
-    //         
-    //         for (var column = 0; column < level.Cols; column++)
-    //         {
-    //             // var currentBlock = list.Find(block => new Vector3(block.X, block.Y) == new Vector3(row, column));
-    //             // if (currentBlock == null) continue;
-    //
-    //             Vector3 blockPosition;
-    //             if (column == 0 && row == 0) blockPosition = initialPosition;
-    //             else blockPosition = new Vector3(column * cellSize, row * cellSize) + initialPosition;
-    //
-    //             InstantiateBlock(blockPosition, currentBlock);
-    //         }
-    //     }
-    // }
-
-    // private IEnumerator Hola()
-    // {
-    // }
-
-    private void InstantiateBlock(Vector3 localPosition, BaseBlockProperties blockProperties)
+    public bool EnemiesTurn
     {
-        // var block = BlockBuilder.Build(blockProperties, localPosition, blockContainer, cellSize);
-        // blockList.Add(block);
+        get => CurrentGameState == GameState.ENEMY_TURN;
+        set => CurrentGameState = GameState.ENEMY_TURN;
     }
 
-    public void EnemiesTurn()
+    public bool GamePaused
     {
-        // var defaultBlockMovement = new Vector3(0, -1) * cellSize;
-        //
-        // for (var i = 0; i < blockList.Count; i++)
-        // {
-        //     var newPosition = new Vector3(blockList[i].transform.position.x, blockList[i].transform.position.y) + defaultBlockMovement;
-        //     var isLastBlock = i == blockList.Count - 1;
-        //
-        //     blockList[i].transform.DOMove(newPosition, 1f);
-        //
-        //     CanPlay = isLastBlock;
-        // }
+        get => CurrentGameState == GameState.PAUSED;
+        set => CurrentGameState = GameState.PAUSED;
     }
 }

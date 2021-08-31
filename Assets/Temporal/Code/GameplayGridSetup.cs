@@ -35,43 +35,51 @@ public class GameplayGridSetup : MonoBehaviour
 
     private List<BaseBlockProperties> _levelBlockList;
     private List<Block> _loadedBlockList;
+    private Vector3 initialBlockMovement;
+    private Vector3 defaultBlockMovement;
 
     private int _safeArea = 4;
+    private float _timeBetweenHordes = .5f;
+    private float _blockMoveSpeed = .5f;
 
-    public IEnumerator InitialLoad(BaseLevel level)
+    public IEnumerator InitialLoad(BaseLevel level, Action callback)
     {
         _level = level;
         _levelBlockList = _level.LevelData;
         _loadedBlockList = new List<Block>();
 
         var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
-        _cellSize = distance / level.Cols;
+        _cellSize = distance/level.Cols;
 
-        topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + _visibleRows * _cellSize);
+        topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + _visibleRows*_cellSize);
         blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y + _cellSize);
         _initialPosition = blockContainer.transform.position;
 
+        initialBlockMovement = new Vector3(0, -1)*_cellSize;
+        defaultBlockMovement = new Vector3(0, -1)*_cellSize;
+
         LoadNextRow();
-        MoveBlocks();
-        
+        MoveBlocks(initialBlockMovement);
+
         for (var i = 0; i < _visibleRows - _safeArea; i++)
         {
             LoadNextRow();
-            yield return new WaitForSeconds(.5f);
-            MoveBlocks();
+            yield return new WaitForSeconds(_timeBetweenHordes);
+            MoveBlocks(initialBlockMovement);
         }
+        
+        yield return new WaitForSeconds(_blockMoveSpeed);
+        callback.Invoke();
     }
 
-    private void Update()
+    public IEnumerator StartTurn(Action callback)
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            LoadNextRow();
-            MoveBlocks();
-        }
+        LoadNextRow();
+        yield return new WaitForSeconds(_timeBetweenHordes);
+        MoveBlocks(defaultBlockMovement);
+        yield return new WaitForSeconds(_blockMoveSpeed);
+        callback.Invoke();
     }
-    
-    // private IEnumerator Move
 
     public void LoadNextRow()
     {
@@ -87,7 +95,7 @@ public class GameplayGridSetup : MonoBehaviour
         {
             Vector3 blockPosition;
             if (blockOnThisRow.Y == 0) blockPosition = _initialPosition;
-            else blockPosition = new Vector3(blockOnThisRow.Y * _cellSize, 0f) + _initialPosition;
+            else blockPosition = new Vector3(blockOnThisRow.Y*_cellSize, 0f) + _initialPosition;
 
             var block = BlockBuilder.Build(blockOnThisRow, blockPosition, blockContainer, _cellSize);
             _loadedBlockList.Add(block);
@@ -96,14 +104,12 @@ public class GameplayGridSetup : MonoBehaviour
         _currentRow++;
     }
 
-    private void MoveBlocks()
+    private void MoveBlocks(Vector3 move)
     {
-        var defaultBlockMovement = new Vector3(0, -1) * _cellSize;
-
         foreach (var block in _loadedBlockList)
         {
-            var newPosition = new Vector3(block.transform.position.x, block.transform.position.y) + defaultBlockMovement;
-            block.transform.DOMove(newPosition, .5f);
+            var newPosition = new Vector3(block.transform.position.x, block.transform.position.y) + move;
+            block.transform.DOMove(newPosition, _blockMoveSpeed);
         }
     }
 }

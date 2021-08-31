@@ -25,7 +25,7 @@ namespace Gameplay
             else
             {
                 gameObject.SetActive(false);
-                GameplayManager.Instance.blockList.Remove(this);
+                // GameplayManager.Instance.blockList.Remove(this);
                 Destroy(gameObject, .5f);
             }
         }

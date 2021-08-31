@@ -36,9 +36,10 @@ namespace Gameplay
 
         private void Update()
         {
-            // if (shootInProgress || !GameplayManager.Instance.CanPlay) return;
-            if (shootInProgress) return;
+            // if (shootInProgress || !GameplayManager.Instance.IsPlayerTurn || GameplayManager.Instance.IsGamePaused) return;
 
+            // Debug.Log("Player turn");
+            
             var worldPosition = camera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
 
             if (Input.GetMouseButtonDown(0))
@@ -112,12 +113,11 @@ namespace Gameplay
 
             if (ballsAvailable != balls.Count) return;
             
+            // GameplayManager.Instance.EnemiesTurn();
             CreateBall();
 
             shootInProgress = false;
             firstBallReturned = false;
-            
-            GameplayManager.Instance.EnemiesTurn();
         }
 
         public void MoveBallLauncher(float positionX)
@@ -125,9 +125,8 @@ namespace Gameplay
             if (firstBallReturned) return;
 
             firstBallReturned = true;
-            
-            DOTween.Sequence()
-                .Append(gameObject.transform.DOMoveX(positionX, .3f));
+
+            gameObject.transform.DOMoveX(positionX, .3f);
         }
     }
 }
