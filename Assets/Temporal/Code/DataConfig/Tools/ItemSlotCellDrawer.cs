@@ -1,4 +1,6 @@
-﻿using DataConfig;
+﻿using System.Collections;
+using System.Linq;
+using DataConfig;
 #if UNITY_EDITOR
 namespace Sirenix.OdinInspector.Demos.RPGEditor
 {
@@ -31,7 +33,7 @@ namespace Sirenix.OdinInspector.Demos.RPGEditor
             };
         }
 
-        [ValueDropdown("GetBaseBlockList", AppendNextDrawer = true)]
+        [ValueDropdown("GetAllBaseBlocks", AppendNextDrawer = true)]
         protected override BaseBlock DrawElement(Rect rect, BaseBlock value)
         {
             // if (value.sizeX > 1)
@@ -68,6 +70,15 @@ namespace Sirenix.OdinInspector.Demos.RPGEditor
             // DragAndDropUtilities.DrawDropZone(rect, null as UnityEngine.Object, null, id);
             // DragAndDropUtilities.DropZone<BaseBlock>(rect, new BaseBlock(), false, id);
         // }
+
+        private static IEnumerable GetAllBaseBlocks()
+        {
+            var level = AssetDatabase.FindAssets("t:ScriptableObject")
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<BaseBlock>);
+
+            return level;
+        }
     }
 
 }

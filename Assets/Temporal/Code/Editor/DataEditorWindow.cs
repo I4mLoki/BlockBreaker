@@ -29,7 +29,7 @@ namespace Temporal.Code.Editor
         {
             base.OnEnable();
             _dataPath = CreateInstance<DataPath>();
-            _dataList = DataListEditor._target;
+            _dataList = AssetDatabase.LoadAssetAtPath<DataList>(_dataPath.dataListPath);
         }
         protected override OdinMenuTree BuildMenuTree()
         {
@@ -115,7 +115,11 @@ namespace Temporal.Code.Editor
             if (GUILayout.Button("Clear Level", GUILayoutOptions.Height(30)))
             {
                 var asset = selected.SelectedValue as BaseLevel;
-                asset.dataTable = new BaseBlock[asset.cols, asset.rows];
+                if (asset is{})
+                {
+                    asset.levelData.Clear();
+                    asset.dataTable = new BaseBlock[asset.cols, asset.rows];
+                }
             }
 
             if (GUILayout.Button("Delete Level", GUILayoutOptions.Height(30)))
@@ -137,8 +141,8 @@ namespace Temporal.Code.Editor
             // Draws a drop-zone where we can destroy items.
             var rect = GUILayoutUtility.GetRect(50, 100).Padding(1);
             var id = DragAndDropUtilities.GetDragAndDropId(rect);
-            DragAndDropUtilities.DrawDropZone(rect, null as UnityEngine.Object, null, id);
-            DragAndDropUtilities.DropZone<BaseBlock>(rect, new BaseBlock(), false, id);
+            DragAndDropUtilities.DrawDropZone(rect, null as BaseBlock, null, id);
+            DragAndDropUtilities.DropZone<BaseBlock>(rect, CreateInstance<BaseBlock>(), false, id);
 
             GUILayout.EndHorizontal();
         }

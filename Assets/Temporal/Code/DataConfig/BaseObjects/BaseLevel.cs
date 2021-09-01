@@ -44,8 +44,8 @@ namespace DataConfig
         [BoxGroup("Level Data"), ColorBox]
         public List<BaseBlock> levelData;
 
-        [BoxGroup("Level Data"), HideLabel, ColorBox, OnValueChanged("SetToList")]
-        public BaseBlock[,] dataTable;
+        [BoxGroup("Level Data"), HideLabel, ColorBox]
+        public BaseBlock[,] dataTable = new BaseBlock[7, 10];
         private BaseBlock[,] _tempTable = new BaseBlock[0,0];
 
         public void Resize()
@@ -65,6 +65,9 @@ namespace DataConfig
         public void SetToList()
         {
             levelData.Clear();
+            _tempTable = new BaseBlock[cols,rows];
+            _tempTable = dataTable;
+
             var col = dataTable.GetLength(0);
             var row = dataTable.GetLength(1);
 
@@ -72,15 +75,25 @@ namespace DataConfig
             {
                 for (var j = 0; j < row; j++)
                 {
-                    var t = dataTable[i, j];
+                    var t = _tempTable[i, j];
                     if (t == null)
                         continue;
                     t.blockProperties.x = j;
                     t.blockProperties.y = i;
-                    t.blockProperties.hits = dataTable[i, j].blockProperties.hits;
+                    t.blockProperties.hits = _tempTable[i, j].blockProperties.hits;
                     levelData.Add(t);
                 }
             }
+            dataTable = _tempTable;
+        }
+
+        private static IEnumerable GetAllBaseBlocks()
+        {
+            var level = AssetDatabase.FindAssets("t:ScriptableObject")
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<BaseBlock>);
+
+            return level;
         }
     }
 }
