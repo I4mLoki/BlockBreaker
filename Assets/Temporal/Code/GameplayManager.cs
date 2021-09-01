@@ -39,7 +39,7 @@ public class GameplayManager : MonoBehaviour
     private void Start()
     {
         var desiredLevel = 1;
-        level = levelList.LevelList.Find(lvl => lvl.LevelNumber == desiredLevel);
+        level = levelList.List.Find(lvl => lvl.levelNumber == desiredLevel);
 
         if (level == null)
         {

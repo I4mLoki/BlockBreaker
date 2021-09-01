@@ -10,9 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: beffb2c9a8b9e5045997dbf024ee821f, type: 3}
-  m_Name: 1_Empty
+  m_Name: Block 2
   m_EditorClassIdentifier: 
-  blockName: Empty
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  blockName: Block 2
   blockPrefab: {fileID: 0}
   blockHeads: []
   blockEyes: []
@@ -22,7 +31,14 @@ MonoBehaviour:
   blockArms: []
   blockLegs: []
   blockMaterials: []
-  blockIcon: {fileID: 0}
-  sizeX: 1
-  sizeY: 1
+  physicsMaterial: {fileID: 0}
+  blockProperties:
+    block: {fileID: 0}
+    x: 0
+    y: 0
+    hits: 6
+    seed: 0
+  blockIcon: {fileID: 2800000, guid: eb17adfca46d03848a601886e90e86ef, type: 3}
+  sizeX: 2
+  sizeY: 2
   shouldBeUnique: 0

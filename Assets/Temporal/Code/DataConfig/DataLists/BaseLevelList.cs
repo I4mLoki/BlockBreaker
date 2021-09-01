@@ -1,16 +1,18 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 
 namespace DataConfig
 {
     public class BaseLevelList : ScriptableObject
     {
-        [SerializeField] private List<BaseLevel> levelList;
+        [SerializeField] private List<BaseLevel> list;
 
-        public List<BaseLevel> LevelList
+        public List<BaseLevel> List
         {
-            get => levelList;
-            set => levelList = value;
+            get => list;
+            set => list = value;
         }
     }
 }

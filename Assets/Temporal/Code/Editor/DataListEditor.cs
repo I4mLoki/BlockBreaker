@@ -5,6 +5,7 @@ using DataConfig;
 using Editor;
 using Gameplay;
 using PlasticPipe.Server;
+using Sirenix.OdinInspector.Editor;
 using TMPro;
 using UnityEditor;
 using UnityEditor.VersionControl;
@@ -16,7 +17,7 @@ using Object = UnityEngine.Object;
 namespace Editor
 {
     [CustomEditor(typeof(DataList))]
-    public class DataListEditor : UnityEditor.Editor
+    public class DataListEditor : OdinEditor
     {
         public static DataList _target;
 
@@ -24,6 +25,7 @@ namespace Editor
         private static int boosterIndex;
         private static int blockIndex;
         private static string blockListPath = "Assets/Data/BaseBlockList.asset";
+        private static string dataPaths = "Assets/Data/DataPath.asset";
         private static string boosterListPath = "Assets/Data/BaseBoosterList.asset";
         private static string levelListPath = "Assets/Data/BaseLevelList.asset";
         private static string dataListPath = "Assets/Data/DataList.asset";
@@ -85,17 +87,38 @@ namespace Editor
             if (AssetDatabase.LoadAssetAtPath<BaseLevelList>(levelListPath) == null)
                 CreateNewLevelList();
             else
-                _target.BaseLevelList = AssetDatabase.LoadAssetAtPath<BaseLevelList>(levelListPath);
+                _target.baseLevelList = AssetDatabase.LoadAssetAtPath<BaseLevelList>(levelListPath);
 
             if (AssetDatabase.LoadAssetAtPath<BaseBlockList>(blockListPath) == null)
                 CreateNewBlockList();
             else
-                _target.BaseBlockList = AssetDatabase.LoadAssetAtPath<BaseBlockList>(blockListPath);
+                _target.baseBlockList = AssetDatabase.LoadAssetAtPath<BaseBlockList>(blockListPath);
 
             if (AssetDatabase.LoadAssetAtPath<BaseBoosterList>(boosterListPath) == null)
                 CreateNewBoosterList();
             else
-                _target.BaseBoosterList = AssetDatabase.LoadAssetAtPath<BaseBoosterList>(boosterListPath);
+                _target.baseBoosterList = AssetDatabase.LoadAssetAtPath<BaseBoosterList>(boosterListPath);
+
+
+            // if (AssetDatabase.LoadAssetAtPath<DataList>(_target.DataPath.dataListPath) == null)
+            //     CreateNewDataList();
+            // else
+            //     _target = AssetDatabase.LoadAssetAtPath<DataList>(_target.DataPath.dataListPath);
+            //
+            // if (AssetDatabase.LoadAssetAtPath<BaseLevelList>(_target.DataPath.levelListPath) == null)
+            //     CreateNewLevelList();
+            // else
+            //     _target.BaseLevelList = AssetDatabase.LoadAssetAtPath<BaseLevelList>(_target.DataPath.levelListPath);
+            //
+            // if (AssetDatabase.LoadAssetAtPath<BaseBlockList>(_target.DataPath.blockListPath) == null)
+            //     CreateNewBlockList();
+            // else
+            //     _target.BaseBlockList = AssetDatabase.LoadAssetAtPath<BaseBlockList>(_target.DataPath.blockListPath);
+            //
+            // if (AssetDatabase.LoadAssetAtPath<BaseBoosterList>(_target.DataPath.boosterListPath) == null)
+            //     CreateNewBoosterList();
+            // else
+            //     _target.BaseBoosterList = AssetDatabase.LoadAssetAtPath<BaseBoosterList>(_target.DataPath.boosterListPath);
         }
 
         public static void CreateNewDataList()
@@ -109,34 +132,34 @@ namespace Editor
         private static void CreateNewLevelList()
         {
             levelIndex = 1;
-            _target.BaseLevelList = CreateLevelList.Create();
-            if (!_target.BaseLevelList) return;
-            _target.BaseLevelList.LevelList = new List<BaseLevel>();
-            levelListPath = AssetDatabase.GetAssetPath(_target.BaseLevelList);
+            _target.baseLevelList = CreateLevelList.Create();
+            if (!_target.baseLevelList) return;
+            _target.baseLevelList.List = new List<BaseLevel>();
+            levelListPath = AssetDatabase.GetAssetPath(_target.baseLevelList);
         }
 
         private static void CreateNewBlockList()
         {
             blockIndex = 1;
-            _target.BaseBlockList = CreateBlockList.Create();
-            if (!_target.BaseBlockList) return;
-            _target.BaseBlockList.BlockList = new List<BaseBlock>();
-            blockListPath = AssetDatabase.GetAssetPath(_target.BaseBlockList);
+            _target.baseBlockList = CreateBlockList.Create();
+            if (!_target.baseBlockList) return;
+            _target.baseBlockList.List = new List<BaseBlock>();
+            _target.dataPath.blockListPath = AssetDatabase.GetAssetPath(_target.baseBlockList);
         }
 
         private static void CreateNewBoosterList()
         {
             boosterIndex = 1;
-            _target.BaseBoosterList = CreateBoosterList.Create();
-            if (!_target.BaseBoosterList) return;
-            _target.BaseBoosterList.BaseBooster = new List<BaseBooster>();
-            boosterListPath = AssetDatabase.GetAssetPath(_target.BaseBoosterList);
+            _target.baseBoosterList = CreateBoosterList.Create();
+            if (!_target.baseBoosterList) return;
+            _target.baseBoosterList.BaseBooster = new List<BaseBooster>();
+            _target.dataPath.boosterListPath = AssetDatabase.GetAssetPath(_target.baseBoosterList);
         }
 
         #endregion
 
         public static void CreateLevelAndAddToList(int levelNumber, int rows, int col, int blocks, int star1Score,
-            int star2Score, int star3Score, Texture2D background, List<BaseBlockProperties> levelData)
+            int star2Score, int star3Score, Texture2D background, List<BaseBlock> levelData)
         {
             //Check Directory
             if (_target == null)
@@ -144,23 +167,23 @@ namespace Editor
 
             //Set Fields
             var tempBaseLevel = CreateInstance<BaseLevel>();
-            tempBaseLevel.LevelNumber = levelNumber;
-            tempBaseLevel.Rows = rows;
-            tempBaseLevel.Cols = col;
-            tempBaseLevel.Blocks = blocks;
-            tempBaseLevel.Star1Score = star1Score;
-            tempBaseLevel.Star2Score = star2Score;
-            tempBaseLevel.Star3Score = star3Score;
-            tempBaseLevel.Background = background;
-            tempBaseLevel.LevelData = new List<BaseBlockProperties>();
-            tempBaseLevel.LevelData = levelData;
+            tempBaseLevel.levelNumber = levelNumber;
+            // tempBaseLevel.rows = rows;
+            // tempBaseLevel.cols = col;
+            tempBaseLevel.blocks = blocks;
+            tempBaseLevel.star1Score = star1Score;
+            tempBaseLevel.star2Score = star2Score;
+            tempBaseLevel.star3Score = star3Score;
+            tempBaseLevel.background = background;
+            tempBaseLevel.levelData = new List<BaseBlock>();
+            tempBaseLevel.levelData = levelData;
 
             //Create ScriptableObject in Directory
             AssetDatabase.CreateAsset(tempBaseLevel,
                 "Assets/Data/Levels/" + ("Level") + "_" + levelNumber + ".asset");
 
             //Add Block To List
-            _target.BaseLevelList.LevelList.Add(tempBaseLevel);
+            _target.baseLevelList.List.Add(tempBaseLevel);
         }
 
         public static void CreateBlockAndAddToList(bool isUnique, string blockName,
@@ -191,10 +214,10 @@ namespace Editor
 
             //Create ScriptableObject in Directory
             AssetDatabase.CreateAsset(tempBaseBlock,
-                "Assets/Data/Blocks/" + (_target.BaseBlockList.BlockList.Count + 1) + "_" + blockName + ".asset");
+                "Assets/Data/Blocks/" + (_target.baseBlockList.List.Count + 1) + "_" + blockName + ".asset");
 
             //Add Block To List
-            _target.BaseBlockList.BlockList.Add(tempBaseBlock);
+            _target.baseBlockList.List.Add(tempBaseBlock);
 
             //Create GameObject and its components in Scene to Set Prefab
             var go = new GameObject("New Block");
@@ -274,7 +297,7 @@ namespace Editor
             hip.transform.parent = art.transform;
 
             var prefab = PrefabUtility.SaveAsPrefabAsset(go,
-                "Assets/Prefabs/Blocks/" + (_target.BaseBlockList.BlockList.Count + 1) + "_" + blockName + ".prefab");
+                "Assets/Prefabs/Blocks/" + (_target.baseBlockList.List.Count + 1) + "_" + blockName + ".prefab");
 
             tempBaseBlock.blockPrefab = prefab;
 

@@ -33,7 +33,7 @@ public class GameplayGridSetup : MonoBehaviour
     private BaseLevel _level;
     private int currentRow;
 
-    private List<BaseBlockProperties> _levelBlockList;
+    private List<BaseBlock> _levelBlockList;
     private List<Block> _loadedBlockList;
 
     private int safeArea = 4;
@@ -41,11 +41,11 @@ public class GameplayGridSetup : MonoBehaviour
     public IEnumerator InitialLoad(BaseLevel level)
     {
         _level = level;
-        _levelBlockList = _level.LevelData;
+        _levelBlockList = _level.levelData;
         _loadedBlockList = new List<Block>();
 
         var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
-        cellSize = distance / level.Cols;
+        // cellSize = distance / level.cols;
 
         topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + visibleRows * cellSize);
         blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y + cellSize);
@@ -75,7 +75,7 @@ public class GameplayGridSetup : MonoBehaviour
 
     public void LoadNextRow()
     {
-        var blockListOnThisRow = _levelBlockList.FindAll(block => block.X == currentRow);
+        var blockListOnThisRow = _levelBlockList.FindAll(block => block.blockProperties.x == currentRow);
 
         if (blockListOnThisRow.IsNullOrEmpty())
         {
@@ -86,8 +86,8 @@ public class GameplayGridSetup : MonoBehaviour
         foreach (var blockOnThisRow in blockListOnThisRow)
         {
             Vector3 blockPosition;
-            if (blockOnThisRow.Y == 0) blockPosition = initialPosition;
-            else blockPosition = new Vector3(blockOnThisRow.Y * cellSize, 0f) + initialPosition;
+            if (blockOnThisRow.blockProperties.y == 0) blockPosition = initialPosition;
+            else blockPosition = new Vector3(blockOnThisRow.blockProperties.y * cellSize, 0f) + initialPosition;
 
             var block = BlockBuilder.Build(blockOnThisRow, blockPosition, blockContainer, cellSize);
             _loadedBlockList.Add(block);

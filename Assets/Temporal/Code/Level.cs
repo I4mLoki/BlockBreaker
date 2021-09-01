@@ -9,9 +9,9 @@ namespace DataConfig
         [SerializeField] private int cellSize = 50;
         [SerializeField] private Transform blockParent;
 
-        private int cols;
-        private int rows;
-        private int[,] grid;
+        private int _cols;
+        private int _rows;
+        private int[,] _grid;
 
         public BaseLevel BaseLevel
         {
@@ -34,8 +34,8 @@ namespace DataConfig
         public void SetComponents(BaseLevel level)
         {
             BaseLevel = level;
-            cols = level.Cols;
-            rows = level.Rows;
+            // _cols = level.cols;
+            // _rows = level.rows;
         }
 
         public void GenerateLevel()

@@ -21,7 +21,7 @@ namespace Editor
         private Texture2D blockIcon;
         private Texture2D background;
 
-        private List<BaseBlockProperties> levelData;
+        private List<BaseBlock> levelData;
 
         private BaseLevelList baseLevelList;
         private BaseBlockList baseBlockList;
@@ -104,19 +104,19 @@ namespace Editor
 
         private void OnEnable()
         {
-            DataListEditor.CheckFolders();
+            // DataListEditor.CheckFolders();
             DataListEditor.CheckLists();
 
             if (AssetDatabase.LoadAssetAtPath("Assets/Art/GuiStyle/GUISkin.guiskin", typeof(GUISkin)) as GUISkin)
                 skin = AssetDatabase.LoadAssetAtPath("Assets/Art/GuiStyle/GUISkin.guiskin", typeof(GUISkin)) as GUISkin;
 
-            baseLevelList = DataListEditor._target.BaseLevelList;
-            baseBlockList = DataListEditor._target.BaseBlockList;
-            baseBoosterList = DataListEditor._target.BaseBoosterList;
+            baseLevelList = DataListEditor._target.baseLevelList;
+            baseBlockList = DataListEditor._target.baseBlockList;
+            baseBoosterList = DataListEditor._target.baseBoosterList;
 
             tempBaseLevel = new BaseLevel();
             baseLevelSo = new SerializedObject(tempBaseLevel);
-            levelData = new List<BaseBlockProperties>();
+            levelData = new List<BaseBlock>();
             // levelData = baseLevelSo.FindProperty("levelData");
             tempBaseBlock = new BaseBlock();
             baseBlockSo = new SerializedObject(tempBaseBlock);
@@ -225,7 +225,7 @@ namespace Editor
             {
                 GUILayout.BeginHorizontal("box");
                 {
-                    levelNumber = baseLevelList.LevelList.Count + 1;
+                    levelNumber = baseLevelList.List.Count + 1;
                     levelNumber = EditorGUILayout.IntField("Level Number", levelNumber);
                 }
                 GUILayout.EndHorizontal();
@@ -563,7 +563,7 @@ namespace Editor
             tempBaseLevel = new BaseLevel();
             baseLevelSo = new SerializedObject(tempBaseLevel);
 
-            levelNumber = baseLevelList.LevelList.Count + 1;
+            levelNumber = baseLevelList.List.Count + 1;
             maxRows = 10;
             maxCols = 7;
             star1Score = 100;
@@ -571,7 +571,7 @@ namespace Editor
             star3Score = 500;
             background = null;
             totalBlocks = 0;
-            baseLevelList.LevelList[levelIndex - 1].LevelData.Clear();
+            baseLevelList.List[levelIndex - 1].levelData.Clear();
 
             for (var i = 0; i < levelSquares.Length; i++) levelSquares[i] = 0;
             for (var i = 0; i < blockHits.Length; i++) blockHits[i] = 0;
@@ -620,26 +620,26 @@ namespace Editor
             GUILayout.BeginVertical();
             GUILayout.FlexibleSpace();
             scrollPositionBoard = GUILayout.BeginScrollView(scrollPositionBoard);
-            for (var row = baseLevel.Rows; row > -1; row--)
+            for (var row = baseLevel.rows; row > -1; row--)
             {
                 GUILayout.BeginHorizontal();
-                if (row >= baseLevel.SafeArea)
+                if (row >= baseLevel.safeArea)
                     GUI.enabled = true;
                 else
                     GUI.enabled = false;
-                for (var col = 0; col < baseLevel.Cols; col++)
+                for (var col = 0; col < baseLevel.cols; col++)
                 {
                     var imageButton = new object();
-                    if (levelSquares[row * baseLevel.Cols + col] == 0)
+                    if (levelSquares[row * baseLevel.cols + col] == 0)
                     {
                         imageButton = "X";
                     }
-                    else if (levelSquares[row * baseLevel.Cols + col] != 0)
+                    else if (levelSquares[row * baseLevel.cols + col] != 0)
                     {
-                        var index = levelSquares[row * baseLevel.Cols + col];
-                        if (baseBlockList.BlockList.Count > index)
-                            if (baseBlockList.BlockList[index].blockIcon != null)
-                                imageButton = baseBlockList.BlockList[index].blockIcon;
+                        var index = levelSquares[row * baseLevel.cols + col];
+                        if (baseBlockList.List.Count > index)
+                            if (baseBlockList.List[index].blockIcon != null)
+                                imageButton = baseBlockList.List[index].blockIcon;
                     }
 
                     BeginVertical("button");
@@ -648,12 +648,12 @@ namespace Editor
                     {
                     }
 
-                    var tempHits = blockHits[row * baseLevel.Cols + col];
+                    var tempHits = blockHits[row * baseLevel.cols + col];
                     tempHits = EditorGUILayout.IntField(tempHits);
                     EndVertical();
 
                     if (mDown && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition) &&
-                        row >= baseLevel.SafeArea)
+                        row >= baseLevel.safeArea)
                     {
                         // if(levelSquares[row * baseLevel.Col + col] != brush)
                         SetType(col, row);
@@ -669,13 +669,13 @@ namespace Editor
 
         private void SetTypeLevelData(BaseBlock block, int col, int row, int i)
         {
-            var tempBlock = new BaseBlockProperties();
-            tempBlock.Block = block;
-            tempBlock.X = row;
-            tempBlock.Y = col;
-            tempBlock.Hits = i;
+            var tempBlock = new BaseBlock();
+            tempBlock = block;
+            tempBlock.blockProperties.x = row;
+            tempBlock.blockProperties.y = col;
+            tempBlock.blockProperties.hits = i;
 
-            baseLevelList.LevelList[levelIndex - 1].LevelData.Add(tempBlock);
+            baseLevelList.List[levelIndex - 1].levelData.Add(tempBlock);
         }
 
         private void DrawGUIBlocks()
@@ -694,7 +694,7 @@ namespace Editor
         {
             GUILayout.BeginVertical(GUILayout.Width(100));
 
-            var tempContent = baseBlockList.BlockList.Select(block => block.blockName).ToList();
+            var tempContent = baseBlockList.List.Select(block => block.blockName).ToList();
 
             var content = tempContent.ToArray();
 
@@ -705,13 +705,13 @@ namespace Editor
 
         private void SetType(int col, int row)
         {
-            levelSquares[row * baseLevelList.LevelList[levelIndex - 1].Cols + col] = brush;
+            levelSquares[row * baseLevelList.List[levelIndex - 1].cols + col] = brush;
 
-            var tempList = new List<BaseBlockProperties>();
-            tempList = baseLevelList.LevelList[levelIndex - 1].LevelData;
+            var tempList = new List<BaseBlock>();
+            tempList = baseLevelList.List[levelIndex - 1].levelData;
 
-            var index = tempList.FindIndex(i => i.X == row && i.Y == col);
-            var check = tempList.Any(i => i.X == row && i.Y == col);
+            var index = tempList.FindIndex(i => i.blockProperties.x == row && i.blockProperties.y == col);
+            var check = tempList.Any(i => i.blockProperties.x == row && i.blockProperties.y == col);
 
             if (tempList.Count > 0 && brush != 0)
             {
@@ -720,13 +720,13 @@ namespace Editor
                     tempList.RemoveAt(index);
                 }
 
-                if (baseBlockList.BlockList[brush].sizeX == 1 && baseBlockList.BlockList[brush].sizeY == 1)
-                    SetTypeLevelData(baseBlockList.BlockList[brush], col, row, hits);
+                if (baseBlockList.List[brush].sizeX == 1 && baseBlockList.List[brush].sizeY == 1)
+                    SetTypeLevelData(baseBlockList.List[brush], col, row, hits);
             }
             else if (brush != 0)
             {
                 // if (baseBlockList.BlockList[brush].SizeX == 1 && baseBlockList.BlockList[brush].SizeY == 1)
-                    SetTypeLevelData(baseBlockList.BlockList[brush], col, row, hits);
+                    SetTypeLevelData(baseBlockList.List[brush], col, row, hits);
                 // else
                 // {
                 //     var i = 0;
@@ -748,9 +748,9 @@ namespace Editor
             else if (brush == 0)
                 tempList.RemoveAt(index);
 
-            tempList = tempList.OrderBy(block => block.X).ThenBy(block => block.Y).ToList();
+            tempList = tempList.OrderBy(block => block.blockProperties.x).ThenBy(block => block.blockProperties.y).ToList();
 
-            baseLevelList.LevelList[levelIndex - 1].LevelData = tempList;
+            baseLevelList.List[levelIndex - 1].levelData = tempList;
         }
 
         #endregion
@@ -790,7 +790,7 @@ namespace Editor
                     break;
 
                 case SelectionShowMenu.ShowBlockData:
-                    if (baseBlockList.BlockList.Count > 0)
+                    if (baseBlockList.List.Count > 0)
                         DrawShowBlockWindow();
                     else
                         GUILayout.Label("Block List is Empty");
@@ -806,8 +806,8 @@ namespace Editor
 
         private void DrawShowLevelWindow()
         {
-            if (baseLevelList.LevelList.Count == 0) return;
-            var level = baseLevelList.LevelList[levelIndex - 1];
+            if (baseLevelList.List.Count == 0) return;
+            var level = baseLevelList.List[levelIndex - 1];
 
             GUILayout.BeginVertical("box", GUILayout.Width(100));
             {
@@ -818,9 +818,9 @@ namespace Editor
                     {
                         levelIndex = Mathf.Clamp(
                             EditorGUILayout.IntField("Current Level", levelIndex, GUILayout.ExpandWidth(false)), 1,
-                            baseLevelList.LevelList.Count);
+                            baseLevelList.List.Count);
 
-                        EditorGUILayout.LabelField("of " + baseLevelList.LevelList.Count + " Level ", "",
+                        EditorGUILayout.LabelField("of " + baseLevelList.List.Count + " Level ", "",
                             GUILayout.ExpandWidth(false));
 
                         if (GUILayout.Button(PrevButtonContent, EditorStyles.miniButtonRight, MiniButtonWidth))
@@ -833,7 +833,7 @@ namespace Editor
                         GUILayout.Space(5);
 
                         if (GUILayout.Button(NextButtonContent, EditorStyles.miniButtonRight, MiniButtonWidth))
-                            if (levelIndex < baseLevelList.LevelList.Count)
+                            if (levelIndex < baseLevelList.List.Count)
                             {
                                 levelIndex++;
                                 UpdateGrid();
@@ -845,52 +845,52 @@ namespace Editor
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.LevelNumber = EditorGUILayout.IntField("Level Number", level.LevelNumber);
+                    level.levelNumber = EditorGUILayout.IntField("Level Number", level.levelNumber);
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.Rows = EditorGUILayout.IntField("Max Rows", level.Rows);
+                    level.rows = EditorGUILayout.IntField("Max Rows", level.rows);
                 }
                 GUILayout.EndHorizontal();
 
                 GUI.enabled = false;
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.Cols = EditorGUILayout.IntField("Max Cols", level.Cols);
+                    level.cols = EditorGUILayout.IntField("Max Cols", level.cols);
                 }
                 GUILayout.EndHorizontal();
                 GUI.enabled = true;
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.Star1Score = EditorGUILayout.IntField("Star 1 Score", level.Star1Score);
+                    level.star1Score = EditorGUILayout.IntField("Star 1 Score", level.star1Score);
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.Star2Score = EditorGUILayout.IntField("Star 2 Score", level.Star2Score);
+                    level.star2Score = EditorGUILayout.IntField("Star 2 Score", level.star2Score);
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.Star3Score = EditorGUILayout.IntField("Star 3 Score", level.Star3Score);
+                    level.star3Score = EditorGUILayout.IntField("Star 3 Score", level.star3Score);
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.SafeArea = EditorGUILayout.IntField("Safe Area", level.SafeArea);
+                    level.safeArea = EditorGUILayout.IntField("Safe Area", level.safeArea);
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.Background =
-                        EditorGUILayout.ObjectField("Background", level.Background, typeof(Texture2D), false) as
+                    level.background =
+                        EditorGUILayout.ObjectField("Background", level.background, typeof(Texture2D), false) as
                             Texture2D;
                 }
                 GUILayout.EndHorizontal();
@@ -898,8 +898,8 @@ namespace Editor
                 GUI.enabled = false;
                 GUILayout.BeginHorizontal("box");
                 {
-                    level.Blocks = level.LevelData.Count;
-                    level.Blocks = EditorGUILayout.IntField("Total Blocks", level.Blocks);
+                    level.blocks = level.levelData.Count;
+                    level.blocks = EditorGUILayout.IntField("Total Blocks", level.blocks);
                 }
                 GUILayout.EndHorizontal();
                 GUI.enabled = true;
@@ -961,8 +961,8 @@ namespace Editor
                     }
 
                     GUI.enabled = false;
-                    if (baseBlockList.BlockList.Count > 0)
-                        GUILayout.Label(baseBlockList.BlockList[brush].blockIcon);
+                    if (baseBlockList.List.Count > 0)
+                        GUILayout.Label(baseBlockList.List[brush].blockIcon);
                     GUI.enabled = true;
                 }
                 GUILayout.EndHorizontal();
@@ -992,16 +992,16 @@ namespace Editor
 
         private void DrawShowBlockWindow()
         {
-            var block = baseBlockList.BlockList[blockIndex - 1];
+            var block = baseBlockList.List[blockIndex - 1];
 
             GUILayout.BeginVertical("box", GUILayout.Width(400));
             GUILayout.BeginHorizontal("box");
             {
                 blockIndex = Mathf.Clamp(
                     EditorGUILayout.IntField("Current Block", blockIndex, GUILayout.ExpandWidth(false)), 1,
-                    baseBlockList.BlockList.Count);
+                    baseBlockList.List.Count);
 
-                EditorGUILayout.LabelField("of " + baseBlockList.BlockList.Count + " Blocks ", "",
+                EditorGUILayout.LabelField("of " + baseBlockList.List.Count + " Blocks ", "",
                     GUILayout.ExpandWidth(false));
 
                 if (GUILayout.Button(PrevButtonContent, EditorStyles.miniButtonRight, MiniButtonWidth))
@@ -1011,7 +1011,7 @@ namespace Editor
                 GUILayout.Space(5);
 
                 if (GUILayout.Button(NextButtonContent, EditorStyles.miniButtonRight, MiniButtonWidth))
-                    if (blockIndex < baseBlockList.BlockList.Count)
+                    if (blockIndex < baseBlockList.List.Count)
                         blockIndex++;
 
                 GUILayout.EndHorizontal();
@@ -1210,11 +1210,11 @@ namespace Editor
         private void DeleteLevel(int i)
         {
             var pathSo =
-                AssetDatabase.GetAssetPath(baseLevelList.LevelList[i]);
+                AssetDatabase.GetAssetPath(baseLevelList.List[i]);
 
             levelIndex = 1;
             AssetDatabase.DeleteAsset(pathSo);
-            baseLevelList.LevelList.RemoveAt(i);
+            baseLevelList.List.RemoveAt(i);
         }
 
         private void UpdateGrid()
@@ -1229,26 +1229,26 @@ namespace Editor
                 blockHits[i] = 0;
             }
 
-            foreach (var block in baseLevelList.LevelList[levelIndex - 1].LevelData)
+            foreach (var block in baseLevelList.List[levelIndex - 1].levelData)
             {
-                levelSquares[block.X * baseLevelList.LevelList[levelIndex - 1].Cols + block.Y] =
-                    baseBlockList.BlockList.IndexOf(block.Block);
+                levelSquares[block.blockProperties.x * baseLevelList.List[levelIndex - 1].cols + block.blockProperties.y] =
+                    baseBlockList.List.IndexOf(block);
 
-                blockHits[block.X * baseLevelList.LevelList[levelIndex - 1].Cols + block.Y] =
-                    block.Hits;
+                blockHits[block.blockProperties.x * baseLevelList.List[levelIndex - 1].cols + block.blockProperties.y] =
+                    block.blockProperties.hits;
             }
         }
 
         private void DeleteBlock(int i)
         {
-            var pathPrefab = AssetDatabase.GetAssetPath(baseBlockList.BlockList[i].blockPrefab);
+            var pathPrefab = AssetDatabase.GetAssetPath(baseBlockList.List[i].blockPrefab);
             var pathSo =
-                AssetDatabase.GetAssetPath(baseBlockList.BlockList[i]);
+                AssetDatabase.GetAssetPath(baseBlockList.List[i]);
 
             blockIndex = 1;
             AssetDatabase.DeleteAsset(pathSo);
             AssetDatabase.DeleteAsset(pathPrefab);
-            baseBlockList.BlockList.RemoveAt(i);
+            baseBlockList.List.RemoveAt(i);
         }
 
         private void MouseControl()

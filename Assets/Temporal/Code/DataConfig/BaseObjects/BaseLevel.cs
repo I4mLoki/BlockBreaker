@@ -1,85 +1,86 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Demos.RPGEditor;
+using UnityEditor;
 using UnityEngine;
 
 namespace DataConfig
 {
-    [Serializable]
-    public class BaseLevel : ScriptableObject
+    [InlineEditor]
+    public class BaseLevel : SerializedScriptableObject
     {
-        [Header("Level Config")]
-        [SerializeField] private int levelNumber = 0;
-        [SerializeField] private  int rows;
-        [SerializeField] private  int _cols;
-        [SerializeField] private int safeArea;
-        [SerializeField] private  int blocks;
-        [Header("Score")]
-        [SerializeField] private  int star1Score;
-        [SerializeField] private  int star2Score;
-        [SerializeField] private  int star3Score;
-        [Header("Textures")]
-        [SerializeField] private  Texture2D background;
-        [Header("Level Data")]
-        [SerializeField] private  List<BaseBlockProperties> levelData;
+        [BoxGroup("Level Config"), ColorBox]
+        public int levelNumber = 0;
 
-        public int LevelNumber
+        [BoxGroup("Level Config"), ColorBox]
+        [ShowInInspector, OnValueChanged("Resize")]
+        public int rows = 10;
+
+        [BoxGroup("Level Config"), ColorBox]
+        [ShowInInspector, OnValueChanged("Resize")]
+        public int cols = 7;
+
+        [BoxGroup("Level Config"), ColorBox]
+        public int safeArea = 0;
+
+        [BoxGroup("Level Config"), ColorBox]
+        public int blocks = 0;
+
+        [BoxGroup("Score"), ColorBox]
+        public int star1Score = 300;
+
+        [BoxGroup("Score"), ColorBox]
+        public int star2Score = 600;
+
+        [BoxGroup("Score"), ColorBox]
+        public int star3Score = 900;
+
+        [BoxGroup("Textures"), ColorBox]
+        public Texture2D background = null;
+
+        [BoxGroup("Level Data"), ColorBox]
+        public List<BaseBlock> levelData;
+
+        [BoxGroup("Level Data"), HideLabel, ColorBox, OnValueChanged("SetToList")]
+        public BaseBlock[,] dataTable;
+        private BaseBlock[,] _tempTable = new BaseBlock[0,0];
+
+        public void Resize()
         {
-            get => levelNumber;
-            set => levelNumber = value;
+            dataTable = new BaseBlock[cols, rows];
         }
 
-        public int Rows
+        private IEnumerable<BaseLevel> GetBaseLevelList()
         {
-            get => rows;
-            set => rows = value;
+            var level = AssetDatabase.FindAssets("t:ScriptableObject")
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<BaseLevel>);
+
+            return level;
         }
 
-        public int Cols
+        public void SetToList()
         {
-            get => _cols;
-            set => _cols = value;
-        }
+            levelData.Clear();
+            var col = dataTable.GetLength(0);
+            var row = dataTable.GetLength(1);
 
-        public int Blocks
-        {
-            get => blocks;
-            set => blocks = value;
-        }
-
-        public int Star1Score
-        {
-            get => star1Score;
-            set => star1Score = value;
-        }
-
-        public int Star2Score
-        {
-            get => star2Score;
-            set => star2Score = value;
-        }
-
-        public int Star3Score
-        {
-            get => star3Score;
-            set => star3Score = value;
-        }
-
-        public Texture2D Background
-        {
-            get => background;
-            set => background = value;
-        }
-
-        public List<BaseBlockProperties> LevelData
-        {
-            get => levelData;
-            set => levelData = value;
-        }
-
-        public int SafeArea
-        {
-            get => safeArea;
-            set => safeArea = value;
+            for (var i = 0; i < col; i++)
+            {
+                for (var j = 0; j < row; j++)
+                {
+                    var t = dataTable[i, j];
+                    if (t == null)
+                        continue;
+                    t.blockProperties.x = j;
+                    t.blockProperties.y = i;
+                    t.blockProperties.hits = dataTable[i, j].blockProperties.hits;
+                    levelData.Add(t);
+                }
+            }
         }
     }
 }
