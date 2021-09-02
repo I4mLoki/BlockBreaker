@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Demos.RPGEditor;
+using Temporal.Code.DataConfig.BaseObjects;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,31 +42,22 @@ namespace DataConfig
         public Texture2D background = null;
 
         [BoxGroup("Level Data"), ColorBox]
-        public List<BaseBlock> levelData;
+        public List<BaseBlockProperties> levelData;
 
-        [BoxGroup("Level Data"), HideLabel, ColorBox]
-        public BaseBlock[,] dataTable = new BaseBlock[7, 10];
-        private BaseBlock[,] _tempTable = new BaseBlock[0,0];
+        [BoxGroup("Level Data"), HideLabel, ColorBox, OnValueChanged("SetToList")]
+        public BaseBlockProperties[,] dataTable = new BaseBlockProperties[7, 10];
 
         public void Resize()
         {
-            dataTable = new BaseBlock[cols, rows];
-        }
-
-        private IEnumerable<BaseLevel> GetBaseLevelList()
-        {
-            var level = AssetDatabase.FindAssets("t:ScriptableObject")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .Select(AssetDatabase.LoadAssetAtPath<BaseLevel>);
-
-            return level;
+            levelData.Clear();
+            dataTable = new BaseBlockProperties[cols, rows];
         }
 
         public void SetToList()
         {
             levelData.Clear();
-            _tempTable = new BaseBlock[cols,rows];
-            _tempTable = dataTable;
+            var tempTable = dataTable;
+            dataTable = new BaseBlockProperties[cols, rows];
 
             var col = dataTable.GetLength(0);
             var row = dataTable.GetLength(1);
@@ -75,25 +66,17 @@ namespace DataConfig
             {
                 for (var j = 0; j < row; j++)
                 {
-                    var t = _tempTable[i, j];
-                    if (t == null)
+                    var data = tempTable[i, j];
+                    if (data.block == null)
                         continue;
-                    t.blockProperties.x = j;
-                    t.blockProperties.y = i;
-                    t.blockProperties.hits = _tempTable[i, j].blockProperties.hits;
-                    levelData.Add(t);
+                    data.block = tempTable[i, j].block;;
+                    data.hits = tempTable[i, j].hits;
+                    data.x = j;
+                    data.y = i;
+                    levelData.Add(data);
                 }
             }
-            dataTable = _tempTable;
-        }
-
-        private static IEnumerable GetAllBaseBlocks()
-        {
-            var level = AssetDatabase.FindAssets("t:ScriptableObject")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .Select(AssetDatabase.LoadAssetAtPath<BaseBlock>);
-
-            return level;
+            dataTable = tempTable;
         }
     }
 }

@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataConfig;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-
-namespace DataConfig
+namespace Temporal.Code.DataConfig.BaseObjects
 {
-    [InlineEditor, Serializable]
     public class BaseBlock : SerializedScriptableObject
     {
         [BoxGroup("Basic Info"), ColorBox]

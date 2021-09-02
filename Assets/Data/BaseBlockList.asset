@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 776fe9b2c097430db1f74c6d804399da, type: 3}
   m_Name: BaseBlockList
   m_EditorClassIdentifier: 
-  list:
-  - {fileID: 11400000, guid: 29d49742760b0c545a8fb05f3a794f6d, type: 2}
-  - {fileID: 11400000, guid: 2f8a771aa2c73504f8c1fb5cf2063235, type: 2}
+  list: []

@@ -15,8 +15,6 @@ namespace Temporal.Code.Editor
         {
             levelData = ScriptableObject.CreateInstance<BaseLevel>();
             levelData.levelNumber = dataList.baseLevelList.List.Count + 1;
-            // levelData.rows = 10;
-            // levelData.cols = 7;
             levelData.star1Score = 300;
             levelData.star2Score = 600;
             levelData.star3Score = 900;

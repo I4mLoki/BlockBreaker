@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataConfig;
+using Temporal.Code.DataConfig.BaseObjects;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUILayout;
@@ -21,7 +22,7 @@ namespace Editor
         private Texture2D blockIcon;
         private Texture2D background;
 
-        private List<BaseBlock> levelData;
+        private List<BaseBlockProperties> levelData;
 
         private BaseLevelList baseLevelList;
         private BaseBlockList baseBlockList;
@@ -116,7 +117,7 @@ namespace Editor
 
             tempBaseLevel = new BaseLevel();
             baseLevelSo = new SerializedObject(tempBaseLevel);
-            levelData = new List<BaseBlock>();
+            levelData = new List<BaseBlockProperties>();
             // levelData = baseLevelSo.FindProperty("levelData");
             tempBaseBlock = new BaseBlock();
             baseBlockSo = new SerializedObject(tempBaseBlock);
@@ -669,11 +670,11 @@ namespace Editor
 
         private void SetTypeLevelData(BaseBlock block, int col, int row, int i)
         {
-            var tempBlock = new BaseBlock();
-            tempBlock = block;
-            tempBlock.blockProperties.x = row;
-            tempBlock.blockProperties.y = col;
-            tempBlock.blockProperties.hits = i;
+            var tempBlock = new BaseBlockProperties();
+            tempBlock.block = block;
+            tempBlock.x = row;
+            tempBlock.y = col;
+            tempBlock.hits = i;
 
             baseLevelList.List[levelIndex - 1].levelData.Add(tempBlock);
         }
@@ -707,11 +708,11 @@ namespace Editor
         {
             levelSquares[row * baseLevelList.List[levelIndex - 1].cols + col] = brush;
 
-            var tempList = new List<BaseBlock>();
+            var tempList = new List<BaseBlockProperties>();
             tempList = baseLevelList.List[levelIndex - 1].levelData;
 
-            var index = tempList.FindIndex(i => i.blockProperties.x == row && i.blockProperties.y == col);
-            var check = tempList.Any(i => i.blockProperties.x == row && i.blockProperties.y == col);
+            var index = tempList.FindIndex(i => i.x == row && i.y == col);
+            var check = tempList.Any(i => i.x == row && i.y == col);
 
             if (tempList.Count > 0 && brush != 0)
             {
@@ -748,7 +749,7 @@ namespace Editor
             else if (brush == 0)
                 tempList.RemoveAt(index);
 
-            tempList = tempList.OrderBy(block => block.blockProperties.x).ThenBy(block => block.blockProperties.y).ToList();
+            tempList = tempList.OrderBy(block => block.x).ThenBy(block => block.y).ToList();
 
             baseLevelList.List[levelIndex - 1].levelData = tempList;
         }
@@ -1231,11 +1232,11 @@ namespace Editor
 
             foreach (var block in baseLevelList.List[levelIndex - 1].levelData)
             {
-                levelSquares[block.blockProperties.x * baseLevelList.List[levelIndex - 1].cols + block.blockProperties.y] =
-                    baseBlockList.List.IndexOf(block);
+                levelSquares[block.x * baseLevelList.List[levelIndex - 1].cols + block.y] =
+                    baseBlockList.List.IndexOf(block.block);
 
-                blockHits[block.blockProperties.x * baseLevelList.List[levelIndex - 1].cols + block.blockProperties.y] =
-                    block.blockProperties.hits;
+                blockHits[block.x * baseLevelList.List[levelIndex - 1].cols + block.y] =
+                    block.hits;
             }
         }
 

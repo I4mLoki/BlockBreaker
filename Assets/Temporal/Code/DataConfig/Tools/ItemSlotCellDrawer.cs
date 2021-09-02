@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Linq;
-using DataConfig;
+﻿using DataConfig;
+using Temporal.Code.DataConfig.BaseObjects;
 #if UNITY_EDITOR
 namespace Sirenix.OdinInspector.Demos.RPGEditor
 {
@@ -11,75 +10,37 @@ namespace Sirenix.OdinInspector.Demos.RPGEditor
     using Sirenix.Utilities;
     using UnityEditor;
 
-    //
-    // In Character.cs we have a two dimention array of ItemSlots which is our inventory.
-    // And instead of using the the TableMatrix attribute to customize it there, we in this case
-    // instead create a custom drawer that will work for all two-dimentional ItemSlot arrays,
-    // so we don't have to make the same CustomDrawer via the TableMatrix attribute again and again.
-    //
-
-    internal sealed class ItemSlotCellDrawer<TArray> : TwoDimensionalArrayDrawer<TArray, BaseBlock>
+    internal sealed class ItemSlotCellDrawer<TArray> : TwoDimensionalArrayDrawer<TArray, BaseBlockProperties>
         where TArray : System.Collections.IList
     {
         protected override TableMatrixAttribute GetDefaultTableMatrixAttributeSettings()
         {
-            return new TableMatrixAttribute()
-            {
-                SquareCells = true,
-                HideColumnIndices = false,
-                HideRowIndices = false,
-                ResizableColumns = false,
-                RespectIndentLevel = true
+            return new TableMatrixAttribute(){
+                SquareCells = true, HideColumnIndices = true, HideRowIndices = true, ResizableColumns = false
             };
         }
 
-        [ValueDropdown("GetAllBaseBlocks", AppendNextDrawer = true)]
-        protected override BaseBlock DrawElement(Rect rect, BaseBlock value)
+        protected override BaseBlockProperties DrawElement(Rect rect, BaseBlockProperties value)
         {
-            // if (value.sizeX > 1)
-            //     rect.SetSize(rect.width + value.sizeX, rect.height);
-            // if (value.sizeY > 1)
-            //     rect.SetSize(rect.width, rect.height + value.sizeY);
-
             var id = DragAndDropUtilities.GetDragAndDropId(rect);
-            DragAndDropUtilities.DrawDropZone(rect, value ? value.blockIcon : null, null, id); // Draws the drop-zone using the items icon.
-            GUILayout.Space(5);
-            if (value != null)
+            var labelRect = new Rect(rect.x + 1f, rect.y + 1f, rect.width, 20f);
+
+            DragAndDropUtilities.DrawDropZone(rect, value.block ? value.block.blockIcon : null, null, id); // Draws the drop-zone using the items icon.
+
+            rect.y += 21f;
+            rect.height -= 20f;
+
+            if (value.block != null)
             {
-                // Item count
-                // var countRect = rect.Padding(5).AlignBottom(16);
-                // value.blockProperties.hits = EditorGUI.IntField(countRect, value.blockProperties.hits);
-                // GUI.Label(countRect, "/ " + value.blockProperties.hits, SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                value.hits = EditorGUI.IntField(labelRect, value.hits, EditorStyles.toolbarButton);
             }
 
             value = DragAndDropUtilities.DropZone(rect, value);
-            value = DragAndDropUtilities.DropZone<BaseBlock>(rect, value);
-            value = DragAndDropUtilities.DragZone(rect, value, true, true);
-            value = DragAndDropUtilities.ObjectPickerZone(rect, value, false, id);
+            value.block = DragAndDropUtilities.DropZone<BaseBlock>(rect, value.block);
+            value.block = DragAndDropUtilities.ObjectPickerZone(rect, value.block, false, id);
 
             return value;
         }
-
-        // protected override void DrawPropertyLayout(GUIContent label)
-        // {
-            // base.DrawPropertyLayout(label);
-            //
-            // // Draws a drop-zone where we can destroy items.
-            // var rect = GUILayoutUtility.GetRect(50, 40).Padding(1);
-            // var id = DragAndDropUtilities.GetDragAndDropId(rect);
-            // DragAndDropUtilities.DrawDropZone(rect, null as UnityEngine.Object, null, id);
-            // DragAndDropUtilities.DropZone<BaseBlock>(rect, new BaseBlock(), false, id);
-        // }
-
-        private static IEnumerable GetAllBaseBlocks()
-        {
-            var level = AssetDatabase.FindAssets("t:ScriptableObject")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .Select(AssetDatabase.LoadAssetAtPath<BaseBlock>);
-
-            return level;
-        }
     }
-
 }
 #endif

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Temporal.Code.DataConfig.BaseObjects;
 using UnityEngine;
 
 namespace DataConfig

@@ -7,6 +7,7 @@ using DataConfig.Tools;
 using DG.Tweening;
 using Gameplay;
 using Sirenix.Utilities;
+using Temporal.Code.DataConfig.BaseObjects;
 using UnityEngine;
 
 public class GameplayGridSetup : MonoBehaviour
@@ -33,7 +34,7 @@ public class GameplayGridSetup : MonoBehaviour
     private BaseLevel _level;
     private int currentRow;
 
-    private List<BaseBlock> _levelBlockList;
+    private List<BaseBlockProperties> _levelBlockList;
     private List<Block> _loadedBlockList;
 
     private int safeArea = 4;
@@ -75,7 +76,7 @@ public class GameplayGridSetup : MonoBehaviour
 
     public void LoadNextRow()
     {
-        var blockListOnThisRow = _levelBlockList.FindAll(block => block.blockProperties.x == currentRow);
+        var blockListOnThisRow = _levelBlockList.FindAll(block => block.x == currentRow);
 
         if (blockListOnThisRow.IsNullOrEmpty())
         {
@@ -86,8 +87,8 @@ public class GameplayGridSetup : MonoBehaviour
         foreach (var blockOnThisRow in blockListOnThisRow)
         {
             Vector3 blockPosition;
-            if (blockOnThisRow.blockProperties.y == 0) blockPosition = initialPosition;
-            else blockPosition = new Vector3(blockOnThisRow.blockProperties.y * cellSize, 0f) + initialPosition;
+            if (blockOnThisRow.y == 0) blockPosition = initialPosition;
+            else blockPosition = new Vector3(blockOnThisRow.y * cellSize, 0f) + initialPosition;
 
             var block = BlockBuilder.Build(blockOnThisRow, blockPosition, blockContainer, cellSize);
             _loadedBlockList.Add(block);

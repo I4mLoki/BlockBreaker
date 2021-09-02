@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Codice.Client.Commands;
 using DataConfig;
@@ -8,9 +9,12 @@ using Sirenix.OdinInspector.Editor;
 using Sirenix.OdinInspector.Editor.Examples;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
+using Temporal.Code.DataConfig.BaseObjects;
+using Temporal.Code.DataConfig.Tools;
 using UnityEditor;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
+using Object = UnityEngine.Object;
 namespace Temporal.Code.Editor
 {
     public class DataEditorWindow : OdinMenuEditorWindow
@@ -18,6 +22,13 @@ namespace Temporal.Code.Editor
         private DataPath _dataPath;
         private static DataList _dataList;
         private Vector2 _scroll;
+
+        [ListItemSelector("SetSelected")]
+        public List<BaseBlock> blockList = new List<BaseBlock>();
+
+        [BoxGroup("Preview")]
+        [ShowInInspector, InlineEditor(InlineEditorObjectFieldModes.Hidden)]
+        private BaseBlock _selectedBlock;
 
         [MenuItem("BlockBreaker/OdinTest")]
         private static void OpenWindow()
@@ -69,11 +80,12 @@ namespace Temporal.Code.Editor
 
             tree.AddAllAssetsAtPath("Show Data/Show Level", _dataPath.levelsPath).SortMenuItemsByName();
 
-            // tree.Add("Show Data/Show Level", new ShowLevelData(_dataList));
-
-            tree.AddAllAssetsAtPath("Show Data/Show Block", _dataPath.blocksPath).SortMenuItemsByName();
+            tree.AddAllAssetsAtPath("Show Data/Show Block", _dataPath.blocksPath).SortMenuItemsByName().ForEach(this.AddDragHandles);
+            ;
 
             tree.EnumerateTree().AddIcons<BaseBlock>(x => x.blockIcon);
+
+            tree.DrawMenuTree();
 
             tree.MarkDirty();
 
@@ -101,51 +113,48 @@ namespace Temporal.Code.Editor
                 ShowBlockData(selected);
             }
         }
-
-
         private void ShowLevelData(OdinMenuTreeSelection selected)
         {
             SirenixEditorGUI.HorizontalLineSeparator();
-
             GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
-            GUILayout.BeginVertical();
-            GUILayout.FlexibleSpace();
-
-            if (GUILayout.Button("Clear Level", GUILayoutOptions.Height(30)))
             {
-                var asset = selected.SelectedValue as BaseLevel;
-                if (asset is{})
+                GUILayout.BeginVertical();
                 {
-                    asset.levelData.Clear();
-                    asset.dataTable = new BaseBlock[asset.cols, asset.rows];
+                    GUILayout.FlexibleSpace();
+
+                    if (GUILayout.Button("Clear Level", GUILayoutOptions.Height(30)))
+                    {
+                        var asset = selected.SelectedValue as BaseLevel;
+                        if (asset is{})
+                        {
+                            asset.levelData.Clear();
+                            asset.dataTable = new BaseBlockProperties[asset.cols, asset.rows];
+                        }
+                    }
+
+                    SirenixEditorGUI.VerticalLineSeparator();
+                }
+                GUILayout.EndHorizontal();
+
+                SirenixEditorGUI.HorizontalLineSeparator();
+
+                if (GUILayout.Button("Delete Level", GUILayoutOptions.Height(30)))
+                {
+                    var asset = selected.SelectedValue as BaseLevel;
+                    var path = AssetDatabase.GetAssetPath(asset);
+                    _dataList.baseLevelList.List.RemoveAt(_dataList.baseLevelList.List.IndexOf(asset));
+                    AssetDatabase.DeleteAsset(path);
+                    AssetDatabase.SaveAssets();
+
+                    Debug.Assert(asset != null, nameof(asset) + " != null");
+                    asset.SetToList();
                 }
             }
-
-            if (GUILayout.Button("Delete Level", GUILayoutOptions.Height(30)))
-            {
-                var asset = selected.SelectedValue as BaseLevel;
-                var path = AssetDatabase.GetAssetPath(asset);
-                _dataList.baseLevelList.List.RemoveAt(_dataList.baseLevelList.List.IndexOf(asset));
-                AssetDatabase.DeleteAsset(path);
-                AssetDatabase.SaveAssets();
-
-                Debug.Assert(asset != null, nameof(asset) + " != null");
-                asset.SetToList();
-            }
             GUILayout.EndVertical();
-
-            SirenixEditorGUI.VerticalLineSeparator();
-            GUI.color = Color.red;
-
-            // Draws a drop-zone where we can destroy items.
-            var rect = GUILayoutUtility.GetRect(50, 100).Padding(1);
-            var id = DragAndDropUtilities.GetDragAndDropId(rect);
-            DragAndDropUtilities.DrawDropZone(rect, null as BaseBlock, null, id);
-            DragAndDropUtilities.DropZone<BaseBlock>(rect, CreateInstance<BaseBlock>(), false, id);
-
-            GUILayout.EndHorizontal();
         }
+
+
 
         private void ShowBlockData(OdinMenuTreeSelection selected)
         {
@@ -159,6 +168,23 @@ namespace Temporal.Code.Editor
             _dataList.baseBlockList.List.RemoveAt(_dataList.baseBlockList.List.IndexOf(asset));
             AssetDatabase.DeleteAsset(path);
             AssetDatabase.SaveAssets();
+        }
+
+        private void AddDragHandles(OdinMenuItem menuItem)
+        {
+            menuItem.OnDrawItem += x => DragAndDropUtilities.DragZone(
+                menuItem.Rect,
+                menuItem.Value,
+                false,
+                false);
+
+            // menuItem.OnDrawItem += y => DragAndDropUtilities.Dra
+            // new BaseBlockProperties().block = (BaseBlock)menuItem.Value,
+        }
+
+        public void SetSelected(int index)
+        {
+            this._selectedBlock = index > 0 ? this.blockList[index] : null;
         }
     }
 }

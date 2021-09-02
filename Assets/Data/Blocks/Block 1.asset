@@ -37,7 +37,6 @@ MonoBehaviour:
     x: 0
     y: 0
     hits: 0
-    seed: 0
   blockIcon: {fileID: 2800000, guid: 9b549be08834dd148aa0f8eeb3cd49b8, type: 3}
   sizeX: 1
   sizeY: 1

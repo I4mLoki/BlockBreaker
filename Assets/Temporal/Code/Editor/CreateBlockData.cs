@@ -1,6 +1,9 @@
 ﻿using DataConfig;
+using Gameplay;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
+using Temporal.Code.DataConfig.BaseObjects;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 namespace Temporal.Code.Editor
@@ -21,30 +24,93 @@ namespace Temporal.Code.Editor
         [Button("Add New Block")]
         private void CreateNewData()
         {
+            var go = new GameObject("New Block");
+
             AssetDatabase.CreateAsset(blockData,_dataList.dataPath.blocksPath + "/" + blockData.blockName + ".asset");
             AssetDatabase.SaveAssets();
             _dataList.baseBlockList.List.Add(blockData);
-        }
-    }
-    public class ShowBlockData : OdinEditor
-    {
-        private DataList _dataList;
 
-        [InlineEditor(Expanded = true)]
-        public BaseBlock blockData;
-        public ShowBlockData(DataList dataList)
-        {
-            blockData = ScriptableObject.CreateInstance<BaseBlock>();
-            blockData.blockName = "Block " + (dataList.baseBlockList.List.Count + 1);
-            _dataList = dataList;
-        }
+            var text = new GameObject("Text");
+            text.transform.parent = go.transform;
+            text.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-        [Button("Delete Block")]
-        private void CreateNewData()
-        {
-            AssetDatabase.CreateAsset(blockData,_dataList.dataPath.blocksPath + "/" + blockData.blockName + ".asset");
-            AssetDatabase.SaveAssets();
-            _dataList.baseBlockList.List.Add(blockData);
+            var blockParts = ObjectFactory.AddComponent<BlockParts>(go);
+            blockParts.BaseBlock = blockData;
+
+            //Add Block Script
+            ObjectFactory.AddComponent<Block>(go);
+
+            //Add Block Script
+            var textTemp = ObjectFactory.AddComponent<TextMeshPro>(text);
+            textTemp.alignment = TextAlignmentOptions.Center;
+            textTemp.autoSizeTextContainer = true;
+            textTemp.color = Color.white;
+
+            //Add SpriteRendererComponent
+            ObjectFactory.AddComponent<SpriteRenderer>(go);
+
+            //Add BoxCollider and PhysicsMaterial
+            // ObjectFactory.AddComponent<BoxCollider2D>(go).sharedMaterial =
+            //     AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>("Assets/Temporal/Materials/Bouncy.physicsMaterial2D");
+
+            var art = new GameObject("Art");
+            art.transform.parent = go.transform;
+
+            var head = new GameObject("head");
+            var leftEye = new GameObject("leftEye");
+            var rightEye = new GameObject("rightEye");
+            var leftEar = new GameObject("leftEar");
+            var rightEar = new GameObject("rightEar");
+            var mouth = new GameObject("mouth");
+            var hip = new GameObject("hip");
+            var leftArm = new GameObject("leftArm");
+            var rightArm = new GameObject("rightArm");
+            var leftLeg = new GameObject("leftLeg");
+            var rightLeg = new GameObject("rightLeg");
+
+            SpriteRenderer headImage = ObjectFactory.AddComponent<SpriteRenderer>(head);
+            SpriteRenderer leftEyeImage = ObjectFactory.AddComponent<SpriteRenderer>(leftEye);
+            SpriteRenderer rightEyeImage = ObjectFactory.AddComponent<SpriteRenderer>(rightEye);
+            SpriteRenderer leftEarImage = ObjectFactory.AddComponent<SpriteRenderer>(leftEar);
+            SpriteRenderer rightEarImage = ObjectFactory.AddComponent<SpriteRenderer>(rightEar);
+            SpriteRenderer mouthImage = ObjectFactory.AddComponent<SpriteRenderer>(mouth);
+            SpriteRenderer hipImage = ObjectFactory.AddComponent<SpriteRenderer>(hip);
+            SpriteRenderer leftArmImage = ObjectFactory.AddComponent<SpriteRenderer>(leftArm);
+            SpriteRenderer rightArmImage = ObjectFactory.AddComponent<SpriteRenderer>(rightArm);
+            SpriteRenderer leftLegImage = ObjectFactory.AddComponent<SpriteRenderer>(leftLeg);
+            SpriteRenderer rightLegImage = ObjectFactory.AddComponent<SpriteRenderer>(rightLeg);
+
+            blockParts.Head = headImage;
+            blockParts.LeftEye = leftEyeImage;
+            blockParts.RightEye = rightEyeImage;
+            blockParts.LeftEar = leftEarImage;
+            blockParts.RightEar = rightEarImage;
+            blockParts.LeftArm = leftArmImage;
+            blockParts.RightArm = rightArmImage;
+            blockParts.LeftLeg = leftLegImage;
+            blockParts.RightLeg = rightLegImage;
+            blockParts.Mouth = mouthImage;
+            blockParts.Hip = hipImage;
+
+            head.transform.parent = art.transform;
+            leftEye.transform.parent = art.transform;
+            rightEye.transform.parent = art.transform;
+            leftEar.transform.parent = art.transform;
+            rightEar.transform.parent = art.transform;
+            leftArm.transform.parent = art.transform;
+            rightArm.transform.parent = art.transform;
+            leftLeg.transform.parent = art.transform;
+            rightLeg.transform.parent = art.transform;
+            mouth.transform.parent = art.transform;
+            hip.transform.parent = art.transform;
+
+
+            var prefab = PrefabUtility.SaveAsPrefabAsset(go,
+                _dataList.dataPath.prefabPath + blockData.blockName + ".prefab");
+
+            blockData.blockPrefab = prefab;
+
+            UnityEngine.Object.DestroyImmediate(go);
         }
     }
 }

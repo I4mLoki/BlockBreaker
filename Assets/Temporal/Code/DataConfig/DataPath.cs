@@ -5,7 +5,6 @@ using UnityEngine;
 namespace DataConfig
 {
     [CreateAssetMenu(fileName = "FILENAME", menuName = "MENUNAME", order = 0)]
-    // [OnValueChanged("OnDataChanged", true)]
     [InlineEditor]
     public class DataPath : ScriptableObject
     {
@@ -22,6 +21,9 @@ namespace DataConfig
         public string blocksPath = "Assets/Data/Blocks/";
         [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
         public string levelsPath = "Assets/Data/levels/";
-
+        [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
+        public string prefabPath = "Assets/Prefabs/Blocks/";
+        [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
+        public string prefabTemplate;
     }
 }

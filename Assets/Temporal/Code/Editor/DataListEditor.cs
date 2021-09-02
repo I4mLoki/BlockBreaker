@@ -6,6 +6,7 @@ using Editor;
 using Gameplay;
 using PlasticPipe.Server;
 using Sirenix.OdinInspector.Editor;
+using Temporal.Code.DataConfig.BaseObjects;
 using TMPro;
 using UnityEditor;
 using UnityEditor.VersionControl;
@@ -159,7 +160,7 @@ namespace Editor
         #endregion
 
         public static void CreateLevelAndAddToList(int levelNumber, int rows, int col, int blocks, int star1Score,
-            int star2Score, int star3Score, Texture2D background, List<BaseBlock> levelData)
+            int star2Score, int star3Score, Texture2D background, List<BaseBlockProperties> levelData)
         {
             //Check Directory
             if (_target == null)
@@ -175,7 +176,7 @@ namespace Editor
             tempBaseLevel.star2Score = star2Score;
             tempBaseLevel.star3Score = star3Score;
             tempBaseLevel.background = background;
-            tempBaseLevel.levelData = new List<BaseBlock>();
+            tempBaseLevel.levelData = new List<BaseBlockProperties>();
             tempBaseLevel.levelData = levelData;
 
             //Create ScriptableObject in Directory
