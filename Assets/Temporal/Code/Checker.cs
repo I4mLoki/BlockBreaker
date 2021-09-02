@@ -13,8 +13,8 @@ public class Checker : MonoBehaviour
     {
         var origin = transform.position;
         var direction = transform.forward;
-        
-        Debug.DrawRay(origin, direction * 10f, Color.red);
+
+        Debug.DrawRay(origin, direction*10f, Color.red);
         var ray = new Ray(origin, direction);
     }
 }

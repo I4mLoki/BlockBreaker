@@ -1,12 +1,11 @@
 ﻿// ItemDropdownAttribute.cs
 using System;
 using System.Linq;
-using DataConfig;
+using Code.DataConfig.BaseObjects;
 using Sirenix.OdinInspector.Editor;
-using Temporal.Code.DataConfig.BaseObjects;
 using UnityEditor;
 using UnityEngine;
-namespace Temporal.Code.DataConfig.Tools
+namespace Code.DataConfig.Tools
 {
     public class BaseBlockDropdownAttribute : Attribute { }
 
@@ -16,7 +15,6 @@ namespace Temporal.Code.DataConfig.Tools
 
         protected override void Initialize()
         {
-            // Get your item types here via your AssetUtil function
             var blocks = AssetDatabase
                 .FindAssets("t:BaseBlock")
                 .Select(AssetDatabase.GUIDToAssetPath)

@@ -1,9 +1,6 @@
 using System;
 using Sirenix.OdinInspector;
-using Temporal.Code.DataConfig.BaseObjects;
-using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.BaseObjects
 {
     [Serializable]
     public struct BaseBlockProperties

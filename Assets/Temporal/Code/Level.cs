@@ -1,7 +1,6 @@
-using DataConfig.Tools;
+using Code.DataConfig.BaseObjects;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code
 {
     public class Level : MonoBehaviour
     {

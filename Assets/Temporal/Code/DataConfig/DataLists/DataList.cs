@@ -1,7 +1,5 @@
 using Sirenix.OdinInspector;
-using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.DataLists
 {
     public class DataList : SerializedScriptableObject
     {

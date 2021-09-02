@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataConfig;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
-namespace Temporal.Code.DataConfig.BaseObjects
+namespace Code.DataConfig.BaseObjects
 {
     public class BaseBlock : SerializedScriptableObject
     {

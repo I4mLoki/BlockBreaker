@@ -1,8 +1,9 @@
-using DataConfig;
+using Code.DataConfig.BaseObjects;
+using Code.DataConfig.DataLists;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
-namespace Temporal.Code.Editor
+namespace Code.Editor
 {
     public class CreateLevelData
     {
@@ -24,7 +25,7 @@ namespace Temporal.Code.Editor
         [Button("Add New Level")]
         private void CreateNewData()
         {
-            AssetDatabase.CreateAsset(levelData,_dataList.dataPath.levelsPath + "/Level " + levelData.levelNumber + ".asset");
+            AssetDatabase.CreateAsset(levelData, _dataList.dataPath.levelsPath + "/Level " + levelData.levelNumber + ".asset");
             AssetDatabase.SaveAssets();
             _dataList.baseLevelList.List.Add(levelData);
         }

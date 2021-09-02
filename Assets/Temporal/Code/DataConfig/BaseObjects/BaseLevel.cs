@@ -1,13 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Sirenix.OdinInspector;
-using Temporal.Code.DataConfig.BaseObjects;
-using UnityEditor;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.BaseObjects
 {
     [InlineEditor]
     public class BaseLevel : SerializedScriptableObject
@@ -69,7 +63,8 @@ namespace DataConfig
                     var data = tempTable[i, j];
                     if (data.block == null)
                         continue;
-                    data.block = tempTable[i, j].block;;
+                    data.block = tempTable[i, j].block;
+                    ;
                     data.hits = tempTable[i, j].hits;
                     data.x = j;
                     data.y = i;

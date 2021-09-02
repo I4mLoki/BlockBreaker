@@ -5,10 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Random = System.Random;
 
-/// <summary>
-/// Draw the properties with a darker background and
-/// borders, optionally.
-/// </summary>
+
 public class DarkBoxAttribute : Attribute
 {
 	/// <summary>

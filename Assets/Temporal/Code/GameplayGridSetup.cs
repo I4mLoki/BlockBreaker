@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using DataConfig;
-using DataConfig.Tools;
+using Code.DataConfig.BaseObjects;
+using Code.DataConfig.Tools;
 using DG.Tweening;
 using Gameplay;
 using Sirenix.Utilities;
-using Temporal.Code.DataConfig.BaseObjects;
 using UnityEngine;
 
 public class GameplayGridSetup : MonoBehaviour

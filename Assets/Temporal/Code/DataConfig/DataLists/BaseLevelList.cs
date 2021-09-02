@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using UnityEditor;
+using Code.DataConfig.BaseObjects;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.DataLists
 {
     public class BaseLevelList : ScriptableObject
     {

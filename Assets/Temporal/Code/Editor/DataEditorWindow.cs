@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codice.Client.Commands;
-using DataConfig;
-using Editor;
+using Code.DataConfig.BaseObjects;
+using Code.DataConfig.DataLists;
+using Code.DataConfig.Tools;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using Sirenix.OdinInspector.Editor.Examples;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
-using Temporal.Code.DataConfig.BaseObjects;
-using Temporal.Code.DataConfig.Tools;
+
 using UnityEditor;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
-using Object = UnityEngine.Object;
-namespace Temporal.Code.Editor
+namespace Code.Editor
 {
     public class DataEditorWindow : OdinMenuEditorWindow
     {
@@ -177,9 +174,6 @@ namespace Temporal.Code.Editor
                 menuItem.Value,
                 false,
                 false);
-
-            // menuItem.OnDrawItem += y => DragAndDropUtilities.Dra
-            // new BaseBlockProperties().block = (BaseBlock)menuItem.Value,
         }
 
         public void SetSelected(int index)

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Temporal.Code.DataConfig.BaseObjects;
+using Code.DataConfig.BaseObjects;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.DataLists
 {
     public class BaseBlockList : ScriptableObject
     {

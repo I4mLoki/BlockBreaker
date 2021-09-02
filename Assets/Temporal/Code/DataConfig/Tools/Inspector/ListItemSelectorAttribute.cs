@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Temporal.Code.DataConfig.Tools
+namespace Code.DataConfig.Tools
 {
     public class ListItemSelectorAttribute : Attribute
     {

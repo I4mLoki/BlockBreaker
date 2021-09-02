@@ -1,8 +1,6 @@
 ﻿using Sirenix.OdinInspector;
-using Sirenix.Serialization;
-using UnityEditor;
 using UnityEngine;
-namespace DataConfig
+namespace Code.DataConfig.DataLists
 {
     [CreateAssetMenu(fileName = "FILENAME", menuName = "MENUNAME", order = 0)]
     [InlineEditor]

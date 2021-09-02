@@ -1,12 +1,12 @@
-﻿using DataConfig;
+﻿using Code.DataConfig.BaseObjects;
+using Code.DataConfig.DataLists;
 using Gameplay;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using Temporal.Code.DataConfig.BaseObjects;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
-namespace Temporal.Code.Editor
+namespace Code.Editor
 {
     public class CreateBlockData
     {
@@ -35,7 +35,7 @@ namespace Temporal.Code.Editor
             text.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
             var blockParts = ObjectFactory.AddComponent<BlockParts>(go);
-            blockParts.BaseBlock = blockData;
+            blockParts.baseBlock = blockData;
 
             //Add Block Script
             ObjectFactory.AddComponent<Block>(go);
@@ -80,17 +80,17 @@ namespace Temporal.Code.Editor
             SpriteRenderer leftLegImage = ObjectFactory.AddComponent<SpriteRenderer>(leftLeg);
             SpriteRenderer rightLegImage = ObjectFactory.AddComponent<SpriteRenderer>(rightLeg);
 
-            blockParts.Head = headImage;
-            blockParts.LeftEye = leftEyeImage;
-            blockParts.RightEye = rightEyeImage;
-            blockParts.LeftEar = leftEarImage;
-            blockParts.RightEar = rightEarImage;
-            blockParts.LeftArm = leftArmImage;
-            blockParts.RightArm = rightArmImage;
-            blockParts.LeftLeg = leftLegImage;
-            blockParts.RightLeg = rightLegImage;
-            blockParts.Mouth = mouthImage;
-            blockParts.Hip = hipImage;
+            blockParts.head = headImage;
+            blockParts.leftEye = leftEyeImage;
+            blockParts.rightEye = rightEyeImage;
+            blockParts.leftEar = leftEarImage;
+            blockParts.rightEar = rightEarImage;
+            blockParts.leftArm = leftArmImage;
+            blockParts.rightArm = rightArmImage;
+            blockParts.leftLeg = leftLegImage;
+            blockParts.rightLeg = rightLegImage;
+            blockParts.mouth = mouthImage;
+            blockParts.hip = hipImage;
 
             head.transform.parent = art.transform;
             leftEye.transform.parent = art.transform;

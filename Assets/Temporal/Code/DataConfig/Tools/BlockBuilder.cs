@@ -1,9 +1,8 @@
+using Code.DataConfig.BaseObjects;
 using Gameplay;
-using Temporal.Code.DataConfig.BaseObjects;
 using UnityEditor;
 using UnityEngine;
-
-namespace DataConfig.Tools
+namespace Code.DataConfig.Tools
 {
     public class BlockBuilder
     {

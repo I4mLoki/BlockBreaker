@@ -1,16 +1,14 @@
-﻿using DataConfig;
-using Temporal.Code.DataConfig.BaseObjects;
+﻿using Code.DataConfig.BaseObjects;
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor.Drawers;
+using Sirenix.Utilities.Editor;
+using UnityEditor;
+using UnityEngine;
 #if UNITY_EDITOR
-namespace Sirenix.OdinInspector.Demos.RPGEditor
+namespace Code.DataConfig.Tools.Inspector
 {
-    using UnityEngine;
-    using Sirenix.OdinInspector.Editor;
-    using Sirenix.OdinInspector.Editor.Drawers;
-    using Sirenix.Utilities.Editor;
-    using Sirenix.Utilities;
-    using UnityEditor;
 
-    internal sealed class ItemSlotCellDrawer<TArray> : TwoDimensionalArrayDrawer<TArray, BaseBlockProperties>
+    internal sealed class BlockSlotCellDrawer<TArray> : TwoDimensionalArrayDrawer<TArray, BaseBlockProperties>
         where TArray : System.Collections.IList
     {
         protected override TableMatrixAttribute GetDefaultTableMatrixAttributeSettings()
