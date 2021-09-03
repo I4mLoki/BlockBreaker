@@ -27,7 +27,7 @@ namespace Code.Editor
         [ShowInInspector, InlineEditor(InlineEditorObjectFieldModes.Hidden)]
         private BaseBlock _selectedBlock;
 
-        [MenuItem("BlockBreaker/OdinTest")]
+        [MenuItem("BlockBreaker Tools/Data Editor")]
         private static void OpenWindow()
         {
             GetWindow<DataEditorWindow>().Show();
@@ -110,6 +110,7 @@ namespace Code.Editor
                 ShowBlockData(selected);
             }
         }
+
         private void ShowLevelData(OdinMenuTreeSelection selected)
         {
             SirenixEditorGUI.HorizontalLineSeparator();

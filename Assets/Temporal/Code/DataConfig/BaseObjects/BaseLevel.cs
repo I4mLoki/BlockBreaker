@@ -62,7 +62,9 @@ namespace Code.DataConfig.BaseObjects
                 {
                     var data = tempTable[i, j];
                     if (data.block == null)
+                    {
                         continue;
+                    }
                     data.block = tempTable[i, j].block;
                     ;
                     data.hits = tempTable[i, j].hits;
@@ -72,6 +74,11 @@ namespace Code.DataConfig.BaseObjects
                 }
             }
             dataTable = tempTable;
+        }
+
+        private IEnumerable<BaseBlock> GetListOfBaseBlocks()
+        {
+            return Object.FindObjectsOfType<BaseBlock>();
         }
     }
 }

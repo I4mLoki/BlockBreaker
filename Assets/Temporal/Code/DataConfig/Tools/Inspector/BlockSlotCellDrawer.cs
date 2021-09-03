@@ -21,21 +21,18 @@ namespace Code.DataConfig.Tools.Inspector
         protected override BaseBlockProperties DrawElement(Rect rect, BaseBlockProperties value)
         {
             var id = DragAndDropUtilities.GetDragAndDropId(rect);
-            var labelRect = new Rect(rect.x + 1f, rect.y + 1f, rect.width, 20f);
-
-            DragAndDropUtilities.DrawDropZone(rect, value.block ? value.block.blockIcon : null, null, id); // Draws the drop-zone using the items icon.
-
-            rect.y += 21f;
-            rect.height -= 20f;
+            var labelRect = new Rect(rect.x + 5f, rect.y  - 5f, rect.width - 10f, 20f);
 
             if (value.block != null)
             {
-                value.hits = EditorGUI.IntField(labelRect, value.hits, EditorStyles.toolbarButton);
+                var blockRect = new Rect(rect.x, rect.y, rect.width * value.block.sizeX, rect.height * value.block.sizeY);
+                DragAndDropUtilities.DrawDropZone(blockRect, value.block ? value.block.blockIcon : null, null, id);
+                DragAndDropUtilities.DisallowedDropAreaForNextDragZone(blockRect);
+                value.hits = EditorGUI.IntField(labelRect, value.hits, EditorStyles.toolbarTextField);
             }
 
             value = DragAndDropUtilities.DropZone(rect, value);
             value.block = DragAndDropUtilities.DropZone<BaseBlock>(rect, value.block);
-            value.block = DragAndDropUtilities.ObjectPickerZone(rect, value.block, false, id);
 
             return value;
         }

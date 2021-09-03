@@ -2,7 +2,6 @@
 using UnityEngine;
 namespace Code.DataConfig.DataLists
 {
-    [CreateAssetMenu(fileName = "FILENAME", menuName = "MENUNAME", order = 0)]
     [InlineEditor]
     public class DataPath : ScriptableObject
     {
@@ -21,7 +20,5 @@ namespace Code.DataConfig.DataLists
         public string levelsPath = "Assets/Data/levels/";
         [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
         public string prefabPath = "Assets/Prefabs/Blocks/";
-        [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
-        public string prefabTemplate;
     }
 }
