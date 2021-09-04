@@ -63,6 +63,7 @@ namespace Code.DataConfig.BaseObjects
                     var data = tempTable[i, j];
                     if (data.block == null)
                     {
+                        tempTable[i, j] = new BaseBlockProperties();
                         continue;
                     }
                     data.block = tempTable[i, j].block;
