@@ -1,16 +1,16 @@
 using System.Collections.Generic;
+using Code.DataConfig.BaseObjects;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.DataLists
 {
     public class BaseBlockList : ScriptableObject
     {
-        [SerializeField] private List<BaseBlock> blockList;
+        [SerializeField] private List<BaseBlock> list;
 
-        public List<BaseBlock> BlockList
+        public List<BaseBlock> List
         {
-            get => blockList;
-            set => blockList = value;
+            get => list;
+            set => list = value;
         }
     }
 }

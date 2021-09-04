@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using DataConfig;
-using DataConfig.Tools;
+using Code.DataConfig.BaseObjects;
+using Code.DataConfig.Tools;
 using DG.Tweening;
 using Gameplay;
 using Sirenix.Utilities;
@@ -45,11 +44,11 @@ public class GameplayGridSetup : MonoBehaviour
     public IEnumerator InitialLoad(BaseLevel level, Action callback)
     {
         _level = level;
-        _levelBlockList = _level.LevelData;
+        _levelBlockList = _level.levelData;
         _loadedBlockList = new List<Block>();
 
         var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
-        _cellSize = distance/level.Cols;
+        _cellSize = distance/level.cols;
 
         topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + _visibleRows*_cellSize);
         blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y + _cellSize);
@@ -83,7 +82,7 @@ public class GameplayGridSetup : MonoBehaviour
 
     public void LoadNextRow()
     {
-        var blockListOnThisRow = _levelBlockList.FindAll(block => block.X == _currentRow);
+        var blockListOnThisRow = _levelBlockList.FindAll(block => block.x == _currentRow);
 
         if (blockListOnThisRow.IsNullOrEmpty())
         {
@@ -94,8 +93,8 @@ public class GameplayGridSetup : MonoBehaviour
         foreach (var blockOnThisRow in blockListOnThisRow)
         {
             Vector3 blockPosition;
-            if (blockOnThisRow.Y == 0) blockPosition = _initialPosition;
-            else blockPosition = new Vector3(blockOnThisRow.Y*_cellSize, 0f) + _initialPosition;
+            if (blockOnThisRow.y == 0) blockPosition = _initialPosition;
+            else blockPosition = new Vector3(blockOnThisRow.y * _cellSize, 0f) + _initialPosition;
 
             var block = BlockBuilder.Build(blockOnThisRow, blockPosition, blockContainer, _cellSize);
             _loadedBlockList.Add(block);

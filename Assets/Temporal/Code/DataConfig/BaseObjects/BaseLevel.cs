@@ -1,85 +1,84 @@
-using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.BaseObjects
 {
-    [Serializable]
-    public class BaseLevel : ScriptableObject
+    [InlineEditor]
+    public class BaseLevel : SerializedScriptableObject
     {
-        [Header("Level Config")]
-        [SerializeField] private int levelNumber = 0;
-        [SerializeField] private  int rows;
-        [SerializeField] private  int _cols;
-        [SerializeField] private int safeArea;
-        [SerializeField] private  int blocks;
-        [Header("Score")]
-        [SerializeField] private  int star1Score;
-        [SerializeField] private  int star2Score;
-        [SerializeField] private  int star3Score;
-        [Header("Textures")]
-        [SerializeField] private  Texture2D background;
-        [Header("Level Data")]
-        [SerializeField] private  List<BaseBlockProperties> levelData;
+        [BoxGroup("Level Config"), ColorBox]
+        public int levelNumber = 0;
 
-        public int LevelNumber
+        [BoxGroup("Level Config"), ColorBox]
+        [ShowInInspector, OnValueChanged("Resize")]
+        public int rows = 10;
+
+        [BoxGroup("Level Config"), ColorBox]
+        [ShowInInspector, OnValueChanged("Resize")]
+        public int cols = 7;
+
+        [BoxGroup("Level Config"), ColorBox]
+        public int safeArea = 0;
+
+        [BoxGroup("Level Config"), ColorBox]
+        public int blocks = 0;
+
+        [BoxGroup("Score"), ColorBox]
+        public int star1Score = 300;
+
+        [BoxGroup("Score"), ColorBox]
+        public int star2Score = 600;
+
+        [BoxGroup("Score"), ColorBox]
+        public int star3Score = 900;
+
+        [BoxGroup("Textures"), ColorBox]
+        public Texture2D background = null;
+
+        [BoxGroup("Level Data"), ColorBox]
+        public List<BaseBlockProperties> levelData;
+
+        [BoxGroup("Level Data"), HideLabel, ColorBox, OnValueChanged("SetToList")]
+        public BaseBlockProperties[,] dataTable = new BaseBlockProperties[7, 10];
+
+        public void Resize()
         {
-            get => levelNumber;
-            set => levelNumber = value;
+            levelData.Clear();
+            dataTable = new BaseBlockProperties[cols, rows];
         }
 
-        public int Rows
+        public void SetToList()
         {
-            get => rows;
-            set => rows = value;
+            levelData.Clear();
+            var tempTable = dataTable;
+            dataTable = new BaseBlockProperties[cols, rows];
+
+            var col = dataTable.GetLength(0);
+            var row = dataTable.GetLength(1);
+
+            for (var i = 0; i < col; i++)
+            {
+                for (var j = 0; j < row; j++)
+                {
+                    var data = tempTable[i, j];
+                    if (data.block == null)
+                    {
+                        continue;
+                    }
+                    data.block = tempTable[i, j].block;
+                    ;
+                    data.hits = tempTable[i, j].hits;
+                    data.x = j;
+                    data.y = i;
+                    levelData.Add(data);
+                }
+            }
+            dataTable = tempTable;
         }
 
-        public int Cols
+        private IEnumerable<BaseBlock> GetListOfBaseBlocks()
         {
-            get => _cols;
-            set => _cols = value;
-        }
-
-        public int Blocks
-        {
-            get => blocks;
-            set => blocks = value;
-        }
-
-        public int Star1Score
-        {
-            get => star1Score;
-            set => star1Score = value;
-        }
-
-        public int Star2Score
-        {
-            get => star2Score;
-            set => star2Score = value;
-        }
-
-        public int Star3Score
-        {
-            get => star3Score;
-            set => star3Score = value;
-        }
-
-        public Texture2D Background
-        {
-            get => background;
-            set => background = value;
-        }
-
-        public List<BaseBlockProperties> LevelData
-        {
-            get => levelData;
-            set => levelData = value;
-        }
-
-        public int SafeArea
-        {
-            get => safeArea;
-            set => safeArea = value;
+            return Object.FindObjectsOfType<BaseBlock>();
         }
     }
 }

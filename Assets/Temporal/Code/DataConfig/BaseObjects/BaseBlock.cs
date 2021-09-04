@@ -1,114 +1,68 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.BaseObjects
 {
-    [Serializable]
-    public class BaseBlock : ScriptableObject
+    public class BaseBlock : SerializedScriptableObject
     {
-        [SerializeField] private string blockName = "New Block ";
-        [SerializeField] private GameObject blockPrefab = null;
+        [BoxGroup("Basic Info"), ColorBox]
+        public string blockName = "New Block ";
 
-        [SerializeField] private List<Texture2D> blockHeads = null;
-        [SerializeField] private List<Texture2D> blockEyes = null;
-        [SerializeField] private List<Texture2D> blockEars = null;
-        [SerializeField] private List<Texture2D> blockMouth = null;
-        [SerializeField] private List<Texture2D> blockHips = null;
-        [SerializeField] private List<Texture2D> blockArms = null;
-        [SerializeField] private List<Texture2D> blockLegs = null;
+        [BoxGroup("Basic Info"), ColorBox]
+        public GameObject blockPrefab = null;
 
-        [SerializeField] private List<Material> blockMaterials = null;
+        [BoxGroup("Game Data")]
+        [BoxGroup("Game Data/Textures"), ColorBox]
+        public List<Texture2D> blockHeads = null;
 
-        [SerializeField] private Texture2D blockIcon = null;
-        [SerializeField] private int sizeX = 1;
-        [SerializeField] private int sizeY = 1;
+        [BoxGroup("Game Data/Textures"), ColorBox]
+        public List<Texture2D> blockEyes = null;
 
-        [SerializeField] private bool shouldBeUnique = false;
+        [BoxGroup("Game Data/Textures"), ColorBox]
+        public List<Texture2D> blockEars = null;
 
+        [BoxGroup("Game Data/Textures"), ColorBox]
+        public List<Texture2D> blockMouth = null;
 
-        public string BlockName
+        [BoxGroup("Game Data/Textures"), ColorBox]
+        public List<Texture2D> blockHips = null;
+
+        [BoxGroup("Game Data/Textures"), ColorBox]
+        public List<Texture2D> blockArms = null;
+
+        [BoxGroup("Game Data/Textures"), ColorBox]
+        public List<Texture2D> blockLegs = null;
+
+        [BoxGroup("Game Data/Materials"), ColorBox]
+        public List<Material> blockMaterials = null;
+
+        [BoxGroup("Game Data/Physics Materials"), ColorBox]
+        public PhysicsMaterial2D physicsMaterial = null;
+
+        [BoxGroup("Game Data/Properties"), ColorBox]
+        public BaseBlockProperties blockProperties;
+
+        [BoxGroup("Basic Info"), ColorBox]
+        public Texture2D blockIcon = null;
+
+        [BoxGroup("Game Data/Properties"), ColorBox]
+        public int sizeX = 1;
+
+        [BoxGroup("Game Data/Properties"), ColorBox]
+        public int sizeY = 1;
+
+        [BoxGroup("Game Data/Properties"), ColorBox]
+        public bool shouldBeUnique = false;
+
+        private IEnumerable<BaseBlock> GetBaseBlockList()
         {
-            get => blockName;
-            set => blockName = value;
-        }
+            var block = AssetDatabase.FindAssets("t:ScriptableObject")
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<BaseBlock>);
 
-        public GameObject BlockPrefab
-        {
-            get => blockPrefab;
-            set => blockPrefab = value;
-        }
-
-        public List<Texture2D> BlockHeads
-        {
-            get => blockHeads;
-            set => blockHeads = value;
-        }
-
-        public List<Texture2D> BlockEyes
-        {
-            get => blockEyes;
-            set => blockEyes = value;
-        }
-
-        public List<Texture2D> BlockEars
-        {
-            get => blockEars;
-            set => blockEars = value;
-        }
-
-        public List<Texture2D> BlockMouth
-        {
-            get => blockMouth;
-            set => blockMouth = value;
-        }
-
-        public List<Texture2D> BlockHips
-        {
-            get => blockHips;
-            set => blockHips = value;
-        }
-
-        public List<Texture2D> BlockArms
-        {
-            get => blockArms;
-            set => blockArms = value;
-        }
-
-        public List<Texture2D> BlockLegs
-        {
-            get => blockLegs;
-            set => blockLegs = value;
-        }
-
-        public List<Material> BlockMaterials
-        {
-            get => blockMaterials;
-            set => blockMaterials = value;
-        }
-
-        public Texture2D BlockIcon
-        {
-            get => blockIcon;
-            set => blockIcon = value;
-        }
-
-        public int SizeX
-        {
-            get => sizeX;
-            set => sizeX = value;
-        }
-
-        public int SizeY
-        {
-            get => sizeY;
-            set => sizeY = value;
-        }
-
-        public bool ShouldBeUnique
-        {
-            get => shouldBeUnique;
-            set => shouldBeUnique = value;
+            return block;
         }
     }
 }
