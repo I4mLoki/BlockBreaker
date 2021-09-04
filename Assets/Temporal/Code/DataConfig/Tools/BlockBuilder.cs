@@ -1,14 +1,14 @@
+using Code.DataConfig.BaseObjects;
 using Gameplay;
 using UnityEditor;
 using UnityEngine;
-
-namespace DataConfig.Tools
+namespace Code.DataConfig.Tools
 {
     public class BlockBuilder
     {
-        public static Block Build(BaseBlockProperties _baseBlockProperties, Vector3 localPosition, GameObject parent, float cellSize)
+        public static Block Build(BaseBlockProperties _baseBlock, Vector3 localPosition, GameObject parent, float cellSize)
         {
-            var tempBaseBlock = Object.Instantiate(_baseBlockProperties.Block.BlockPrefab, localPosition + new Vector3(cellSize, cellSize) * .5f, Quaternion.identity, parent.transform);
+            var tempBaseBlock = Object.Instantiate(_baseBlock.block.blockPrefab, localPosition + new Vector3(cellSize, cellSize) * .5f, Quaternion.identity, parent.transform);
 
             // Set sprite renderer size to adjust it to given columns
             tempBaseBlock.GetComponent<SpriteRenderer>().size = new Vector2(cellSize, cellSize);
@@ -21,7 +21,7 @@ namespace DataConfig.Tools
             // Set block which will be returned on this method
             var tempBlock = tempBaseBlock.GetComponent<Block>();
 
-            tempBlock.SetHits(_baseBlockProperties.Hits);
+            tempBlock.SetHits(_baseBlock.block.blockProperties.hits);
 
             // var t = tempBlock.GetComponent<BlockParts>();
             //

@@ -1,7 +1,7 @@
+using Code.DataConfig.DataLists;
 using UnityEditor;
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.Editor
 {
     public class CreateDataList
     {

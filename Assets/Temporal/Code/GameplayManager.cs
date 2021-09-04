@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DataConfig;
-using DataConfig.Tools;
-using DG.Tweening;
+using Code.DataConfig.BaseObjects;
+using Code.DataConfig.DataLists;
 using Gameplay;
-using Sirenix.Utilities;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
@@ -39,7 +37,7 @@ public class GameplayManager : MonoBehaviour
     private void Start()
     {
         var desiredLevel = 1;
-        level = levelList.LevelList.Find(lvl => lvl.LevelNumber == desiredLevel);
+        level = levelList.List.Find(lvl => lvl.levelNumber == desiredLevel);
 
         if (level == null)
         {

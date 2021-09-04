@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using DataConfig;
-using DataConfig.Tools;
+using Code.DataConfig.BaseObjects;
+using Code.DataConfig.Tools;
 using DG.Tweening;
 using Gameplay;
 using Sirenix.Utilities;
@@ -41,11 +40,11 @@ public class GameplayGridSetup : MonoBehaviour
     public IEnumerator InitialLoad(BaseLevel level)
     {
         _level = level;
-        _levelBlockList = _level.LevelData;
+        _levelBlockList = _level.levelData;
         _loadedBlockList = new List<Block>();
 
         var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
-        cellSize = distance / level.Cols;
+        // cellSize = distance / level.cols;
 
         topWall.transform.position = new Vector3(topWall.transform.position.x, bottomWall.transform.position.y + visibleRows * cellSize);
         blockContainer.transform.position = new Vector3(leftWall.transform.position.x, topWall.transform.position.y + cellSize);
@@ -75,7 +74,7 @@ public class GameplayGridSetup : MonoBehaviour
 
     public void LoadNextRow()
     {
-        var blockListOnThisRow = _levelBlockList.FindAll(block => block.X == currentRow);
+        var blockListOnThisRow = _levelBlockList.FindAll(block => block.x == currentRow);
 
         if (blockListOnThisRow.IsNullOrEmpty())
         {
@@ -86,8 +85,8 @@ public class GameplayGridSetup : MonoBehaviour
         foreach (var blockOnThisRow in blockListOnThisRow)
         {
             Vector3 blockPosition;
-            if (blockOnThisRow.Y == 0) blockPosition = initialPosition;
-            else blockPosition = new Vector3(blockOnThisRow.Y * cellSize, 0f) + initialPosition;
+            if (blockOnThisRow.y == 0) blockPosition = initialPosition;
+            else blockPosition = new Vector3(blockOnThisRow.y * cellSize, 0f) + initialPosition;
 
             var block = BlockBuilder.Build(blockOnThisRow, blockPosition, blockContainer, cellSize);
             _loadedBlockList.Add(block);

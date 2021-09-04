@@ -1,6 +1,5 @@
 using UnityEngine;
-
-namespace DataConfig
+namespace Code.DataConfig.BaseObjects
 {
     public class BaseBooster : ScriptableObject
     {
