@@ -26,6 +26,7 @@ namespace Code.Editor
         [BoxGroup("Preview")]
         [ShowInInspector, InlineEditor(InlineEditorObjectFieldModes.Hidden)]
         private BaseBlock _selectedBlock;
+        private bool _down;
 
         [MenuItem("BlockBreaker Tools/Data Editor")]
         private static void OpenWindow()
@@ -180,6 +181,13 @@ namespace Code.Editor
         public void SetSelected(int index)
         {
             this._selectedBlock = index > 0 ? this.blockList[index] : null;
+        }
+
+        private void MouseControl()
+        {
+            if (Event.current.type == EventType.MouseDown)
+                _down = true;
+            else if (Event.current.type == EventType.MouseUp) _down = false;
         }
     }
 }
