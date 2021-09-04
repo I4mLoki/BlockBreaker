@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Code.DataConfig.BaseObjects;
 using Code.DataConfig.DataLists;
+using DataConfig;
 using Gameplay;
 using UnityEngine;
 
@@ -11,124 +10,107 @@ public class GameplayManager : MonoBehaviour
     [SerializeField]
     private BaseLevelList levelList;
 
-    private int maxActiveBlocksAllowed = 50;
-    private bool levelLoaded;
-
-    /*
-     * Current level properties
-     */
-    private BaseLevel level;
-
-    public List<Block> blockList { get; private set; }
     public static GameplayManager Instance { get; private set; }
 
-    public bool CanPlay { get; private set; }
+    public float CellSize { get; private set; }
+    public int VisibleColumns { get; private set; }
+    public int VisibleRows { get; private set; }
 
-    private GameplayGridSetup gridSetup;
+    private GameplayGrid _gameplayGrid;
+    private PlayerActions _playerActions;
+    private EnemiesActions _enemiesActions;
+
+    private BaseLevel _level;
+    private bool _levelLoaded;
+
+    private int _visibleRows = 11;
+    private float _cellSize;
+
+    private enum GameState
+    {
+        PLAYER_TURN,
+        ENEMY_TURN,
+        PAUSED
+    }
+
+    private GameState CurrentGameState;
 
     private void Awake()
     {
         Instance = this;
-        blockList = new List<Block>();
 
-        gridSetup = GetComponent<GameplayGridSetup>();
+        _gameplayGrid = GetComponent<GameplayGrid>();
+        _playerActions = GetComponent<PlayerActions>();
+        _enemiesActions = GetComponent<EnemiesActions>();
     }
 
     private void Start()
     {
-        var desiredLevel = 1;
-        level = levelList.List.Find(lvl => lvl.levelNumber == desiredLevel);
+        SetPaused();
 
-        if (level == null)
+        _playerActions.LoadComponents();
+        _enemiesActions.LoadComponents();
+    }
+
+    public void StartGameplay(int desiredLevel)
+    {
+        _level = levelList.List.Find(lvl => lvl.levelNumber == desiredLevel);
+
+        if (_level == null)
         {
             Debug.LogError($"Unable to find level {desiredLevel} in BaseLevelList, gameplay aborted.");
             return;
         }
 
-        StartCoroutine(gridSetup.InitialLoad(level));
+        _gameplayGrid.Setup(_level, SetGameplayParams);
+        _playerActions.Setup(CalculateRayCastLength());
+
+        CurrentGameState = GameState.ENEMY_TURN;
+        _enemiesActions.InitialEnemiesTurn(_level);
     }
 
-    private void Update()
+    private void SetGameplayParams(float cellSize, int visibleColumns, int visibleRows)
     {
-        // if (levelLoaded || level.LevelData.IsNullOrEmpty()) return;
-        // print(blockList.Count);
-        //
-        // float progress = (blockList.Count * 100) / 3500;
-        // GameManager.Instance.SetProgress(progress);
-        //
-        // if (blockList.Count == 3500)
-        // {
-        //     levelLoaded = true;
-        // }
+        CellSize = cellSize;
+        VisibleColumns = visibleColumns;
+        VisibleRows = visibleRows;
     }
 
-    // private void GridSetup()
-    // {
-    //     var distance = Vector3.Distance(leftWall.transform.position, rightWall.transform.position);
-    //
-    //     cellSize = distance / level.Cols;
-    //     StartCoroutine(InstantiateGrid());
-    // }
-
-    // private IEnumerator InstantiateGrid()
-    // {
-    //     CanPlay = true;
-    //     var list = level.LevelData;
-    //     var rowIndexCount = 0;
-    //     var rowLimit = level.Rows / 10;
-    //
-    //     var currentBlock = list[0];
-    //
-    //     for (var row = 0; row < 500; row++)
-    //     {
-    //         // if (row < 4) continue;
-    //
-    //         // yield return new WaitUntil(() => mustLoadMoreBlocks);
-    //         
-    //         if (rowIndexCount == rowLimit)
-    //         {
-    //             rowIndexCount = 0;
-    //             yield return new WaitForSeconds(.5f);
-    //         }
-    //         
-    //         rowIndexCount++;
-    //         
-    //         for (var column = 0; column < level.Cols; column++)
-    //         {
-    //             // var currentBlock = list.Find(block => new Vector3(block.X, block.Y) == new Vector3(row, column));
-    //             // if (currentBlock == null) continue;
-    //
-    //             Vector3 blockPosition;
-    //             if (column == 0 && row == 0) blockPosition = initialPosition;
-    //             else blockPosition = new Vector3(column * cellSize, row * cellSize) + initialPosition;
-    //
-    //             InstantiateBlock(blockPosition, currentBlock);
-    //         }
-    //     }
-    // }
-
-    // private IEnumerator Hola()
-    // {
-    // }
-
-    private void InstantiateBlock(Vector3 localPosition, BaseBlockProperties blockProperties)
+    private float CalculateRayCastLength()
     {
-        // var block = BlockBuilder.Build(blockProperties, localPosition, blockContainer, cellSize);
-        // blockList.Add(block);
+        return (float)Math.Sqrt(Math.Pow(VisibleColumns, 2) + Math.Pow(VisibleRows, 2));
     }
 
-    public void EnemiesTurn()
+    public void SetPlayerTurn()
     {
-        // var defaultBlockMovement = new Vector3(0, -1) * cellSize;
-        //
-        // for (var i = 0; i < blockList.Count; i++)
-        // {
-        //     var newPosition = new Vector3(blockList[i].transform.position.x, blockList[i].transform.position.y) + defaultBlockMovement;
-        //     var isLastBlock = i == blockList.Count - 1;
-        //
-        //     blockList[i].transform.DOMove(newPosition, 1f);
-        //
-        //     CanPlay = isLastBlock;
-        // }
+        Debug.Log("Player turn");
+        CurrentGameState = GameState.PLAYER_TURN;
+    }
+
+    public bool IsPlayerTurn()
+    {
+        return CurrentGameState == GameState.PLAYER_TURN;
+    }
+
+    public void SetEnemiesTurn()
+    {
+        Debug.Log("Enemies turn");
+        CurrentGameState = GameState.ENEMY_TURN;
+        _enemiesActions.EnemiesTurn();
+    }
+
+    public bool IsEnemiesTurn()
+    {
+        return CurrentGameState == GameState.ENEMY_TURN;
+    }
+
+    public void SetPaused()
+    {
+        CurrentGameState = GameState.PAUSED;
+    }
+
+    public bool IsPaused()
+    {
+        return CurrentGameState == GameState.PAUSED;
     }
 }

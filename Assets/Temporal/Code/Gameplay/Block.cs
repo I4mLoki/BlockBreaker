@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace Gameplay
@@ -9,11 +10,13 @@ namespace Gameplay
 
         private SpriteRenderer spriteRenderer;
         private TextMeshPro text;
+        // private GameplayGridSetup _gameplayGridSetup;
 
         private void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             text = GetComponentInChildren<TextMeshPro>();
+            // _gameplayGridSetup = FindObjectOfType<GameplayGridSetup>();
         }
         
         private void OnCollisionEnter2D()
@@ -24,10 +27,14 @@ namespace Gameplay
                 UpdateVisualState();
             else
             {
-                gameObject.SetActive(false);
-                GameplayManager.Instance.blockList.Remove(this);
-                Destroy(gameObject, .5f);
+                var block = gameObject.GetComponent<Block>();
+                // _gameplayGridSetup.DestroyEnemy(block);
             }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            Debug.Log("VAR");
         }
 
         private void UpdateVisualState()
@@ -40,6 +47,10 @@ namespace Gameplay
         {
             hitsRemaining = hits;
             UpdateVisualState();
+        }
+
+        public void Attack()
+        {
         }
     }
 }
