@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Code.DataConfig.BaseObjects;
 using Code.DataConfig.Tools;
+using DataConfig.Tools;
 using DG.Tweening;
 using Gameplay;
 using Sirenix.Utilities;

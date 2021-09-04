@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Gameplay
@@ -10,7 +11,7 @@ namespace Gameplay
     {
         [SerializeField]
         private Camera camera;
-        
+
         [SerializeField]
         private Ball ballPrefab;
 
@@ -26,28 +27,26 @@ namespace Gameplay
         private int ballsAvailable;
         private bool firstBallReturned;
 
-        private void Awake()
-        {
-            balls = new List<Ball>();
-            launchPreview = GetComponent<LaunchPreview>();
-
-            CreateBall();
-        }
-
         private void Update()
         {
-            // if (shootInProgress || !GameplayManager.Instance.IsPlayerTurn || GameplayManager.Instance.IsGamePaused) return;
+            // if (!GameplayManager.Instance.IsPlayerTurn() || shootInProgress) return;
+            //
+            // var worldPosition = camera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back*-10;
+            //
+            // if (Input.GetMouseButtonDown(0))
+            //     StartDrag(worldPosition);
+            // else if (Input.GetMouseButton(0))
+            //     ContinueDrag(worldPosition);
+            // else if (Input.GetMouseButtonUp(0) && canShoot)
+            //     EndDrag();
+        }
+        
+        public void Setup()
+        {
+            launchPreview = GetComponent<LaunchPreview>();
+            balls = new List<Ball>();
 
-            // Debug.Log("Player turn");
-            
-            var worldPosition = camera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
-
-            if (Input.GetMouseButtonDown(0))
-                StartDrag(worldPosition);
-            else if (Input.GetMouseButton(0))
-                ContinueDrag(worldPosition);
-            else if (Input.GetMouseButtonUp(0) && canShoot)
-                EndDrag();
+            CreateBall();
         }
 
         private void StartDrag(Vector3 worldPosition)
@@ -102,7 +101,7 @@ namespace Gameplay
         {
             var ball = Instantiate(ballPrefab, transform.position, Quaternion.identity, ballContainer.transform);
             ball.gameObject.SetActive(false);
-            
+
             balls.Add(ball);
             ballsAvailable = balls.Count;
         }
@@ -113,7 +112,8 @@ namespace Gameplay
 
             if (ballsAvailable != balls.Count) return;
             
-            // GameplayManager.Instance.EnemiesTurn();
+            GameplayManager.Instance.SetEnemiesTurn();
+            
             CreateBall();
 
             shootInProgress = false;

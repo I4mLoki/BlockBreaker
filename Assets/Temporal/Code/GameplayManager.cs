@@ -1,4 +1,6 @@
 using System;
+using Code.DataConfig.BaseObjects;
+using Code.DataConfig.DataLists;
 using DataConfig;
 using Gameplay;
 using UnityEngine;
@@ -35,7 +37,7 @@ public class GameplayManager : MonoBehaviour
 
     private void Start()
     {
-        GamePaused = true;
+        SetPaused();
         
         _playerActions.LoadComponents();
         _enemiesActions.LoadComponents();
@@ -43,7 +45,7 @@ public class GameplayManager : MonoBehaviour
 
     public void StartGameplay(int desiredLevel)
     {
-        _level = levelList.LevelList.Find(lvl => lvl.LevelNumber == desiredLevel);
+        _level = levelList.List.Find(lvl => lvl.levelNumber == desiredLevel);
 
         if (_level == null)
         {
@@ -51,11 +53,13 @@ public class GameplayManager : MonoBehaviour
             return;
         }
 
+        CurrentGameState = GameState.ENEMY_TURN;
         _enemiesActions.InitialEnemiesTurn(_level);
     }
 
     public void SetPlayerTurn()
     {
+        Debug.Log("Player turn");
         CurrentGameState = GameState.PLAYER_TURN;
     }
     
@@ -63,16 +67,26 @@ public class GameplayManager : MonoBehaviour
     {
         return CurrentGameState == GameState.PLAYER_TURN;
     }
-
-    public bool EnemiesTurn
+    
+    public void SetEnemiesTurn()
     {
-        get => CurrentGameState == GameState.ENEMY_TURN;
-        set => CurrentGameState = GameState.ENEMY_TURN;
+        Debug.Log("Enemies turn");
+        CurrentGameState = GameState.ENEMY_TURN;
+        _enemiesActions.EnemiesTurn();
     }
-
-    public bool GamePaused
+    
+    public bool IsEnemiesTurn()
     {
-        get => CurrentGameState == GameState.PAUSED;
-        set => CurrentGameState = GameState.PAUSED;
+        return CurrentGameState == GameState.ENEMY_TURN;
+    }
+    
+    public void SetPaused()
+    {
+        CurrentGameState = GameState.PAUSED;
+    }
+    
+    public bool IsPaused()
+    {
+        return CurrentGameState == GameState.PAUSED;
     }
 }

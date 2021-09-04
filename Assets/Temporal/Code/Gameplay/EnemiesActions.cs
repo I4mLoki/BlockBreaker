@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.DataConfig.BaseObjects;
 using DataConfig;
 using UnityEngine;
 namespace Gameplay
@@ -14,6 +15,7 @@ namespace Gameplay
 
         public void InitialEnemiesTurn(BaseLevel level)
         {
+            Debug.Log("Enemies turn");
             StartCoroutine(_gridSetup.InitialLoad(level, OnEnemiesTurnEnd));
         }
 
