@@ -10,13 +10,13 @@ namespace Gameplay
 
         private SpriteRenderer spriteRenderer;
         private TextMeshPro text;
-        private GameplayGridSetup _gameplayGridSetup;
+        // private GameplayGridSetup _gameplayGridSetup;
 
         private void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             text = GetComponentInChildren<TextMeshPro>();
-            _gameplayGridSetup = FindObjectOfType<GameplayGridSetup>();
+            // _gameplayGridSetup = FindObjectOfType<GameplayGridSetup>();
         }
         
         private void OnCollisionEnter2D()

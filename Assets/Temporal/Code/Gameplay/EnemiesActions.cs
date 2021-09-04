@@ -6,22 +6,22 @@ namespace Gameplay
 {
     public class EnemiesActions : MonoBehaviour
     {
-        private GameplayGridSetup _gridSetup;
+        private EnemiesTurn _enemiesTurn;
 
         public void LoadComponents()
         {
-            _gridSetup = GetComponent<GameplayGridSetup>();
+            _enemiesTurn = GetComponent<EnemiesTurn>();
         }
 
         public void InitialEnemiesTurn(BaseLevel level)
         {
             Debug.Log("Enemies turn");
-            StartCoroutine(_gridSetup.InitialLoad(level, OnEnemiesTurnEnd));
+            StartCoroutine(_enemiesTurn.InitialLoad(level, OnEnemiesTurnEnd));
         }
 
         public void EnemiesTurn()
         {
-            StartCoroutine(_gridSetup.StartTurn(OnEnemiesTurnEnd));
+            StartCoroutine(_enemiesTurn.StartTurn(OnEnemiesTurnEnd));
         }
 
         public void OnEnemiesTurnEnd()

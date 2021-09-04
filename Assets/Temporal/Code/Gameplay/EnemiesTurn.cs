@@ -1,17 +1,16 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Code.DataConfig.BaseObjects;
-using Code.DataConfig.Tools;
 using DataConfig.Tools;
 using DG.Tweening;
-using Gameplay;
 using Sirenix.Utilities;
 using UnityEngine;
-
-public class GameplayGridSetup : MonoBehaviour
+namespace Gameplay
 {
-    [SerializeField]
+    public class EnemiesTurn : MonoBehaviour
+    {
+[SerializeField]
     private GameObject leftWall;
 
     [SerializeField]
@@ -111,5 +110,6 @@ public class GameplayGridSetup : MonoBehaviour
             var newPosition = new Vector3(block.transform.position.x, block.transform.position.y) + move;
             block.transform.DOMove(newPosition, _blockMoveSpeed);
         }
+    }
     }
 }
