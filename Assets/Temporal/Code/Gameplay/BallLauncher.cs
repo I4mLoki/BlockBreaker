@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Gameplay
@@ -7,21 +9,26 @@ namespace Gameplay
     public class BallLauncher : MonoBehaviour
     {
         [SerializeField]
+        private Camera camera;
+        
+        [SerializeField]
         private Ball ballPrefab;
+
+        [SerializeField]
+        private GameObject ballContainer;
 
         private Vector3 startDragPosition;
         private Vector3 endDragPosition;
-        private BlockSpawner blockSpawner;
         private LaunchPreview launchPreview;
         private List<Ball> balls;
-        private Camera mainCamera;
-        private int ballsReady;
+        private bool canShoot;
+        private bool shootInProgress;
+        private int ballsAvailable;
+        private bool firstBallReturned;
 
         private void Awake()
         {
             balls = new List<Ball>();
-            mainCamera = Camera.main;
-            blockSpawner = FindObjectOfType<BlockSpawner>();
             launchPreview = GetComponent<LaunchPreview>();
 
             CreateBall();
@@ -29,15 +36,15 @@ namespace Gameplay
 
         private void Update()
         {
-            if (ballsReady != balls.Count) return;
+            if (shootInProgress || !GameplayManager.Instance.CanPlay) return;
 
-            var worldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
+            var worldPosition = camera.ScreenToWorldPoint(Input.mousePosition) + Vector3.back * -10;
 
             if (Input.GetMouseButtonDown(0))
                 StartDrag(worldPosition);
             else if (Input.GetMouseButton(0))
                 ContinueDrag(worldPosition);
-            else if (Input.GetMouseButtonUp(0))
+            else if (Input.GetMouseButtonUp(0) && canShoot)
                 EndDrag();
         }
 
@@ -51,22 +58,35 @@ namespace Gameplay
         private void ContinueDrag(Vector3 worldPosition)
         {
             endDragPosition = worldPosition;
-            var direction = endDragPosition - startDragPosition;
+            var direction = startDragPosition - endDragPosition;
+
+            if (direction.y > 0)
+            {
+                canShoot = false;
+                launchPreview.ShowLine(false);
+                return;
+            }
+
+            canShoot = true;
+            launchPreview.ShowLine(true);
             launchPreview.SetEndPoint(transform.position - direction);
         }
 
         private void EndDrag()
         {
             launchPreview.ShowLine(false);
+            shootInProgress = true;
             StartCoroutine(LaunchBalls());
         }
 
         private IEnumerator LaunchBalls()
         {
-            var direction = endDragPosition - startDragPosition;
+            var direction = startDragPosition - endDragPosition;
             direction.Normalize();
 
-            foreach (var ball in balls)
+            ballsAvailable = 0;
+
+            foreach (var ball in balls.ToList())
             {
                 ball.transform.position = transform.position;
                 ball.gameObject.SetActive(true);
@@ -74,24 +94,39 @@ namespace Gameplay
 
                 yield return new WaitForSeconds(0.1f);
             }
-
-            ballsReady = 0;
         }
 
         private void CreateBall()
         {
-            var ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+            var ball = Instantiate(ballPrefab, transform.position, Quaternion.identity, ballContainer.transform);
+            ball.gameObject.SetActive(false);
+            
             balls.Add(ball);
-            ballsReady++;
+            ballsAvailable = balls.Count;
         }
-    
+
         public void ReturnBall()
         {
-            ballsReady++;
-            if (ballsReady != balls.Count) return;
-        
-            // blockSpawner.SpawnRowOfBlocks();
+            ballsAvailable++;
+
+            if (ballsAvailable != balls.Count) return;
+            
             CreateBall();
+
+            shootInProgress = false;
+            firstBallReturned = false;
+            
+            GameplayManager.Instance.EnemiesTurn();
+        }
+
+        public void MoveBallLauncher(float positionX)
+        {
+            if (firstBallReturned) return;
+
+            firstBallReturned = true;
+            
+            DOTween.Sequence()
+                .Append(gameObject.transform.DOMoveX(positionX, .3f));
         }
     }
 }
