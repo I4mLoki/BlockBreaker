@@ -1,26 +1,17 @@
-using System;
 using UnityEngine;
 
-public class BulletShooter : MonoBehaviour
+public class AimAssistant : MonoBehaviour
 {
-    private float _rayCastLength;
+    private BulletShooter _bulletShooter;
     private LineRenderer _renderer;
-    private bool _canShoot;
+
+    private float _aimDeadZone = .5f;
+    private float _rayCastLength;
 
     private void Awake()
     {
+        _bulletShooter = GetComponent<BulletShooter>();
         _renderer = GetComponent<LineRenderer>();
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-            StartAiming();
-        else if (Input.GetMouseButton(0))
-            // if (Input.GetMouseButton(0) && GameplayManager.Instance.IsPlayerTurn())
-            KeepAiming();
-        else if (Input.GetMouseButtonUp(0))
-            StopAiming();
     }
 
     public void Setup(float rayCastLength)
@@ -28,13 +19,7 @@ public class BulletShooter : MonoBehaviour
         _rayCastLength = rayCastLength;
     }
 
-    private void StartAiming()
-    {
-        //TODO Remove this
-        _rayCastLength = 15f;
-    }
-
-    private void KeepAiming()
+    public void StartAim()
     {
         /*
          * First raycast
@@ -47,12 +32,12 @@ public class BulletShooter : MonoBehaviour
         // Don't aim down
         if (direction.y < .5f)
         {
-            _canShoot = false;
+            _bulletShooter.CanShoot = false;
             _renderer.positionCount = 0;
             return;
         }
 
-        _canShoot = true;
+        _bulletShooter.CanShoot = true;
 
         var hits = Physics2D.RaycastAll(startPoint, direction, _rayCastLength);
 
@@ -100,16 +85,39 @@ public class BulletShooter : MonoBehaviour
 
         _renderer.positionCount = 3;
         _renderer.SetPosition(2, validHit2.point);
+
+        if (validHit2.collider.tag != "Wall") return;
+
+        /*
+         * Third raycast
+         */
+
+        var startPoint3 = validHit2.point;
+        var deflectRotation2 = Quaternion.FromToRotation(-direction2, validHit2.normal);
+        var direction3 = deflectRotation2*validHit2.normal;
+
+        var hit3 = Physics2D.Raycast(startPoint3, direction3, .1f);
+
+        // var validHit3 = new RaycastHit2D();
+        // foreach (var hit in hits3)
+        // {
+        //     if (hit.collider == null || hit.collider.gameObject == validHit2.collider.gameObject) continue;
+        //
+        //     validHit3 = hit;
+        //     break;
+        // }
+
+        if (hit3.collider != null) Debug.DrawLine(startPoint3, hit3.point, Color.blue);
+        else Debug.DrawRay(startPoint3, direction3, Color.blue);
+
+
+
+        _renderer.positionCount = 4;
+        _renderer.SetPosition(3, hit3.point);
     }
 
-    private void StopAiming()
+    public void StopAim()
     {
         _renderer.positionCount = 0;
-        
-        if (_canShoot) Shoot();
-    }
-
-    private void Shoot()
-    {
     }
 }
