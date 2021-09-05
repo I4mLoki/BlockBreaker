@@ -35,7 +35,8 @@ public class BulletShooter : MonoBehaviour
 
     private void KeepAiming()
     {
-        _aimAssistant.StartAim();
+        _aimAssistant.StartAimTest();
+        // _aimAssistant.StartAim();
     }
 
     private void StopAiming()
