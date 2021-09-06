@@ -1,13 +1,14 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AimAssistant : MonoBehaviour
 {
     private BulletShooter _bulletShooter;
     private LineRenderer _renderer;
 
-    private float _aimDeadZone = .5f;
-    private float _rayCastLength;
+    private float _rayLength;
+    private float _aimDeadZone;
+    private int _reflectionsCount;
 
     private void Awake()
     {
@@ -15,14 +16,20 @@ public class AimAssistant : MonoBehaviour
         _renderer = GetComponent<LineRenderer>();
     }
 
-    public void Setup(float rayCastLength)
+    public void Setup()
     {
-        _rayCastLength = rayCastLength;
+        _rayLength = _bulletShooter.RayLength;
+        _aimDeadZone = _bulletShooter.AimDeadZone;
     }
 
-    public void StartAimTest()
+    public void StartAim()
     {
-        StartRay(_rayCastLength);
+        StartRay(_rayLength);
+    }
+    
+    public void StopAim()
+    {
+        _renderer.positionCount = 0;
     }
 
     private void StartRay(float length)
@@ -31,15 +38,16 @@ public class AimAssistant : MonoBehaviour
         Vector2 endPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var direction = (endPoint - startPoint).normalized;
         var remainingRayCastLength = length;
+        _reflectionsCount = 0;
 
         // Don't aim down
-        if (direction.y < .5f)
+        if (direction.y < _aimDeadZone)
         {
             _bulletShooter.CanShoot = false;
             _renderer.positionCount = 0;
             return;
         }
-        
+
         _bulletShooter.CanShoot = true;
         var ray = new Ray2D(startPoint, direction*remainingRayCastLength);
         var hit = Physics2D.Raycast(startPoint, direction, remainingRayCastLength);
@@ -67,6 +75,7 @@ public class AimAssistant : MonoBehaviour
 
         if (remainingRayCastLength <= 0 || hit.collider == null) return;
 
+        _reflectionsCount++;
         DeflectRay(hit, direction, remainingRayCastLength);
     }
 
@@ -84,7 +93,7 @@ public class AimAssistant : MonoBehaviour
         foreach (var hit in hits)
         {
             if (hit.collider == null || hit.collider.gameObject == previousHit.collider.gameObject) continue;
-        
+
             validHit = hit;
             break;
         }
@@ -103,17 +112,13 @@ public class AimAssistant : MonoBehaviour
             drawPoint = validHit.point;
             remainingRayCastLength -= validHit.distance;
         }
-        
-        _renderer.positionCount = 3;
-        _renderer.SetPosition(2, drawPoint);
+
+        _renderer.positionCount = _reflectionsCount + 2;
+        _renderer.SetPosition(_reflectionsCount + 1, drawPoint);
 
         if (remainingRayCastLength <= 0 || validHit.collider == null) return;
 
+        _reflectionsCount++;
         DeflectRay(validHit, direction, remainingRayCastLength);
-    }
-
-    public void StopAim()
-    {
-        _renderer.positionCount = 0;
     }
 }

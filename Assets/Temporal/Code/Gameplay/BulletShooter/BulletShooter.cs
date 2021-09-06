@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class BulletShooter : MonoBehaviour
 {
+    public float AimDeadZone = .5f;
+    public float RayLength = 10f;
+
     public bool CanShoot { get; set; }
 
     private AimAssistant _aimAssistant;
-    private float _rayCastLength = 15f;
 
     private void Awake()
     {
@@ -15,34 +17,27 @@ public class BulletShooter : MonoBehaviour
 
     private void Start()
     {
-        // TODO REMOVE HERE
-        _aimAssistant.Setup(_rayCastLength);
+        _aimAssistant.Setup();
     }
 
     private void Update()
     {
         if (Input.GetMouseButton(0))
             // if (Input.GetMouseButton(0) && GameplayManager.Instance.IsPlayerTurn())
-            KeepAiming();
+            StartAiming();
         else if (Input.GetMouseButtonUp(0))
             StopAiming();
     }
 
-    public void Setup(float rayCastLength)
+    private void StartAiming()
     {
-        _aimAssistant.Setup(_rayCastLength);
-    }
-
-    private void KeepAiming()
-    {
-        _aimAssistant.StartAimTest();
-        // _aimAssistant.StartAim();
+        _aimAssistant.StartAim();
     }
 
     private void StopAiming()
     {
         _aimAssistant.StopAim();
-        
+
         if (CanShoot) Shoot();
     }
 

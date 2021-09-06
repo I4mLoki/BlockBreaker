@@ -15,7 +15,7 @@ namespace Gameplay
 
         public void Setup(float rayCastLength)
         {
-            _bulletShooter.Setup(rayCastLength);
+            // _bulletShooter.Setup(rayCastLength);
         }
 
         public void StartTurn()
