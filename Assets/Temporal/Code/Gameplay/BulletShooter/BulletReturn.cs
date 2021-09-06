@@ -3,20 +3,19 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class BallReturn : MonoBehaviour
+    public class BulletReturn : MonoBehaviour
     {
-        private BallLauncher ballLauncher;
+        private BulletShooter _bulletShooter;
 
         private void Awake()
         {
-            ballLauncher = FindObjectOfType<BallLauncher>();
+            _bulletShooter = FindObjectOfType<BulletShooter>();
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             collision.collider.gameObject.SetActive(false);
-            ballLauncher.MoveBallLauncher(collision.transform.position.x);
-            ballLauncher.ReturnBall();
+            _bulletShooter.ReturnBullet(collision.transform.position.x);
         }
     }
 }

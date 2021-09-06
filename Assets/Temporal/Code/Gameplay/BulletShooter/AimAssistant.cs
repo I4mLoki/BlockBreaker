@@ -3,6 +3,8 @@ using UnityEngine.Serialization;
 
 public class AimAssistant : MonoBehaviour
 {
+    public Vector2 ShootDirection { get; private set; }
+    
     private BulletShooter _bulletShooter;
     private LineRenderer _renderer;
 
@@ -40,15 +42,17 @@ public class AimAssistant : MonoBehaviour
         var remainingRayCastLength = length;
         _reflectionsCount = 0;
 
+        ShootDirection = direction;
+
         // Don't aim down
         if (direction.y < _aimDeadZone)
         {
-            _bulletShooter.CanShoot = false;
+            _bulletShooter.AimReady = false;
             _renderer.positionCount = 0;
             return;
         }
 
-        _bulletShooter.CanShoot = true;
+        _bulletShooter.AimReady = true;
         var ray = new Ray2D(startPoint, direction*remainingRayCastLength);
         var hit = Physics2D.Raycast(startPoint, direction, remainingRayCastLength);
 
