@@ -76,7 +76,7 @@ namespace Code.Editor
             };
 
 
-            tree.AddAllAssetsAtPath("Show Data/Show Level", _dataPath.levelsPath).SortMenuItemsByName();
+            tree.AddAllAssetsAtPath("Show Data/Show Level", _dataPath.levelsPath).SortMenuItemsByName().ForEach(this.Colorize);
 
             tree.AddAllAssetsAtPath("Show Data/Show Block", _dataPath.blocksPath).SortMenuItemsByName().ForEach(this.AddDragHandles);
             ;
@@ -90,6 +90,10 @@ namespace Code.Editor
             // this.RepaintIfRequested();
 
             return tree;
+        }
+        private void Colorize(OdinMenuItem menuItem)
+        {
+
         }
 
         protected override void DrawEditor(int index)
@@ -152,8 +156,6 @@ namespace Code.Editor
             }
             GUILayout.EndVertical();
         }
-
-
 
         private void ShowBlockData(OdinMenuTreeSelection selected)
         {
