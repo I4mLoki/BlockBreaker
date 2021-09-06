@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class Ball : MonoBehaviour
+    public class Bullet : MonoBehaviour
     {
         [SerializeField]
         private float moveSpeed = 10f;

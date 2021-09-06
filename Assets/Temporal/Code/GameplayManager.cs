@@ -50,6 +50,8 @@ public class GameplayManager : MonoBehaviour
 
         _playerActions.LoadComponents();
         _enemiesActions.LoadComponents();
+        
+        _playerActions.PlayerTurn();
     }
 
     public void StartGameplay(int desiredLevel)
@@ -63,7 +65,6 @@ public class GameplayManager : MonoBehaviour
         }
 
         _gameplayGrid.Setup(_level, SetGameplayParams);
-        _playerActions.Setup(CalculateRayCastLength());
 
         CurrentGameState = GameState.ENEMY_TURN;
         _enemiesActions.InitialEnemiesTurn(_level);
@@ -76,15 +77,11 @@ public class GameplayManager : MonoBehaviour
         VisibleRows = visibleRows;
     }
 
-    private float CalculateRayCastLength()
-    {
-        return (float)Math.Sqrt(Math.Pow(VisibleColumns, 2) + Math.Pow(VisibleRows, 2));
-    }
-
     public void SetPlayerTurn()
     {
         Debug.Log("Player turn");
         CurrentGameState = GameState.PLAYER_TURN;
+        _playerActions.PlayerTurn();
     }
 
     public bool IsPlayerTurn()
@@ -95,8 +92,10 @@ public class GameplayManager : MonoBehaviour
     public void SetEnemiesTurn()
     {
         Debug.Log("Enemies turn");
-        CurrentGameState = GameState.ENEMY_TURN;
-        _enemiesActions.EnemiesTurn();
+        // TODO Test proposal, remove player turn and uncomment
+        _playerActions.PlayerTurn();
+        // CurrentGameState = GameState.ENEMY_TURN;
+        // _enemiesActions.EnemiesTurn();
     }
 
     public bool IsEnemiesTurn()
