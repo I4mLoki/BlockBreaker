@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Zombie_01
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 512
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 590079c870905c948bc5dbf0ca795769, type: 3}
+    totalSpriteSurfaceArea: 94652
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 0fbfd65071e926140afd75f61003ba6b, type: 3}
+  - {fileID: 21300000, guid: 589f2680858bfde48b64a79d1116a355, type: 3}
+  - {fileID: 21300000, guid: 8f5bc1a05b21a894e9c087886e405e87, type: 3}
+  - {fileID: 21300000, guid: 34683ae4feac9ff4eacf5fd414f3584a, type: 3}
+  - {fileID: 21300000, guid: 40f8e55550b64c541ade1e45132ef5c9, type: 3}
+  - {fileID: 21300000, guid: 96f73a4608f031546beaee4f49ef4e1a, type: 3}
+  - {fileID: 21300000, guid: 5e4430661eab9de44aefee9e1a20b04d, type: 3}
+  - {fileID: 21300000, guid: 4e1b6b5b66ca70447a9f4ca2b83fe99b, type: 3}
+  - {fileID: 21300000, guid: c92b8a1d85f8e9d469cebec86b35edd8, type: 3}
+  - {fileID: 21300000, guid: 999692ad735b83e4cbf5fe20b4bc230e, type: 3}
+  - {fileID: 21300000, guid: 0fb0ebbff21d93f43bb64badf1af403a, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - _0003_EyeBrow_bad
+  - _0001_Foot
+  - _0009_Body
+  - _0000_Leg_01
+  - _0007_Head
+  - _0005_Mouth_01
+  - _0002_Ear_01
+  - _0010_Hips
+  - _0004_Eye_01
+  - _0006_MouthOpen_01
+  - _0008_Arm
+  m_RenderDataMap: {}
+  m_Tag: Zombie_01
+  m_IsVariant: 0
