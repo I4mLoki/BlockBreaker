@@ -7,5 +7,6 @@ namespace Code.DataConfig.DataLists
         public BaseLevelList baseLevelList;
         public BaseBlockList baseBlockList;
         public BaseBoosterList baseBoosterList;
+        public VariableDataConfig variableData;
     }
 }

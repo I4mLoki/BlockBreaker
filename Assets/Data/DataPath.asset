@@ -15,6 +15,8 @@ MonoBehaviour:
   blockListPath: Assets/Data/BaseBlockList.asset
   boosterListPath: Assets/Data/BaseBoosterList.asset
   levelListPath: Assets/Data/BaseLevelList.asset
-  dataListPath: Assets/Data/DataList.asset
+  variableDataListPath: Assets/Data/VariableData.asset
+  dataListPath: Assets/Data/VariableData.asset
   blocksPath: Assets/Data/Blocks
   levelsPath: Assets/Data/Levels
+  prefabPath: Assets/Prefabs/Blocks/

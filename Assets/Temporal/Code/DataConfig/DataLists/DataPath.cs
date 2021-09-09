@@ -13,6 +13,8 @@ namespace Code.DataConfig.DataLists
         [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
         public string levelListPath = "Assets/Data/BaseLevelList.asset";
         [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
+        public string variableDataListPath = "Assets/Data/VariableData.asset";
+        [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
         public string dataListPath = "Assets/Data/DataList.asset";
         [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
         public string blocksPath = "Assets/Data/Blocks/";
