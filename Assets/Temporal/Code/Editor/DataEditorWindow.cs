@@ -166,7 +166,9 @@ namespace Code.Editor
                 return;
             var asset = selected.SelectedValue as BaseBlock;
             var path = AssetDatabase.GetAssetPath(asset);
+            var pathAnimator = AssetDatabase.GetAssetPath(asset.behaviourData);
             _dataList.baseBlockList.List.RemoveAt(_dataList.baseBlockList.List.IndexOf(asset));
+            AssetDatabase.DeleteAsset(pathAnimator);
             AssetDatabase.DeleteAsset(path);
             AssetDatabase.SaveAssets();
         }

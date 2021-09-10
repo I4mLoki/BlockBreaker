@@ -83,8 +83,8 @@ namespace Code.DataConfig.BaseObjects
         [BoxGroup("Behaviour/Template"), HorizontalGroup("Behaviour/Template/Temp"), ColorBox, HideLabel]
         public int value = 0;
 
-        [BoxGroup("Behaviour/Template"), HorizontalGroup("Behaviour/Template/Temp"), ColorBox, HideLabel, ValueDropdown("BbParam")]
-        public string parameter = "";
+        [BoxGroup("Behaviour/Template"), HorizontalGroup("Behaviour/Template/Temp"), ColorBox, HideLabel, ValueDropdown("BbStates")]
+        public string state = "";
 
         [BoxGroup("Behaviour/Behaviour List"), ColorBox, TableList(HideToolbar = true), Space]
         public List<BlockBehaviour> behaviourTable = new List<BlockBehaviour>();
@@ -150,9 +150,8 @@ namespace Code.DataConfig.BaseObjects
 
         private void AddBehaviourToList()
         {
-            var item = BlockBehaviour.AddBehaviourToList(target, field, condition, value, parameter, this);
+            var item = BlockBehaviour.AddBehaviourToList(target, field, condition, value, state, this);
 
-            behaviourTable.Add(item);
             ResetBehaviourValues();
         }
 
@@ -162,7 +161,7 @@ namespace Code.DataConfig.BaseObjects
             field = "";
             condition = AnimatorConditionMode.Equals;
             value = 0;
-            parameter = "";
+            state = "";
         }
 
         private static bool DrawElements(Rect rect, bool value)
@@ -191,9 +190,14 @@ namespace Code.DataConfig.BaseObjects
             BbParam = new List<string>();
             BbStates = new List<string>();
 
-            for (var i = 0; i < behaviourData.parameters.Length; i++)
+            foreach (var t in behaviourData.parameters)
             {
-                BbParam.Add(behaviourData.parameters[i].name);
+                BbParam.Add(t.name);
+            }
+            
+            foreach (var t in behaviourData.layers[0].stateMachine.states)
+            {
+                BbStates.Add(t.state.name);
             }
         }
 

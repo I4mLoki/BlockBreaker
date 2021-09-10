@@ -112,7 +112,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   blockName: Block 1
-  blockPrefab: {fileID: 2466014601744161678, guid: ad799f22802e71e4988f5c131b361cc1, type: 3}
+  blockPrefab: {fileID: 0}
   blockHeads: []
   blockEyes: []
   blockEars: []
@@ -138,12 +138,12 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 7c7dabfc4dd4fac428b6e60e1ec96764, type: 2}
   - {fileID: 7400000, guid: 7209d4b7ed66b2e41bdcf9aab82f0957, type: 2}
   - {fileID: 7400000, guid: 1ae0113bcc2844149abe72c396e01962, type: 2}
-  behaviourData: {fileID: 9100000, guid: 0ea2f17b5a3db5f44ba9b67a577ca0c5, type: 2}
+  behaviourData: {fileID: 0}
   target: 
   field: 
   condition: 6
   value: 0
-  parameter: 
+  state: 
   behaviourTable: []
   movementTiles: []
   shouldBeUnique: 0

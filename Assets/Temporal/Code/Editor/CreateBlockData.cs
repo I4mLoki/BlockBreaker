@@ -37,28 +37,33 @@ namespace Code.Editor
             if(blockData.animationList != null)
             {
                 var animList = blockData.animationList;
+                var t = fsm.AddState("CheckAction", new Vector3(-100, 100 * animList.Count / 2, 0));
 
                 for (var i = 0; i < animList.Count; i++)
                 {
                     //Add a state named clip.name, whose position is (250,100,0)
                     var state = fsm.AddState(animList[i].name, new Vector3(250, 100*i, 0));
-                    fsm.anyStatePosition = new Vector3(-100, 100*i/2, 0);
                     fsm.entryPosition = new Vector3(600, 100*i/2, 0);
-
-                    //Add a parameter to list
-                    blockData.behaviourData.AddParameter("On" + animList[i].name, AnimatorControllerParameterType.Trigger);
 
                     //The animation of this state is clip
                     state.motion = animList[i];
 
-                    //Add transition status
-                    var fromAnyState = fsm.AddAnyStateTransition(state);
-                    fromAnyState.AddCondition(AnimatorConditionMode.Equals, 0, "On" + animList[i].name);
-
                     //Set this state to the default state
                     if (animList[i].name == "Idle")
                     {
+                        fsm.anyStatePosition = new Vector3(600, 100*i, 0);
+
+                        blockData.behaviourData.AddParameter("Action", AnimatorControllerParameterType.Trigger);
+                        blockData.behaviourData.AddParameter("TurnFinished", AnimatorControllerParameterType.Trigger);
+
+                        var fromAnyState = fsm.AddAnyStateTransition(state);
+                        fromAnyState.AddCondition(AnimatorConditionMode.Equals, 0, "TurnFinished");
+
                         fsm.defaultState = state;
+
+
+                        var transition = state.AddTransition(t);
+                        transition.AddCondition(AnimatorConditionMode.Equals, 0, "Action");
                     }
                 }
             }
