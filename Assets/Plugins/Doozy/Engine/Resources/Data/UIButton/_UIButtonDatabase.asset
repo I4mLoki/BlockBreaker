@@ -17,6 +17,10 @@ MonoBehaviour:
   - Custom
   - Example
   - General
+  - Core
+  - Top Bar
   Categories:
   - {fileID: 11400000, guid: 40f9e81ff80114a47a3721228ba749ed, type: 2}
   - {fileID: 11400000, guid: ca81fb5e1e97eff40a43e17def703189, type: 2}
+  - {fileID: 11400000, guid: 279a2efda8e04a845bf9dd887c23b652, type: 2}
+  - {fileID: 11400000, guid: 6c300470b1745e64386640127c3d9587, type: 2}

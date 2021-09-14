@@ -18,7 +18,7 @@ namespace Code.Editor
         public CreateBlockData(DataList dataList)
         {
             blockData = ScriptableObject.CreateInstance<BaseBlock>();
-            blockData.blockName = "Block " + (dataList.baseBlockList.List.Count + 1);
+            blockData.blockName = "Block " + (dataList.baseBlockList.list.Count + 1);
             _dataList = dataList;
         }
 
@@ -68,7 +68,7 @@ namespace Code.Editor
                 }
             }
 
-            _dataList.baseBlockList.List.Add(blockData);
+            _dataList.baseBlockList.list.Add(blockData);
 
             var text = new GameObject("Text");
             text.transform.parent = go.transform;
@@ -146,7 +146,7 @@ namespace Code.Editor
 
 
             var prefab = PrefabUtility.SaveAsPrefabAsset(go,
-                _dataList.dataPath.prefabPath + blockData.blockName + ".prefab");
+                _dataList.dataPath.characterPrefabPath + blockData.blockName + ".prefab");
 
             blockData.blockPrefab = prefab;
 

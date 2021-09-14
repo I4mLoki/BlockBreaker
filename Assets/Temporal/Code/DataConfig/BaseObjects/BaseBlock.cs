@@ -15,6 +15,7 @@ using UnityEngine;
 namespace Code.DataConfig.BaseObjects
 {
     [SuppressMessage("ReSharper", "CognitiveComplexity")]
+    [InlineEditor]
     public class BaseBlock : SerializedScriptableObject
     {
         [FoldoutGroup("Basic Info")]

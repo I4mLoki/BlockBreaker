@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33805a4a91d84ee0aaacf472450b520b, type: 3}
   m_Name: DataPath
   m_EditorClassIdentifier: 
-  blockListPath: Assets/Data/BaseBlockList.asset
-  boosterListPath: Assets/Data/BaseBoosterList.asset
-  levelListPath: Assets/Data/BaseLevelList.asset
+  characterListPath: Assets/Data/DataLists/BaseCharacterList.asset
+  blockListPath: Assets/Data/DataLists/BaseBlockList.asset
+  boosterListPath: Assets/Data/DataLists/BaseBoosterList.asset
+  levelListPath: Assets/Data/DataLists/BaseLevelList.asset
   variableDataListPath: Assets/Data/VariableData.asset
-  dataListPath: Assets/Data/VariableData.asset
+  dataListPath: Assets/Data/DataList.asset
   blocksPath: Assets/Data/Blocks
   levelsPath: Assets/Data/Levels
-  prefabPath: Assets/Prefabs/Blocks/
+  blocksPrefabPath: Assets/Prefabs/Blocks/
+  characterPath: Assets/Data/Characters/
+  characterPrefabPath: Assets/Prefabs/Characters/

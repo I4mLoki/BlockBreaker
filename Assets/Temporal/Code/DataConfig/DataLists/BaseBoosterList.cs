@@ -3,14 +3,10 @@ using Code.DataConfig.BaseObjects;
 using UnityEngine;
 namespace Code.DataConfig.DataLists
 {
+    [CreateAssetMenu(menuName = "BlockBreaker/Data/Create BaseBoosterList", fileName = "BaseBoosterList", order = 0)]
     public class BaseBoosterList : ScriptableObject
     {
-        [SerializeField] private List<BaseBooster> baseBooster;
-
-        public List<BaseBooster> BaseBooster
-        {
-            get => baseBooster;
-            set => baseBooster = value;
-        }
+        [ColorBox]
+        public List<BaseBooster> list;
     }
 }
