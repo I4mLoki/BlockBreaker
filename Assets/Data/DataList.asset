@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc5f47491254d7593c08c4f9d4222ad, type: 3}
+  m_Name: DataList
+  m_EditorClassIdentifier: 
+  dataPath: {fileID: 11400000, guid: cb5991db6fd73914fb142ab50a984710, type: 2}
+  baseLevelList: {fileID: 11400000, guid: 370973fd65587a446ad47d9eb779552d, type: 2}
+  baseBlockList: {fileID: 11400000, guid: 030a0cc30677f004189514c8a9c39c6b, type: 2}
+  baseBoosterList: {fileID: 11400000, guid: 9f559888a5e109f4f97cf7ecc0809c75, type: 2}

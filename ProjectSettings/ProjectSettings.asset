@@ -68,12 +68,6 @@ PlayerSettings:
   androidRenderOutsideSafeArea: 1
   androidUseSwappy: 1
   androidBlitType: 2
-  androidResizableWindow: 0
-  androidDefaultWindowWidth: 1920
-  androidDefaultWindowHeight: 1080
-  androidMinimumWindowWidth: 400
-  androidMinimumWindowHeight: 300
-  androidFullscreenMode: 1
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
   runInBackground: 1
@@ -246,7 +240,6 @@ PlayerSettings:
   useCustomGradlePropertiesTemplate: 0
   useCustomProguardFile: 0
   AndroidTargetArchitectures: 1
-  AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: 
@@ -263,7 +256,6 @@ PlayerSettings:
     height: 180
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
-  chromeosInputEmulation: 1
   AndroidMinifyWithR8: 0
   AndroidMinifyRelease: 0
   AndroidMinifyDebug: 0
@@ -328,7 +320,6 @@ PlayerSettings:
   cameraUsageDescription: 
   locationUsageDescription: 
   microphoneUsageDescription: 
-  bluetoothUsageDescription: 
   switchNMETAOverride: 
   switchNetLibKey: 
   switchSocketMemoryPoolSize: 6144
@@ -564,20 +555,21 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: TextMeshPro;ODIN_INSPECTOR;ODIN_INSPECTOR_3
-    4: TextMeshPro
-    7: ODIN_INSPECTOR;ODIN_INSPECTOR_3;TextMeshPro
-    13: TextMeshPro
-    14: TextMeshPro
-    19: TextMeshPro
-    21: TextMeshPro
-    25: TextMeshPro
-    27: TextMeshPro
-    28: TextMeshPro
-    29: TextMeshPro
-    30: TextMeshPro
-    32: TextMeshPro
-    33: TextMeshPro
+    1: TextMeshPro;ODIN_INSPECTOR;ODIN_INSPECTOR_3;dUI_MANAGER
+    4: TextMeshPro;dUI_MANAGER
+    7: ODIN_INSPECTOR;ODIN_INSPECTOR_3;TextMeshPro;dUI_MANAGER
+    13: TextMeshPro;dUI_MANAGER
+    14: TextMeshPro;dUI_MANAGER
+    19: TextMeshPro;dUI_MANAGER
+    21: TextMeshPro;dUI_MANAGER
+    25: TextMeshPro;dUI_MANAGER
+    27: TextMeshPro;dUI_MANAGER
+    28: TextMeshPro;dUI_MANAGER
+    29: TextMeshPro;dUI_MANAGER
+    30: TextMeshPro;dUI_MANAGER
+    31: dUI_MANAGER
+    32: TextMeshPro;dUI_MANAGER
+    33: TextMeshPro;dUI_MANAGER
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
