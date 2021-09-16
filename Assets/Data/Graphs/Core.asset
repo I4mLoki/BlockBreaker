@@ -483,6 +483,85 @@ MonoBehaviour:
   - Category: Core
     InstantAction: 0
     Name: Characters
+--- !u!114 &-40027253170931806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 840a439e06374673a9115ed02deb5a54, type: 3}
+  m_Name: UINode
+  m_EditorClassIdentifier: 
+  ErrorNodeNameIsEmpty: 0
+  ErrorDuplicateNameFoundInGraph: 0
+  m_inputSockets:
+  - m_connectionMode: 1
+    m_connections: []
+    m_connectionPoints:
+    - {x: -2, y: 4}
+    - {x: 202, y: 4}
+    m_direction: 0
+    m_canBeDeleted: 0
+    m_canBeReordered: 0
+    m_curveModifier: 0
+    m_height: 24
+    m_width: 216
+    m_x: 0
+    m_y: 38
+    m_id: 50a22895-c58d-41bb-b7a5-f91ad744cc32
+    m_nodeId: dd904993-8214-4a51-a8d5-dd3cf263b1c1
+    m_socketName: InputSocket_0
+    m_value: '{"ButtonCategory":"General","ButtonName":"Unnamed","GameEvent":"","TimeDelay":3.0,"Trigger":0}'
+    m_valueTypeQualifiedName: Doozy.Engine.UI.Connections.UIConnection, Assembly-CSharp-firstpass,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_outputSockets:
+  - m_connectionMode: 0
+    m_connections: []
+    m_connectionPoints:
+    - {x: -2, y: 4}
+    - {x: 202, y: 4}
+    m_direction: 1
+    m_canBeDeleted: 1
+    m_canBeReordered: 1
+    m_curveModifier: 0
+    m_height: 24
+    m_width: 216
+    m_x: 0
+    m_y: 62
+    m_id: 86d16cb7-9f83-4c22-8439-c89d2bbba333
+    m_nodeId: dd904993-8214-4a51-a8d5-dd3cf263b1c1
+    m_socketName: OutputSocket_0
+    m_value: '{"ButtonCategory":"General","ButtonName":"Back","GameEvent":"","TimeDelay":3.0,"Trigger":0}'
+    m_valueTypeQualifiedName: Doozy.Engine.UI.Connections.UIConnection, Assembly-CSharp-firstpass,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_nodeType: 4
+  m_allowDuplicateNodeName: 0
+  m_allowEmptyNodeName: 0
+  m_canBeDeleted: 1
+  m_debugMode: 0
+  m_useFixedUpdate: 0
+  m_useLateUpdate: 0
+  m_useUpdate: 0
+  m_height: 128
+  m_width: 216
+  m_x: 1116
+  m_y: -240
+  m_minimumInputSocketsCount: 1
+  m_minimumOutputSocketsCount: 1
+  m_graphId: 62e26332-fdc5-4ffa-aaa2-4b1bdd578ba8
+  m_id: dd904993-8214-4a51-a8d5-dd3cf263b1c1
+  m_name: Region 1
+  m_notes: 
+  m_onEnterShowViews:
+  - Category: Core
+    InstantAction: 0
+    Name: Shop
+  m_onEnterHideViews: []
+  m_onExitShowViews: []
+  m_onExitHideViews: []
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,11 +586,12 @@ MonoBehaviour:
   - {fileID: 3452908306812097967}
   - {fileID: 7356951576867270777}
   - {fileID: 6537157136805810320}
+  - {fileID: -40027253170931806}
   m_isSubGraph: 0
   m_version: 1
   m_description: 
   m_id: 62e26332-fdc5-4ffa-aaa2-4b1bdd578ba8
-  m_lastModified: 132760926351986233
+  m_lastModified: 132762626332440669
 --- !u!114 &3452908306812097967
 MonoBehaviour:
   m_ObjectHideFlags: 1
