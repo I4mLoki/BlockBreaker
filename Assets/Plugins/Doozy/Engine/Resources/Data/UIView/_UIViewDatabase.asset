@@ -19,8 +19,10 @@ MonoBehaviour:
   - General
   - Core
   - Top Bar
+  - Mission
   Categories:
+  - {fileID: 11400000, guid: 105694c5f3f8d1e4b96c649b42705907, type: 2}
   - {fileID: 11400000, guid: b01e98f4801f7124ba39e1dac4debf90, type: 2}
   - {fileID: 11400000, guid: 69332c3d972955f4a92ce831e891f99a, type: 2}
-  - {fileID: 11400000, guid: 105694c5f3f8d1e4b96c649b42705907, type: 2}
+  - {fileID: 11400000, guid: 34db11ea0d29bbc449466913755dce63, type: 2}
   - {fileID: 11400000, guid: 61174f8d88df9874db98f7995cc02183, type: 2}

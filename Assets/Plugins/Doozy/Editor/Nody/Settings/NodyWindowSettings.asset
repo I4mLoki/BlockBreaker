@@ -36,8 +36,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  CurrentGraph: {fileID: 11400000, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
+  CurrentGraph: {fileID: 11400000, guid: 98ed30b67e592ac49a06e08580b59870, type: 2}
   RecentlyOpenedGraphs:
+  - {fileID: 11400000, guid: 98ed30b67e592ac49a06e08580b59870, type: 2}
   - {fileID: 11400000, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
   - {fileID: 11400000, guid: c1e32349ddfd54d4e822c0c557953abc, type: 2}
   - {fileID: 11400000, guid: de088ce9af98bea4da02c629de0d5bba, type: 2}
@@ -45,22 +46,43 @@ MonoBehaviour:
   CopiedNodes: []
   DeletedNodes: []
   SelectedNodes:
-  - {fileID: -40027253170931806, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
+  - {fileID: 1525906614276860424, guid: 98ed30b67e592ac49a06e08580b59870, type: 2}
   GraphTabs:
   - IsRootTab: 1
     Graph: {fileID: 11400000, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
     SubGraphNode: {fileID: 0}
-    Zoom: 1.2
-    PanOffset: {x: 485.4929, y: 383.6188}
-    SelectedNodes: []
+    Zoom: 1
+    PanOffset: {x: 590.4257, y: 306.66483}
+    SelectedNodes:
+    - {fileID: -7204408905595340032, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
     DeletedNodes: []
+  - IsRootTab: 0
+    Graph: {fileID: 11400000, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
+    SubGraphNode: {fileID: -7204408905595340032, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
+    Zoom: 1
+    PanOffset: {x: 590.4257, y: 306.66483}
+    SelectedNodes:
+    - {fileID: -7204408905595340032, guid: e7ebdc2e8bf7f3a4ab61b40eaed7b857, type: 2}
+    DeletedNodes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   CurrentView: 1
-  CurrentPanOffset: {x: -0.84375, y: 621.7759}
+  CurrentPanOffset: {x: 398.4, y: 480.69998}
   DefaultPanOffset: {x: 0, y: 0}
   IsDirty: 0
   SaveCurrentGraphWithControlS: 1
   CurrentDotAnimationSpeed: 0.6
-  CurrentZoom: 0.7
+  CurrentZoom: 0.6
   DefaultDotAnimationSpeed: 0.6
   DefaultZoom: 1
   ShowNodeNotes: 1
