@@ -3,14 +3,10 @@ using Code.DataConfig.BaseObjects;
 using UnityEngine;
 namespace Code.DataConfig.DataLists
 {
+    [CreateAssetMenu(menuName = "BlockBreaker/Data/Create BaseLevelList", fileName = "BaseLevelList", order = 0)]
     public class BaseLevelList : ScriptableObject
     {
-        [SerializeField] private List<BaseLevel> list;
-
-        public List<BaseLevel> List
-        {
-            get => list;
-            set => list = value;
-        }
+        [ColorBox]
+        public List<BaseLevel> list;
     }
 }

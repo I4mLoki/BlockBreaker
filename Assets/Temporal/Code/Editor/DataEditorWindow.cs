@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Code.DataConfig.BaseObjects;
+using Code.DataConfig.Characters;
 using Code.DataConfig.DataLists;
 using Code.DataConfig.Tools;
 using Sirenix.OdinInspector;
@@ -10,6 +11,7 @@ using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 namespace Code.Editor
@@ -48,6 +50,8 @@ namespace Code.Editor
                 },{
                     "Show Data", ""
                 },{
+                    "Show Data/Show Character", _dataList.baseCharacterList
+                },{
                     "Show Data/Show Level", _dataList.baseLevelList
                 },{
                     "Show Data/Show Block", _dataList.baseBlockList
@@ -55,6 +59,8 @@ namespace Code.Editor
                     "Show Data/Show Booster", ""
                 },{
                     "Create Data", ""
+                },{
+                    "Create Data/Create Character", new CreateCharacterData(_dataList)
                 },{
                     "Create Data/Create Level", new CreateLevelData(_dataList)
                 },{
@@ -75,13 +81,15 @@ namespace Code.Editor
                 BorderAlpha = 0.50f, SelectedColorDarkSkin = new Color(0.243f, 0.373f, 0.588f, 1.000f), SelectedColorLightSkin = new Color(0.243f, 0.490f, 0.900f, 1.000f)
             };
 
+            tree.AddAllAssetsAtPath("Show Data/Show Block", _dataPath.blocksPath).SortMenuItemsByName().ForEach(this.AddDragHandles);
+
+            tree.AddAllAssetsAtPath("Show Data/Show Character", _dataPath.characterPath).SortMenuItemsByName();
 
             tree.AddAllAssetsAtPath("Show Data/Show Level", _dataPath.levelsPath).SortMenuItemsByName();
 
-            tree.AddAllAssetsAtPath("Show Data/Show Block", _dataPath.blocksPath).SortMenuItemsByName().ForEach(this.AddDragHandles);
-            ;
-
             tree.EnumerateTree().AddIcons<BaseBlock>(x => x.blockIcon);
+
+            tree.EnumerateTree().AddIcons<BaseCharacter>(x => x.icon);
 
             tree.DrawMenuTree();
 
@@ -100,6 +108,11 @@ namespace Code.Editor
                 base.DrawEditor(index);
             }
             GUILayout.EndScrollView();
+
+            if (selected.SelectedValue.GetType() == typeof(BaseCharacter))
+            {
+                ShowCharacterData(selected);
+            }
 
             if (selected.SelectedValue.GetType() == typeof(BaseLevel))
             {
@@ -142,7 +155,7 @@ namespace Code.Editor
                 {
                     var asset = selected.SelectedValue as BaseLevel;
                     var path = AssetDatabase.GetAssetPath(asset);
-                    _dataList.baseLevelList.List.RemoveAt(_dataList.baseLevelList.List.IndexOf(asset));
+                    _dataList.baseLevelList.list.RemoveAt(_dataList.baseLevelList.list.IndexOf(asset));
                     AssetDatabase.DeleteAsset(path);
                     AssetDatabase.SaveAssets();
 
@@ -153,7 +166,28 @@ namespace Code.Editor
             GUILayout.EndVertical();
         }
 
+        private void ShowCharacterData(OdinMenuTreeSelection selected)
+        {
+            SirenixEditorGUI.HorizontalLineSeparator();
+            GUILayout.FlexibleSpace();
+            GUILayout.BeginHorizontal();
+            {
+                SirenixEditorGUI.HorizontalLineSeparator();
 
+                if (GUILayout.Button("Delete Character", GUILayoutOptions.Height(30)))
+                {
+                    var asset = selected.SelectedValue as BaseCharacter;
+                    var path = AssetDatabase.GetAssetPath(asset);
+                    _dataList.baseCharacterList.list.RemoveAt(_dataList.baseCharacterList.list.IndexOf(asset));
+                    AssetDatabase.DeleteAsset(path);
+                    AssetDatabase.SaveAssets();
+
+                    Debug.Assert(asset != null, nameof(asset) + " != null");
+                    // asset.SetToList();
+                }
+            }
+            GUILayout.EndVertical();
+        }
 
         private void ShowBlockData(OdinMenuTreeSelection selected)
         {
@@ -164,7 +198,9 @@ namespace Code.Editor
                 return;
             var asset = selected.SelectedValue as BaseBlock;
             var path = AssetDatabase.GetAssetPath(asset);
-            _dataList.baseBlockList.List.RemoveAt(_dataList.baseBlockList.List.IndexOf(asset));
+            var pathAnimator = AssetDatabase.GetAssetPath(asset.behaviourData);
+            _dataList.baseBlockList.list.RemoveAt(_dataList.baseBlockList.list.IndexOf(asset));
+            AssetDatabase.DeleteAsset(pathAnimator);
             AssetDatabase.DeleteAsset(path);
             AssetDatabase.SaveAssets();
         }

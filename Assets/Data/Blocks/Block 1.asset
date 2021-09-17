@@ -20,7 +20,97 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: CustomCellDrawing
+      Entry: 7
+      Data: 0|System.Boolean[,], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 25
+    - Name: ranks
+      Entry: 1
+      Data: 5|5
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   blockName: Block 1
   blockPrefab: {fileID: 0}
   blockHeads: []
@@ -31,7 +121,6 @@ MonoBehaviour:
   blockArms: []
   blockLegs: []
   blockMaterials: []
-  physicsMaterial: {fileID: 0}
   blockProperties:
     block: {fileID: 0}
     x: 0
@@ -40,4 +129,21 @@ MonoBehaviour:
   blockIcon: {fileID: 2800000, guid: 9b549be08834dd148aa0f8eeb3cd49b8, type: 3}
   sizeX: 1
   sizeY: 1
+  animationList:
+  - {fileID: 7400000, guid: f7714a0176bbb8b4dbfb0bddab9e6af4, type: 2}
+  - {fileID: 7400000, guid: 39774fc8d1062ad49a0a8657419abbec, type: 2}
+  - {fileID: 7400000, guid: ede785428f2f5464eb05852db46ab5eb, type: 2}
+  - {fileID: 7400000, guid: 774f3b06bcfb25741bf282210f87ddd2, type: 2}
+  - {fileID: 7400000, guid: 22d67767fa63bff478acf1357969b7c7, type: 2}
+  - {fileID: 7400000, guid: 7c7dabfc4dd4fac428b6e60e1ec96764, type: 2}
+  - {fileID: 7400000, guid: 7209d4b7ed66b2e41bdcf9aab82f0957, type: 2}
+  - {fileID: 7400000, guid: 1ae0113bcc2844149abe72c396e01962, type: 2}
+  behaviourData: {fileID: 0}
+  target: 
+  field: 
+  condition: 6
+  value: 0
+  state: 
+  behaviourTable: []
+  movementTiles: []
   shouldBeUnique: 0

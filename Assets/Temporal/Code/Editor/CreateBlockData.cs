@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 namespace Code.Editor
 {
@@ -17,7 +18,7 @@ namespace Code.Editor
         public CreateBlockData(DataList dataList)
         {
             blockData = ScriptableObject.CreateInstance<BaseBlock>();
-            blockData.blockName = "Block " + (dataList.baseBlockList.List.Count + 1);
+            blockData.blockName = "Block " + (dataList.baseBlockList.list.Count + 1);
             _dataList = dataList;
         }
 
@@ -26,9 +27,48 @@ namespace Code.Editor
         {
             var go = new GameObject("New Block");
 
-            AssetDatabase.CreateAsset(blockData,_dataList.dataPath.blocksPath + "/" + blockData.blockName + ".asset");
+            AssetDatabase.CreateAsset(blockData, _dataList.dataPath.blocksPath + "/" + blockData.blockName + ".asset");
             AssetDatabase.SaveAssets();
-            _dataList.baseBlockList.List.Add(blockData);
+
+            //Create Animator with all animations
+            blockData.behaviourData = AnimatorController.CreateAnimatorControllerAtPath(_dataList.dataPath.blocksPath + "/Behaviour/" + blockData.blockName + " Behaviour.controller");
+
+            var fsm = blockData.behaviourData.layers[0].stateMachine;
+            if(blockData.animationList != null)
+            {
+                var animList = blockData.animationList;
+                var t = fsm.AddState("CheckAction", new Vector3(-100, 100 * animList.Count / 2, 0));
+
+                for (var i = 0; i < animList.Count; i++)
+                {
+                    //Add a state named clip.name, whose position is (250,100,0)
+                    var state = fsm.AddState(animList[i].name, new Vector3(250, 100*i, 0));
+                    fsm.entryPosition = new Vector3(600, 100*i/2, 0);
+
+                    //The animation of this state is clip
+                    state.motion = animList[i];
+
+                    //Set this state to the default state
+                    if (animList[i].name == "Idle")
+                    {
+                        fsm.anyStatePosition = new Vector3(600, 100*i, 0);
+
+                        blockData.behaviourData.AddParameter("Action", AnimatorControllerParameterType.Trigger);
+                        blockData.behaviourData.AddParameter("TurnFinished", AnimatorControllerParameterType.Trigger);
+
+                        var fromAnyState = fsm.AddAnyStateTransition(state);
+                        fromAnyState.AddCondition(AnimatorConditionMode.Equals, 0, "TurnFinished");
+
+                        fsm.defaultState = state;
+
+
+                        var transition = state.AddTransition(t);
+                        transition.AddCondition(AnimatorConditionMode.Equals, 0, "Action");
+                    }
+                }
+            }
+
+            _dataList.baseBlockList.list.Add(blockData);
 
             var text = new GameObject("Text");
             text.transform.parent = go.transform;
@@ -106,7 +146,7 @@ namespace Code.Editor
 
 
             var prefab = PrefabUtility.SaveAsPrefabAsset(go,
-                _dataList.dataPath.prefabPath + blockData.blockName + ".prefab");
+                _dataList.dataPath.characterPrefabPath + blockData.blockName + ".prefab");
 
             blockData.blockPrefab = prefab;
 

@@ -7,11 +7,15 @@ namespace Code.DataConfig.DataLists
     {
         [BoxGroup("Data Paths")]
         [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
+        public string characterListPath = "Assets/Data/BaseCharacterList.asset";
+        [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
         public string blockListPath = "Assets/Data/BaseBlockList.asset";
         [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
         public string boosterListPath = "Assets/Data/BaseBoosterList.asset";
         [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
         public string levelListPath = "Assets/Data/BaseLevelList.asset";
+        [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
+        public string variableDataListPath = "Assets/Data/VariableData.asset";
         [BoxGroup("Data Paths/Lists"), ColorBox, Sirenix.OdinInspector.FilePath(Extensions = "asset")]
         public string dataListPath = "Assets/Data/DataList.asset";
         [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
@@ -19,6 +23,10 @@ namespace Code.DataConfig.DataLists
         [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
         public string levelsPath = "Assets/Data/levels/";
         [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
-        public string prefabPath = "Assets/Prefabs/Blocks/";
+        public string blocksPrefabPath = "Assets/Prefabs/Blocks/";
+        [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
+        public string characterPath = "Assets/Data/Characters/";
+        [BoxGroup("Data Paths/Objects"), ColorBox, FolderPath]
+        public string characterPrefabPath = "Assets/Prefabs/Characters/";
     }
 }

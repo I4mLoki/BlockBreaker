@@ -43,17 +43,6 @@ namespace Code.DataConfig.Tools.Inspector
 
             return value;
         }
-
-        protected override void DrawPropertyLayout(GUIContent label)
-        {
-            base.DrawPropertyLayout(label);
-
-            // Draws a drop-zone where we can destroy items.
-            var rect = GUILayoutUtility.GetRect(0, 40).Padding(2);
-            var id = DragAndDropUtilities.GetDragAndDropId(rect);
-            DragAndDropUtilities.DrawDropZone(rect, null as UnityEngine.Object, null, id);
-            DragAndDropUtilities.DropZone<BaseBlockProperties>(rect, new BaseBlockProperties(), false, id);
-        }
     }
 }
 #endif
